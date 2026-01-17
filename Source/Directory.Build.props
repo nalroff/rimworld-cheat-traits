@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <!-- CHANGE THIS -->
+    <RimWorldDir>..\..\..\..</RimWorldDir>
+
+    <RimWorldManaged>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+</Project>

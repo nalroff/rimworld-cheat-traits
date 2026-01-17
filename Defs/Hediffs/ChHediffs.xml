@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <HediffDef>
+    <defName>ChTank_PainDampener</defName>
+    <label>pain dampener</label>
+    <description>Pain response is dampened.</description>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <isBad>false</isBad>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <stages>
+      <li>
+        <painFactor>0.4</painFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChAscendant_GrowthAura</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>ascendant growth</label>
+    <description>Growth is accelerated by a nearby ascendant presence.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>15000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChBeastmaster_HerdBlessing</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>herd blessing</label>
+    <description>This animal thrives under the influence of a nearby beastmaster.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <!-- 2 in-game hours; intended to be continuously refreshed while in aura. -->
+        <disappearsAfterTicks>5000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChBeastmaster_DominancePressure</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>dominance pressure</label>
+    <description>This animal is unsettled by a nearby beastmaster and becomes calm and submissive.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <!-- Short duration so it cleanly falls off if the animal leaves the area. -->
+        <disappearsAfterTicks>1200</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

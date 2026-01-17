@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <TraitDef>
+    <defName>ChBoxer</defName>
+    <degreeDatas>
+      <li>
+        <label>ch boxer</label>
+        <description>Excels at unarmed combat. When unarmed, melee damage becomes absurd.</description>
+        <statOffsets>
+          <MeleeHitChance>100.0</MeleeHitChance>
+          <PainShockThreshold>1000</PainShockThreshold>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChTex</defName>
+    <degreeDatas>
+      <li>
+        <label>ch tex</label>
+        <description>Excels with revolvers. While wielding one, accuracy and handling become absurd.</description>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChZippy</defName>
+    <degreeDatas>
+      <li>
+        <label>ch zippy</label>
+        <description>Moves at an absurd speed.</description>
+        <statOffsets>
+          <MoveSpeed>100</MoveSpeed>
+          <CrawlSpeed>100</CrawlSpeed>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChTank</defName>
+    <degreeDatas>
+      <li>
+        <label>ch tank</label>
+        <description>Extremely resistant to injury. Damage is heavily reduced. Movement is less impacted by injury.</description>
+        <statOffsets>
+          <ArmorRating_Sharp>2.5</ArmorRating_Sharp>
+          <ArmorRating_Blunt>2.5</ArmorRating_Blunt>
+          <ArmorRating_Heat>2.0</ArmorRating_Heat>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChGreenThumb</defName>
+    <degreeDatas>
+      <li>
+        <label>ch green thumb</label>
+        <description>Plants near me grow faster and ignore darkness and temperature penalties.</description>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChArtificer</defName>
+    <degreeDatas>
+      <li>
+        <label>ch artificer</label>
+        <description>Everything I make is legendary.</description>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChDoc</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>ch doc</label>
+        <description>All surgeries performed by this pawn succeed. Tend quality is always excellent, including self-tend.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChAscendant</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>ch ascendant</label>
+        <description>This pawn embodies generational ascent. They are always fertile, deeply bonded with children, and nearby children grow and learn at an accelerated pace.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChBeastmaster</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>ch beastmaster</label>
+        <description>Absolute dominion over animals. Taming always succeeds. Training never provokes revenge and decays far more slowly. Herd animals near this pawn thrive and reproduce rapidly. Wild animals that linger nearby become calm and submissive.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+
+</Defs>
