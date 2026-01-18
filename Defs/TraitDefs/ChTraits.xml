@@ -108,6 +108,10 @@
       <li>
         <label>ch beastmaster</label>
         <description>Absolute dominion over animals. Taming always succeeds. Training never provokes revenge and decays far more slowly. Herd animals near this pawn thrive and reproduce rapidly. Wild animals that linger nearby become calm and submissive.</description>
+        <statOffsets>
+          <TameAnimalChance>1000</TameAnimalChance>
+          <TrainAnimalChance>1000</TrainAnimalChance>
+        </statOffsets>
       </li>
     </degreeDatas>
   </TraitDef>
