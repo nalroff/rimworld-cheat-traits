@@ -52,6 +52,33 @@
         <showRemainingTime>false</showRemainingTime>
       </li>
     </comps>
+    <stages>
+      <li>
+        <statOffsets>
+          <MeleeHitChance>0.12</MeleeHitChance>
+          <MeleeDodgeChance>0.08</MeleeDodgeChance>
+          <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.12</ArmorRating_Blunt>
+          <PainShockThreshold>0.20</PainShockThreshold>
+        </statOffsets>
+
+        <statFactors>
+          <MoveSpeed>1.15</MoveSpeed>
+          <CarryingCapacity>1.50</CarryingCapacity>
+
+          <MeleeDamageFactor>1.25</MeleeDamageFactor>
+          <MeleeCooldownFactor>0.95</MeleeCooldownFactor>
+
+          <InjuryHealingFactor>1.25</InjuryHealingFactor>
+          <ImmunityGainSpeed>1.25</ImmunityGainSpeed>
+          <ToxicResistance>1.25</ToxicResistance>
+          <ToxicEnvironmentResistance>1.25</ToxicEnvironmentResistance>
+
+          <IncomingDamageFactor>0.85</IncomingDamageFactor>
+          <Fertility>1.25</Fertility>
+        </statFactors>
+      </li>
+    </stages>
   </HediffDef>
 
   <HediffDef>

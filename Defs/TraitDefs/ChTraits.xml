@@ -102,16 +102,21 @@
   </TraitDef>
 
   <TraitDef>
+    <!-- TODO: Beastmaster – consider instant tame/train gizmo with cooldown (Command_Target) -->
     <defName>ChBeastmaster</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
         <label>ch beastmaster</label>
-        <description>Absolute dominion over animals. Taming always succeeds. Training never provokes revenge and decays far more slowly. Herd animals near this pawn thrive and reproduce rapidly. Wild animals that linger nearby become calm and submissive.</description>
+        <description>Absolute dominion over animals. Taming and training are effectively guaranteed. Nearby colony animals are blessed with improved survival, productivity, and fighting ability.</description>
         <statOffsets>
           <TameAnimalChance>1000</TameAnimalChance>
           <TrainAnimalChance>1000</TrainAnimalChance>
         </statOffsets>
+        <statFactors>
+          <AnimalGatherSpeed>2.0</AnimalGatherSpeed>
+          <AnimalGatherYield>2.0</AnimalGatherYield>
+        </statFactors>
       </li>
     </degreeDatas>
   </TraitDef>

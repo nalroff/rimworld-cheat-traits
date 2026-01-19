@@ -8,6 +8,7 @@ namespace ChTraits.Patches
         private int nextPawnTick;
         private int nextGreenThumbTick;
         private int nextAscendantTick;
+        private int nextBeastmasterTick;
 
         public ChTraitsMapComponent(Map map) : base(map) { }
 
@@ -39,6 +40,13 @@ namespace ChTraits.Patches
             {
                 nextAscendantTick = tick + ChAscendantAuraConfig.ScanIntervalTicks;
                 ChAscendantAuraSystem.TickMap(map);
+            }
+
+            // Beastmaster cadence (250)
+            if (tick >= nextBeastmasterTick)
+            {
+                nextBeastmasterTick = tick + ChBeastmasterAuraConfig.ScanIntervalTicks;
+                ChBeastmasterAuraSystem.TickMap(map);
             }
 
             // Plant-facing systems cadence (separate so you can tune later)

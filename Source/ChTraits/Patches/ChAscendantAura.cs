@@ -33,7 +33,9 @@ namespace ChTraits.Patches
     [DefOf]
     internal static class ChAscendantDefOf
     {
+        #pragma warning disable 0649
         public static HediffDef ChAscendant_GrowthAura;
+        #pragma warning restore 0649
 
         static ChAscendantDefOf()
         {
