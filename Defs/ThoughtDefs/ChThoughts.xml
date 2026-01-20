@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Mood boost -->
+  <ThoughtDef>
+    <defName>ChDiplomat_MoodAura</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ChTraits.Patches.ThoughtWorker_ChDiplomatMoodAura</workerClass>
+    <validWhileDespawned>false</validWhileDespawned>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>diplomatic calm</label>
+        <description>Being around a skilled diplomat soothes the mind.</description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Relationship drift positive -->
+  <ThoughtDef>
+    <defName>ChDiplomat_SocialAura</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>ChTraits.Patches.ThoughtWorker_ChDiplomatSocialAura</workerClass>
+    <validWhileDespawned>false</validWhileDespawned>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>easy rapport</label>
+        <description>People just seem to get along when the diplomat is nearby.</description>
+        <baseOpinionOffset>12</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

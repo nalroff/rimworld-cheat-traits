@@ -82,20 +82,19 @@
   </HediffDef>
 
   <HediffDef>
-    <defName>ChBeastmaster_DominancePressure</defName>
+    <defName>ChDiplomat_Presence</defName>
     <hediffClass>HediffWithComps</hediffClass>
-    <label>dominance pressure</label>
-    <description>This animal is unsettled by a nearby beastmaster and becomes calm and submissive.</description>
+    <label>diplomat presence</label>
+    <description>Being near a diplomat smooths tensions and lifts spirits.</description>
     <isBad>false</isBad>
     <tendable>false</tendable>
     <initialSeverity>1</initialSeverity>
     <maxSeverity>1</maxSeverity>
     <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
     <comps>
+      <!-- 6 hours linger -->
       <li Class="HediffCompProperties_Disappears">
-        <!-- Short duration so it cleanly falls off if the animal leaves the area. -->
-        <disappearsAfterTicks>1200</disappearsAfterTicks>
-        <showRemainingTime>false</showRemainingTime>
+        <disappearsAfterTicks>15000</disappearsAfterTicks>
       </li>
     </comps>
   </HediffDef>

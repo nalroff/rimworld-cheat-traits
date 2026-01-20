@@ -121,5 +121,22 @@
     </degreeDatas>
   </TraitDef>
 
+  <TraitDef>
+    <defName>ChDiplomat</defName>
+    <degreeDatas>
+      <li>
+        <label>ch diplomat</label>
+        <description>Master of persuasion. Prisoners break faster, ideologies convert faster, trade deals improve, and social interactions land with overwhelming force.</description>
+        <statOffsets>
+          <SocialImpact>10.0</SocialImpact>
+          <NegotiationAbility>10.0</NegotiationAbility>
+          <TradePriceImprovement>2.0</TradePriceImprovement>
+          <ConversionPower>10.0</ConversionPower>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
 
 </Defs>

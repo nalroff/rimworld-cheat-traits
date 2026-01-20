@@ -33,5 +33,6 @@ namespace ChTraits.Patches
         public const string GreenThumbTrait = "ChGreenThumb";
         public const string TankTrait = "ChTank";
         public const string TexTrait = "ChTex";
+        public const string DiplomatTrait = "ChDiplomat";
     }
 }
