@@ -96,7 +96,7 @@
     <degreeDatas>
       <li>
         <label>ch ascendant</label>
-        <description>This pawn embodies generational ascent. They are always fertile, deeply bonded with children, and nearby children grow and learn at an accelerated pace.</description>
+        <description>This pawn embodies generational ascent. They are always fertile, deeply bonded with children.</description>
       </li>
     </degreeDatas>
   </TraitDef>

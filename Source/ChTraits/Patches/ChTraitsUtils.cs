@@ -21,6 +21,19 @@ namespace ChTraits.Patches
 
             return traitDef != null && pawn.story.traits.HasTrait(traitDef);
         }
+
+        internal static bool IsValidPlayerColonistTarget(Pawn p)
+        {
+            if (p == null || p.Dead || !p.Spawned) return false;
+
+            // Only player-controlled pawns (colonists + typically slaves), excludes prisoners/guests.
+            if (!p.IsColonistPlayerControlled) return false;
+
+            // Optional: humanlikes only (if you don't want auras hitting animals by accident)
+            if (!p.RaceProps.Humanlike) return false;
+
+            return true;
+        }
     }
 
     public static class ChTraitsNames

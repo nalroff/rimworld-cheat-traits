@@ -43,7 +43,7 @@ namespace ChTraits.Patches
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
-                if (p == null || !p.Spawned || p.Dead) continue;
+                if (!ChTraitsUtils.IsValidPlayerColonistTarget(p)) continue;
                 if (p.story?.traits == null) continue;
                 if (!ChTraitsUtils.HasTrait(p, ChTraitsNames.DiplomatTrait)) continue;
                 diplomats.Add(p);
@@ -60,11 +60,7 @@ namespace ChTraits.Patches
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn target = pawns[i];
-                if (target == null || !target.Spawned || target.Dead) continue;
-                if (!target.RaceProps.Humanlike) continue;
-
-                // "Relationships & mood around them" usually means colony-side pawns
-                if (target.Faction != Faction.OfPlayer) continue;
+                if (!ChTraitsUtils.IsValidPlayerColonistTarget(target)) continue;
 
                 bool inAura = false;
                 for (int j = 0; j < diplomats.Count; j++)

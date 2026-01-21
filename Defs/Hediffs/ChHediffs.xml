@@ -18,24 +18,6 @@
   </HediffDef>
 
   <HediffDef>
-    <defName>ChAscendant_GrowthAura</defName>
-    <hediffClass>HediffWithComps</hediffClass>
-    <label>ascendant growth</label>
-    <description>Growth is accelerated by a nearby ascendant presence.</description>
-    <isBad>false</isBad>
-    <tendable>false</tendable>
-    <initialSeverity>1</initialSeverity>
-    <maxSeverity>1</maxSeverity>
-    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
-    <comps>
-      <li Class="HediffCompProperties_Disappears">
-        <disappearsAfterTicks>15000</disappearsAfterTicks>
-        <showRemainingTime>true</showRemainingTime>
-      </li>
-    </comps>
-  </HediffDef>
-
-  <HediffDef>
     <defName>ChBeastmaster_HerdBlessing</defName>
     <hediffClass>HediffWithComps</hediffClass>
     <label>herd blessing</label>
@@ -97,6 +79,33 @@
         <disappearsAfterTicks>15000</disappearsAfterTicks>
       </li>
     </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChAscendant_SkillAura</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>ascendant inspiration</label>
+    <description>Skill learning is accelerated by an ascendant presence.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <!-- 3 hours -->
+        <disappearsAfterTicks>7500</disappearsAfterTicks>
+      </li>
+    </comps>
+
+    <stages>
+      <li>
+        <statFactors>
+          <!-- Multiplies ALL skill XP gain -->
+          <GlobalLearningFactor>3.0</GlobalLearningFactor>
+        </statFactors>
+      </li>
+    </stages>
   </HediffDef>
 
 </Defs>
