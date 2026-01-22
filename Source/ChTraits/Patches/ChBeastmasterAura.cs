@@ -6,12 +6,18 @@ using Verse;
 namespace ChTraits.Patches
 {
     /// <summary>
-    /// Beastmaster: ranching aura. Applies ChBeastmaster_HerdBlessing to nearby player-owned animals.
-    /// While the hediff is present, wool/milk/chemfuel production progresses faster (patched via comps).
+    /// Beastmaster: ranching aura. Applies ChBeastmaster_HerdBlessing to nearby same-faction animals.
+    /// While the hediff is present, wool/milk/chemfuel production progresses faster (patched via BodyResourceGrowthSpeed).
+    ///
+    /// Conventions:
+    /// - Downed pawns are allowed to emit and receive auras.
+    /// - Targets are animals (not humanlikes) and must be same faction as the emitting beastmaster.
+    /// - No hardcoded player faction checks (future-proof for non-player factions).
     /// </summary>
     internal static class ChBeastmasterAuraConfig
     {
         internal const int AuraRadius = 20;
+        internal const int AuraRadiusSquared = AuraRadius * AuraRadius;
 
         // How often we scan & apply (ticks). 250 = ~4 seconds at 60 TPS.
         internal const int ScanIntervalTicks = 250;
@@ -30,10 +36,7 @@ namespace ChTraits.Patches
         public static HediffDef ChBeastmaster_HerdBlessing;
         #pragma warning restore 0649
 
-        static ChBeastmasterDefOf()
-        {
-            DefOfHelper.EnsureInitializedInCtor(typeof(ChBeastmasterDefOf));
-        }
+        static ChBeastmasterDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ChBeastmasterDefOf));
     }
 
     internal static class ChBeastmasterAuraUtil
@@ -41,44 +44,10 @@ namespace ChTraits.Patches
         internal static bool IsBeastmaster(Pawn pawn)
             => pawn != null && ChTraitsUtils.HasTrait(pawn, ChTraitsNames.BeastmasterTrait);
 
-        internal static bool IsPlayerAnimal(Pawn pawn)
-            => pawn != null
-               && pawn.Spawned
-               && pawn.RaceProps != null
-               && pawn.RaceProps.Animal
-               && pawn.Faction == Faction.OfPlayer;
-
-        internal static bool SameMapAndSpawned(Pawn a, Pawn b)
-            => a != null && b != null && a.Spawned && b.Spawned && a.Map == b.Map;
-
-        internal static bool InRadius(IntVec3 a, IntVec3 b, int radius)
-            => (a - b).LengthHorizontalSquared <= radius * radius;
-
-        internal static void EnsureHerdBlessing(Pawn animal)
-        {
-            if (animal == null || !animal.Spawned) return;
-
-            var hediffDef = ChBeastmasterDefOf.ChBeastmaster_HerdBlessing;
-            if (hediffDef == null) return;
-
-            Hediff existing = animal.health?.hediffSet?.GetFirstHediffOfDef(hediffDef);
-            if (existing == null)
-            {
-                existing = HediffMaker.MakeHediff(hediffDef, animal);
-                animal.health.AddHediff(existing);
-            }
-
-            // Refresh linger duration each time the aura is applied.
-            var disappears = existing.TryGetComp<HediffComp_Disappears>();
-            if (disappears != null)
-                disappears.ticksToDisappear = ChBeastmasterAuraConfig.HerdBlessingRefreshTicks;
-        }
-
         internal static bool HasHerdBlessing(Pawn pawn)
         {
-            var hediffDef = ChBeastmasterDefOf.ChBeastmaster_HerdBlessing;
-            if (pawn == null || hediffDef == null) return false;
-            return pawn.health?.hediffSet?.HasHediff(hediffDef) ?? false;
+            if (pawn == null || ChBeastmasterDefOf.ChBeastmaster_HerdBlessing == null) return false;
+            return pawn.health?.hediffSet?.HasHediff(ChBeastmasterDefOf.ChBeastmaster_HerdBlessing) ?? false;
         }
     }
 
@@ -98,36 +67,64 @@ namespace ChTraits.Patches
 
             beastmasters.Clear();
 
+            // Collect beastmasters (emitters). Downed allowed.
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
+                if (p?.story?.traits == null) continue;
                 if (ChBeastmasterAuraUtil.IsBeastmaster(p))
+                {
                     beastmasters.Add(p);
+                }
             }
 
             if (beastmasters.Count == 0) return;
 
-            // Apply blessing to nearby player-owned animals.
+            // Apply blessing to nearby same-faction animals.
             for (int i = 0; i < pawns.Count; i++)
             {
-                Pawn a = pawns[i];
-                if (!ChBeastmasterAuraUtil.IsPlayerAnimal(a)) continue;
+                Pawn target = pawns[i];
 
-                bool inAura = false;
+                if (!ChTraitsUtils.IsAnimal(target)) continue;
+                if (!ChTraitsUtils.IsHediffEligible(target)) continue;
+
+                IntVec3 tPos = target.Position;
+
                 for (int j = 0; j < beastmasters.Count; j++)
                 {
-                    Pawn bm = beastmasters[j];
-                    if (!ChBeastmasterAuraUtil.SameMapAndSpawned(bm, a)) continue;
+                    Pawn source = beastmasters[j];
+                    if (source == null || source.Dead || !source.Spawned) continue;
+                    if (source.Map != map) continue;
 
-                    if (ChBeastmasterAuraUtil.InRadius(bm.Position, a.Position, ChBeastmasterAuraConfig.AuraRadius))
-                    {
-                        inAura = true;
-                        break;
-                    }
+                    // Must be in range first.
+                    if ((source.Position - tPos).LengthHorizontalSquared > ChBeastmasterAuraConfig.AuraRadiusSquared) continue;
+
+                    // Same-faction ally check (and blocks self-targeting).
+                    // humanlikesOnly:false so it works on animals.
+                    if (!ChTraitsUtils.IsAuraAlly(source, target, humanlikesOnly: false)) continue;
+
+                    EnsureHerdBlessing(target);
+                    break;
                 }
+            }
+        }
 
-                if (inAura)
-                    ChBeastmasterAuraUtil.EnsureHerdBlessing(a);
+        private static void EnsureHerdBlessing(Pawn animal)
+        {
+            if (!ChTraitsUtils.IsHediffEligible(animal)) return;
+            if (ChBeastmasterDefOf.ChBeastmaster_HerdBlessing == null) return;
+
+            Hediff existing = animal.health.hediffSet.GetFirstHediffOfDef(ChBeastmasterDefOf.ChBeastmaster_HerdBlessing);
+            if (existing == null)
+            {
+                existing = HediffMaker.MakeHediff(ChBeastmasterDefOf.ChBeastmaster_HerdBlessing, animal);
+                animal.health.AddHediff(existing);
+            }
+
+            HediffComp_Disappears disappears = existing.TryGetComp<HediffComp_Disappears>();
+            if (disappears != null)
+            {
+                disappears.ticksToDisappear = ChBeastmasterAuraConfig.HerdBlessingRefreshTicks;
             }
         }
     }
@@ -138,9 +135,11 @@ namespace ChTraits.Patches
         static void Postfix(Pawn pawn, ref float __result)
         {
             if (pawn == null) return;
-            if (pawn.Faction != Faction.OfPlayer) return;
+            if (pawn.RaceProps == null || !pawn.RaceProps.Animal) return;
 
+            // No faction check: any animal with the blessing benefits (future-proof).
             if (!ChBeastmasterAuraUtil.HasHerdBlessing(pawn)) return;
+
             __result *= ChBeastmasterAuraConfig.ProductionProgressMultiplier;
         }
     }

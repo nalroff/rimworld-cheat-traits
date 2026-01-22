@@ -57,17 +57,10 @@ namespace ChTraits.Patches
                 ChDiplomatAuraSystem.TickMap(map);
             }
 
-            // Ascendant cadence (250)
-            if (tick >= nextAscendantTick)
-            {
-                nextAscendantTick = tick + ChAscendantAuraConfig.ScanIntervalTicks;
-                ChAscendantAuraSystem.TickMap(map);
-            }
-
-            // Plant-facing systems cadence (separate so you can tune later)
+            // Green Thumb cadence
             if (tick >= nextGreenThumbTick)
             {
-                nextGreenThumbTick = tick + ChGreenThumbAuraConfig.UpdateIntervalTicks; // assumes this exists in your project
+                nextGreenThumbTick = tick + ChGreenThumbAuraConfig.ScanIntervalTicks;
                 ChGreenThumbAura.RebuildAffectedPlants(map);
             }
         }

@@ -9,7 +9,10 @@ namespace ChTraits.Patches
     {
         public const string TraitDefName = "ChGreenThumb";
         public const float AuraRadius = 12f;
-        public const int UpdateIntervalTicks = 250;
+
+        // Keep naming consistent with other auras (Ascendant/Diplomat/Beastmaster)
+        public const int ScanIntervalTicks = 250;
+
         public const float GrowthMultiplier = 10f;
         public const int MaxTrackedPlantsPerMap = 200;
         public const float GrowthRateHardCap = 20f;
@@ -20,6 +23,8 @@ namespace ChTraits.Patches
     /// - Periodically scans around pawns with the ChGreenThumb trait.
     /// - Caches affected plant IDs in ChAuraCacheComponent under ChAuraKeys.GreenThumb_Plants.
     /// - Plant getters read the cache in hot paths (no scanning in getters).
+    ///
+    /// Note: Downed pawns are allowed to emit (no Downed check), consistent with your aura policy.
     /// </summary>
     internal static class ChGreenThumbAura
     {

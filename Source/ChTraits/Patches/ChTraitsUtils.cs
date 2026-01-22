@@ -34,6 +34,23 @@ namespace ChTraits.Patches
 
             return true;
         }
+
+        internal static bool IsAnimal(Pawn pawn)
+            => pawn != null && pawn.RaceProps != null && pawn.RaceProps.Animal;
+
+        internal static bool IsAuraAlly(Pawn source, Pawn target, bool humanlikesOnly = true)
+        {
+            if (source == null || target == null || source == target) return false;
+            if (humanlikesOnly && (target.RaceProps == null || !target.RaceProps.Humanlike)) return false;
+            if (source.Dead || target.Dead || !source.Spawned || !target.Spawned) return false;
+            if (source.Map != target.Map) return false;
+
+            // Treat same faction as ally
+            return source.Faction != null && source.Faction == target.Faction;
+        }
+
+        internal static bool IsHediffEligible(Pawn target)
+            => !(target == null || target.Dead || !target.Spawned || target.health?.hediffSet == null);
     }
 
     public static class ChTraitsNames
