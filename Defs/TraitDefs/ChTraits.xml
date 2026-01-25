@@ -10,6 +10,9 @@
           <MeleeHitChance>100.0</MeleeHitChance>
           <PainShockThreshold>1000</PainShockThreshold>
         </statOffsets>
+        <skillGains>
+          <Melee>10</Melee>
+        </skillGains>
       </li>
     </degreeDatas>
     <commonality>0</commonality>
@@ -21,6 +24,9 @@
       <li>
         <label>ch tex</label>
         <description>Excels with revolvers. While wielding one, accuracy and handling become absurd.</description>
+        <skillGains>
+          <Shooting>10</Shooting>
+        </skillGains>
       </li>
     </degreeDatas>
     <commonality>0</commonality>
@@ -63,6 +69,9 @@
       <li>
         <label>ch green thumb</label>
         <description>Plants near me grow faster and ignore darkness and temperature penalties.</description>
+        <skillGains>
+          <Plants>10</Plants>
+        </skillGains>
       </li>
     </degreeDatas>
     <commonality>0</commonality>
@@ -74,6 +83,11 @@
       <li>
         <label>ch artificer</label>
         <description>Everything I make is legendary.</description>
+        <skillGains>
+          <Construction>10</Construction>
+          <Crafting>10</Crafting>
+          <Artistic>10</Artistic>
+        </skillGains>
       </li>
     </degreeDatas>
     <commonality>0</commonality>
@@ -86,6 +100,9 @@
       <li>
         <label>ch doc</label>
         <description>All surgeries performed by this pawn succeed. Tend quality is always excellent, including self-tend.</description>
+        <skillGains>
+          <Medicine>10</Medicine>
+        </skillGains>
       </li>
     </degreeDatas>
   </TraitDef>
@@ -96,13 +113,12 @@
     <degreeDatas>
       <li>
         <label>ch ascendant</label>
-        <description>This pawn embodies generational ascent. They are always fertile, deeply bonded with children.</description>
+        <description>This pawn radiates an exceptional presence. Nearby allies learn skills far more quickly and heal from injuries at an accelerated rate. Always fertile.</description>
       </li>
     </degreeDatas>
   </TraitDef>
 
   <TraitDef>
-    <!-- TODO: Beastmaster – consider instant tame/train gizmo with cooldown (Command_Target) -->
     <defName>ChBeastmaster</defName>
     <commonality>0</commonality>
     <degreeDatas>
@@ -117,12 +133,16 @@
           <AnimalGatherSpeed>2.0</AnimalGatherSpeed>
           <AnimalGatherYield>2.0</AnimalGatherYield>
         </statFactors>
+        <skillGains>
+          <Animals>10</Animals>
+        </skillGains>
       </li>
     </degreeDatas>
   </TraitDef>
 
   <TraitDef>
     <defName>ChDiplomat</defName>
+    <commonality>0</commonality>
     <degreeDatas>
       <li>
         <label>ch diplomat</label>
@@ -133,10 +153,32 @@
           <TradePriceImprovement>2.0</TradePriceImprovement>
           <ConversionPower>10.0</ConversionPower>
         </statOffsets>
+        <skillGains>
+          <Social>10</Social>
+        </skillGains>
       </li>
     </degreeDatas>
-    <commonality>0</commonality>
   </TraitDef>
 
+  <TraitDef>
+    <defName>ChDigger</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <degree>0</degree>
+        <label>ch digger</label>
+        <description>This pawn tears through rock and pulls far more from every vein.</description>
+
+        <statFactors>
+          <MiningSpeed>3.0</MiningSpeed>
+          <MiningYield>2.5</MiningYield>
+          <DeepDrillingSpeed>3.0</DeepDrillingSpeed>
+        </statFactors>
+        <skillGains>
+          <Mining>10</Mining>
+        </skillGains>
+      </li>
+    </degreeDatas>
+  </TraitDef>
 
 </Defs>
