@@ -46,6 +46,7 @@
     <Compile Include="WorkGivers\*.cs" />
     <Compile Include="Jobs\*.cs" />
     <Compile Include="Utilities\*.cs" />
+    <Compile Include="Comps\*.cs" />
   </ItemGroup>
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

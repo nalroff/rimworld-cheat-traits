@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -10,6 +11,10 @@ namespace ChTraits.Patches
         private int nextAscendantTick;
         private int nextBeastmasterTick;
         private int nextDiplomatTick;
+        private int nextComfyTick;
+
+        private HashSet<int> chComfyFireSuppressionDisabledPawnIds = new HashSet<int>();
+        private Dictionary<int, int> chComfyNextDeployTickByPawnId = new Dictionary<int, int>();
 
         public ChTraitsMapComponent(Map map) : base(map) { }
 
@@ -63,6 +68,73 @@ namespace ChTraits.Patches
                 nextGreenThumbTick = tick + ChGreenThumbAuraConfig.ScanIntervalTicks;
                 ChGreenThumbAura.RebuildAffectedPlants(map);
             }
+
+            // ChComfy cadence
+            if (tick >= nextComfyTick)
+            {
+                nextComfyTick = tick + ChComfyAuraConfig.UpdateIntervalTicks;
+                ChComfyAuraSystem.TickMap(map);
+            }
+        }
+
+        public override void ExposeData()
+        {
+            Scribe_Collections.Look(ref chComfyFireSuppressionDisabledPawnIds,
+                "chComfy_fireSuppressionDisabledPawnIds", LookMode.Value);
+
+            if (chComfyFireSuppressionDisabledPawnIds == null)
+                chComfyFireSuppressionDisabledPawnIds = new HashSet<int>();
+
+            List<int> tmpKeys = null;
+            List<int> tmpVals = null;
+
+            Scribe_Collections.Look(ref chComfyNextDeployTickByPawnId,
+                "chComfy_nextDeployTickByPawnId",
+                LookMode.Value, LookMode.Value,
+                ref tmpKeys, ref tmpVals);
+
+            if (chComfyNextDeployTickByPawnId == null)
+                chComfyNextDeployTickByPawnId = new Dictionary<int, int>();
+        }
+
+        public bool ChComfy_IsFireSuppressionEnabled(Pawn pawn)
+        {
+            if (pawn == null) return false;
+            return !chComfyFireSuppressionDisabledPawnIds.Contains(pawn.thingIDNumber);
+        }
+
+        public void ChComfy_SetFireSuppressionEnabled(Pawn pawn, bool enabled)
+        {
+            if (pawn == null) return;
+
+            int id = pawn.thingIDNumber;
+            if (enabled)
+                chComfyFireSuppressionDisabledPawnIds.Remove(id);
+            else
+                chComfyFireSuppressionDisabledPawnIds.Add(id);
+        }
+
+        public bool ChComfy_CanDeployNodeNow(Pawn pawn, int nowTicks, out int ticksRemaining)
+        {
+            ticksRemaining = 0;
+            if (pawn == null) return false;
+
+            int id = pawn.thingIDNumber;
+            if (chComfyNextDeployTickByPawnId.TryGetValue(id, out int next))
+            {
+                if (nowTicks < next)
+                {
+                    ticksRemaining = next - nowTicks;
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public void ChComfy_SetDeployCooldown(Pawn pawn, int nextAllowedTick)
+        {
+            if (pawn == null) return;
+            chComfyNextDeployTickByPawnId[pawn.thingIDNumber] = nextAllowedTick;
         }
     }
 }

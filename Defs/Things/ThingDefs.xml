@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+
+<ThingDef ParentName="BuildingBase">
+    <defName>ChComfyClimateNode</defName>
+    <label>comfort node</label>
+    <description>A compact climate stabilizer. It needs no power and gently keeps its room near the configured temperature.</description>
+
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <tickerType>Rare</tickerType>
+
+    <!-- floor object -->
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.05</fillPercent>
+    <rotatable>false</rotatable>
+
+    <!-- IMPORTANT: don't put this in Architect menu -->
+    <!-- (No designationCategory / thingCategories on purpose) -->
+
+    <!-- Placeholder graphic: reuse heater until you make art -->
+    <graphicData>
+      <texPath>Things/ChComfy_ComfyNode</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Mass>4</Mass>
+    </statBases>
+
+    <comps>
+      <li Class="ChTraits.Comps.CompProperties_ChComfyClimateNode">
+        <defaultTargetTemperature>21.1</defaultTargetTemperature>
+        <deadbandC>3</deadbandC>
+        <gain>0.25</gain>
+        <heatPerDegreeC>120</heatPerDegreeC>
+        <maxAbsHeatPerTickRare>300</maxAbsHeatPerTickRare>
+        <requireIndoors>true</requireIndoors>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(255,150,100,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

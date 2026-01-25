@@ -181,4 +181,15 @@
     </degreeDatas>
   </TraitDef>
 
+  <TraitDef>
+    <defName>ChComfy</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>ch comfy</label>
+        <description>This pawn levelizes the temperature of their surroundings and can extinguish nearby fires.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
 </Defs>
