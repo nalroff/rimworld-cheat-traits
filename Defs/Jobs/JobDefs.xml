@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <JobDef>
+    <defName>ChDeployComfyNode</defName>
+    <driverClass>ChTraits.Jobs.JobDriver_DeployComfyNode</driverClass>
+    <reportString>deploying a comfy node.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+</Defs>

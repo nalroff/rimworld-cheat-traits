@@ -15,13 +15,8 @@ namespace ChTraits.Patches
     /// </summary>
     internal static class ChComfyAuraConfig
     {
-        public const string TraitDefName = "ChComfy";
-
         // How often we update (ticks). 120 = ~2 seconds.
         public const int UpdateIntervalTicks = 120;
-
-        // 70°F ~= 21.1°C
-        public const float TargetTempC = 21.1f;
 
         // Fire suppression
         public const float FireSuppressRadius = 10f;
@@ -42,7 +37,7 @@ namespace ChTraits.Patches
             {
                 Pawn p = pawns[i];
                 if (p?.story?.traits == null || !p.Spawned) continue;
-                if (!ChTraitsUtils.HasTrait(p, ChComfyAuraConfig.TraitDefName)) continue;
+                if (!ChTraitsUtils.HasTrait(p, ChTraitsNames.ComfyTrait)) continue;
 
                 if (mapComp != null && mapComp.ChComfy_IsFireSuppressionEnabled(p))
                 {

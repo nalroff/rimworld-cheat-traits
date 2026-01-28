@@ -22,53 +22,17 @@ namespace ChTraits.Patches
         {
             if (map == null) return;
 
-            var pawns = map.mapPawns?.AllPawnsSpawned;
-            if (pawns == null || pawns.Count == 0) return;
-
-            diplomats.Clear();
-
-            // Collect diplomats
-            for (int i = 0; i < pawns.Count; i++)
-            {
-                Pawn p = pawns[i];
-                if (p.story?.traits == null) continue;
-                if (!ChTraitsUtils.HasTrait(p, ChTraitsNames.DiplomatTrait)) continue;
-                diplomats.Add(p);
-            }
-
+            ChTraitsUtils.CollectEmitters(map, ChTraitsNames.DiplomatTrait, diplomats);
             if (diplomats.Count == 0) return;
 
-            // Apply presence to nearby friendlies
-            for (int i = 0; i < pawns.Count; i++)
-            {
-                Pawn target = pawns[i];
-                if (!ChTraitsUtils.IsHediffEligible(target)) continue;
-                for (int j = 0; j < diplomats.Count; j++)
-                {
-                    Pawn source = diplomats[j];
-                    if ((source.Position - target.Position).LengthHorizontalSquared > ChDiplomatAuraConfig.AuraRadiusSquared) continue;
-                    if (!ChTraitsUtils.IsAuraAlly(source, target)) continue;
-
-                    EnsurePresenceHediff(target, ChDiplomatDefOf.ChDiplomat_Presence);
-                    break;
-                }
-            }
-        }
-
-        private static void EnsurePresenceHediff(Pawn target, HediffDef hediffDef)
-        {
-            Hediff existing = target.health.hediffSet.GetFirstHediffOfDef(ChDiplomatDefOf.ChDiplomat_Presence);
-            if (existing == null)
-            {
-                existing = HediffMaker.MakeHediff(ChDiplomatDefOf.ChDiplomat_Presence, target);
-                target.health.AddHediff(existing);
-            }
-
-            var disappears = existing.TryGetComp<HediffComp_Disappears>();
-            if (disappears != null)
-            {
-                disappears.ticksToDisappear = ChDiplomatAuraConfig.PresenceLingerTicks;
-            }
+            ChTraitsUtils.ApplyAuraHediff(
+                map,
+                diplomats,
+                targetPredicate: ChTraitsUtils.IsHediffEligible,
+                hediffDef: ChDiplomatDefOf.ChDiplomat_Presence,
+                radiusSquared: ChDiplomatAuraConfig.AuraRadiusSquared,
+                refreshTicks: ChDiplomatAuraConfig.PresenceLingerTicks,
+                humanlikesOnly: true);
         }
     }
 

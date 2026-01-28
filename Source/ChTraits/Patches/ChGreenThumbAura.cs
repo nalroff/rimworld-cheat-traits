@@ -7,7 +7,6 @@ namespace ChTraits.Patches
 {
     internal static class ChGreenThumbAuraConfig
     {
-        public const string TraitDefName = "ChGreenThumb";
         public const float AuraRadius = 12f;
 
         // Keep naming consistent with other auras (Ascendant/Diplomat/Beastmaster)
@@ -28,8 +27,6 @@ namespace ChTraits.Patches
     /// </summary>
     internal static class ChGreenThumbAura
     {
-        private static TraitDef cachedTraitDef;
-
         public static void RebuildAffectedPlants(Map map)
         {
             if (map == null) return;
@@ -39,11 +36,6 @@ namespace ChTraits.Patches
 
             var set = cache.GetSetForWrite(ChAuraKeys.GreenThumb_Plants);
             set.Clear();
-
-            if (cachedTraitDef == null)
-                cachedTraitDef = DefDatabase<TraitDef>.GetNamedSilentFail(ChGreenThumbAuraConfig.TraitDefName);
-
-            if (cachedTraitDef == null) return;
 
             var pawns = map.mapPawns?.AllPawnsSpawned;
             if (pawns == null || pawns.Count == 0) return;
@@ -58,8 +50,7 @@ namespace ChTraits.Patches
                 Pawn p = pawns[i];
                 if (p == null || !p.Spawned || p.Dead) continue;
 
-                var traits = p.story?.traits;
-                if (traits == null || !traits.HasTrait(cachedTraitDef)) continue;
+                if (!ChTraitsUtils.HasTrait(p, ChTraitsNames.GreenThumbTrait)) continue;
 
                 IntVec3 center = p.Position;
 

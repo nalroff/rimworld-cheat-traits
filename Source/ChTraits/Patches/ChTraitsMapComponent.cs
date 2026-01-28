@@ -113,28 +113,5 @@ namespace ChTraits.Patches
             else
                 chComfyFireSuppressionDisabledPawnIds.Add(id);
         }
-
-        public bool ChComfy_CanDeployNodeNow(Pawn pawn, int nowTicks, out int ticksRemaining)
-        {
-            ticksRemaining = 0;
-            if (pawn == null) return false;
-
-            int id = pawn.thingIDNumber;
-            if (chComfyNextDeployTickByPawnId.TryGetValue(id, out int next))
-            {
-                if (nowTicks < next)
-                {
-                    ticksRemaining = next - nowTicks;
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public void ChComfy_SetDeployCooldown(Pawn pawn, int nextAllowedTick)
-        {
-            if (pawn == null) return;
-            chComfyNextDeployTickByPawnId[pawn.thingIDNumber] = nextAllowedTick;
-        }
     }
 }

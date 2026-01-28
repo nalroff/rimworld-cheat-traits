@@ -3,20 +3,17 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using ChTraits.Designators;
 
 namespace ChTraits.Patches
 {
     internal static class ChComfyNodeConfig
     {
-        public const string TraitDefName = "ChComfy";
         public const string NodeDefName = "ChComfyClimateNode";
-
-        // generous cooldown: 12 in-game hours (30,000 ticks)
-        public const int DeployCooldownTicks = 30000;
     }
 
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.GetGizmos))]
-    internal static class ChComfyDeployNodeGizmoPatch
+    internal static class ChComfyGizmoPatch
     {
         public static void Postfix(Pawn __instance, ref IEnumerable<Gizmo> __result)
         {
@@ -31,47 +28,39 @@ namespace ChTraits.Patches
             if (pawn == null || !pawn.Spawned) yield break;
             if (pawn.Faction != Faction.OfPlayer) yield break;
             if (pawn.story?.traits == null) yield break;
-            if (!ChTraitsUtils.HasTrait(pawn, ChComfyNodeConfig.TraitDefName)) yield break;
+            if (!ChTraitsUtils.HasTrait(pawn, ChTraitsNames.ComfyTrait)) yield break;
 
             ChTraitsMapComponent mapComp = pawn.Map.GetComponent<ChTraitsMapComponent>();
             if (mapComp == null) yield break;
 
+            // Deploy Node Gizmo
             int now = Find.TickManager.TicksGame;
-            bool canDeploy = mapComp.ChComfy_CanDeployNodeNow(pawn, now, out int remaining);
-
-            string cdText = canDeploy ? "Ready." : $"Cooldown: {remaining.ToStringTicksToPeriod()}";
 
             yield return new Command_Action
             {
-                defaultLabel = "Deploy comfort node",
-                defaultDesc = "Places a comfort node instantly for free.\n\n" + cdText,
+                defaultLabel = "Deploy Comfy Node",
+                defaultDesc = "Deploy a climate control node.",
                 icon = ContentFinder<Texture2D>.Get(
                     "Things/ChComfy_ComfyNode", true
                 ),
-                Disabled = !canDeploy,
-                disabledReason = canDeploy ? null : cdText,
                 action = () =>
                 {
-                    Find.Targeter.BeginTargeting(
-                        new TargetingParameters
-                        {
-                            canTargetLocations = true,
-                            canTargetBuildings = false,
-                            canTargetPawns = false,
-                            canTargetFires = false,
-                            canTargetItems = false,
-                            mapObjectTargetsMustBeAutoAttackable = false
-                            
-                        },
-                        target =>
-                        {
-                            if (!target.IsValid) return;
-                            IntVec3 cell = target.Cell;
-                            TryPlaceNode(pawn, mapComp, cell);
-                        },
-                        null, null
-                    );
+                    Find.DesignatorManager.Select(new ComfyNodeDesignator(pawn, ChThingDefOf.ChComfyClimateNode));
                 }
+            };
+
+            // Fire Suppression Toggle Gizmo
+            yield return new Command_Toggle
+            {
+                defaultLabel = "Fire suppression",
+                defaultDesc = "Automatically extinguish nearby fires.\n\nTurn this off if you are using burn boxes or controlled fires.",
+                isActive = () => mapComp.ChComfy_IsFireSuppressionEnabled(pawn),
+                toggleAction = () =>
+                {
+                    bool cur = mapComp.ChComfy_IsFireSuppressionEnabled(pawn);
+                    mapComp.ChComfy_SetFireSuppressionEnabled(pawn, !cur);
+                },
+                icon = TexCommand.ForbidOff
             };
         }
 
@@ -81,12 +70,6 @@ namespace ChTraits.Patches
             if (map == null) return;
 
             int now = Find.TickManager.TicksGame;
-            if (!mapComp.ChComfy_CanDeployNodeNow(pawn, now, out int remaining))
-            {
-                Messages.Message($"Comfort node on cooldown: {remaining.ToStringTicksToPeriod()}",
-                    MessageTypeDefOf.RejectInput, false);
-                return;
-            }
 
             if (!cell.InBounds(map))
             {
@@ -121,11 +104,31 @@ namespace ChTraits.Patches
             Thing node = ThingMaker.MakeThing(def);
             node.SetFaction(Faction.OfPlayer);
 
-            GenPlace.TryPlaceThing(node, cell, map, ThingPlaceMode.Direct);
-
-            mapComp.ChComfy_SetDeployCooldown(pawn, now + ChComfyNodeConfig.DeployCooldownTicks);
+            var job = JobMaker.MakeJob(ChJobDefOf.ChDeployComfyNode, cell);
+            pawn.jobs.TryTakeOrderedJob(job);
 
             Messages.Message("Deployed comfort node.", MessageTypeDefOf.PositiveEvent, false);
+        }
+    }
+
+    [DefOf]
+    internal static class ChJobDefOf
+    {
+        #pragma warning disable 0649
+        public static JobDef ChDeployComfyNode;
+        #pragma warning restore 0649
+
+        static ChJobDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ChJobDefOf));
+    }
+
+    [DefOf]
+    public static class ChThingDefOf
+    {
+        public static ThingDef ChComfyClimateNode; // MUST match the ThingDef defName exactly
+
+        static ChThingDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(ChThingDefOf));
         }
     }
 }

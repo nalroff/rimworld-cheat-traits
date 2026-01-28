@@ -62,70 +62,21 @@ namespace ChTraits.Patches
         {
             if (map == null) return;
 
-            var pawns = map.mapPawns?.AllPawnsSpawned;
-            if (pawns == null || pawns.Count == 0) return;
-
-            beastmasters.Clear();
-
-            // Collect beastmasters (emitters). Downed allowed.
-            for (int i = 0; i < pawns.Count; i++)
-            {
-                Pawn p = pawns[i];
-                if (p?.story?.traits == null) continue;
-                if (ChBeastmasterAuraUtil.IsBeastmaster(p))
-                {
-                    beastmasters.Add(p);
-                }
-            }
-
+            ChTraitsUtils.CollectEmitters(map, ChTraitsNames.BeastmasterTrait, beastmasters);
             if (beastmasters.Count == 0) return;
 
-            // Apply blessing to nearby same-faction animals.
-            for (int i = 0; i < pawns.Count; i++)
-            {
-                Pawn target = pawns[i];
+            // Target predicate: must be animal AND hediff eligible
+            System.Func<Pawn, bool> isValidTarget = p =>
+                ChTraitsUtils.IsAnimal(p) && ChTraitsUtils.IsHediffEligible(p);
 
-                if (!ChTraitsUtils.IsAnimal(target)) continue;
-                if (!ChTraitsUtils.IsHediffEligible(target)) continue;
-
-                IntVec3 tPos = target.Position;
-
-                for (int j = 0; j < beastmasters.Count; j++)
-                {
-                    Pawn source = beastmasters[j];
-                    if (source == null || source.Dead || !source.Spawned) continue;
-                    if (source.Map != map) continue;
-
-                    // Must be in range first.
-                    if ((source.Position - tPos).LengthHorizontalSquared > ChBeastmasterAuraConfig.AuraRadiusSquared) continue;
-
-                    // Same-faction ally check (and blocks self-targeting).
-                    // humanlikesOnly:false so it works on animals.
-                    if (!ChTraitsUtils.IsAuraAlly(source, target, humanlikesOnly: false)) continue;
-
-                    EnsureHerdBlessing(target);
-                    break;
-                }
-            }
-        }
-
-        private static void EnsureHerdBlessing(Pawn animal)
-        {
-            if (!ChTraitsUtils.IsHediffEligible(animal)) return;
-            if (ChBeastmasterDefOf.ChBeastmaster_HerdBlessing == null) return;
-
-            Hediff existing = animal.health.hediffSet.GetFirstHediffOfDef(ChBeastmasterDefOf.ChBeastmaster_HerdBlessing);
-            if (existing == null)
-            {
-                existing = HediffMaker.MakeHediff(ChBeastmasterDefOf.ChBeastmaster_HerdBlessing, animal);
-                animal.health.AddHediff(existing);
-            }
-
-            HediffComp_Disappears disappears = existing.TryGetComp<HediffComp_Disappears>();
-            if (disappears != null)
-            {
-                disappears.ticksToDisappear = ChBeastmasterAuraConfig.HerdBlessingRefreshTicks;
-            }
+            ChTraitsUtils.ApplyAuraHediff(
+                map,
+                beastmasters,
+                targetPredicate: isValidTarget,
+                hediffDef: ChBeastmasterDefOf.ChBeastmaster_HerdBlessing,
+                radiusSquared: ChBeastmasterAuraConfig.AuraRadiusSquared,
+                refreshTicks: ChBeastmasterAuraConfig.HerdBlessingRefreshTicks,
+                humanlikesOnly: false);
         }
     }
 

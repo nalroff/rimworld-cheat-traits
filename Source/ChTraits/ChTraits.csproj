@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <Compile Include="Patches\*.cs" />
+    <Compile Include="Designators\*.cs" />
     <Compile Include="DefOf\*.cs" />
     <Compile Include="WorkGivers\*.cs" />
     <Compile Include="Jobs\*.cs" />

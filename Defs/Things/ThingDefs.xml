@@ -35,15 +35,14 @@
     <comps>
       <li Class="ChTraits.Comps.CompProperties_ChComfyClimateNode">
         <defaultTargetTemperature>21.1</defaultTargetTemperature>
-        <deadbandC>3</deadbandC>
-        <gain>0.25</gain>
-        <heatPerDegreeC>120</heatPerDegreeC>
-        <maxAbsHeatPerTickRare>300</maxAbsHeatPerTickRare>
+        <deadbandC>0.25</deadbandC>
+        <gain>1</gain>
+        <maxAbsHeatPerTickRare>100000</maxAbsHeatPerTickRare>
         <requireIndoors>true</requireIndoors>
       </li>
-      <li Class="CompProperties_Glower">
+      <li Class="ChTraits.Comps.CompProperties_ComfyGlow">
         <glowRadius>3</glowRadius>
-        <glowColor>(255,150,100,0)</glowColor>
+        <glowColor>(255,255,255)</glowColor>
       </li>
     </comps>
   </ThingDef>

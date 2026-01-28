@@ -56,7 +56,6 @@
         <statOffsets>
           <ArmorRating_Sharp>2.5</ArmorRating_Sharp>
           <ArmorRating_Blunt>2.5</ArmorRating_Blunt>
-          <ArmorRating_Heat>2.0</ArmorRating_Heat>
         </statOffsets>
       </li>
     </degreeDatas>
@@ -187,7 +186,12 @@
     <degreeDatas>
       <li>
         <label>ch comfy</label>
-        <description>This pawn levelizes the temperature of their surroundings and can extinguish nearby fires.</description>
+        <description>This can extinguish nearby fires and place comfort nodes which heat/cool even large rooms with no electricity.</description>
+        <statOffsets>
+          <ArmorRating_Heat>2.5</ArmorRating_Heat>
+          <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+          <ComfyTemperatureMax>40</ComfyTemperatureMax>
+        </statOffsets>
       </li>
     </degreeDatas>
   </TraitDef>

@@ -89,70 +89,16 @@ namespace ChTraits.Patches
         }
     }
 
-    // ---------------------------------------------------------------------
-    // 2) FORCE TEND QUALITY TO 0.98 (including self-tend)
-    //
-    // Strategy: Patch the tend quality calculation and clamp to 0.98
-    // when the doctor has ChDoc.
-    //
-    // A stable hook across versions is typically:
-    //   TendUtility.CalculateBaseTendQuality(...)
-    // or similar. We'll resolve dynamically by name and parameters.
-    // ---------------------------------------------------------------------
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(TendUtility), nameof(TendUtility.CalculateBaseTendQuality),
+        new[] { typeof(Pawn), typeof(Pawn), typeof(float), typeof(float) })]
     internal static class Patch_TendUtility_CalculateBaseTendQuality_Doc
     {
-        static MethodBase TargetMethod()
+        private static void Postfix(Pawn doctor, Pawn patient, float medicinePotency, float medicineQualityMax, ref float __result)
         {
-            var t = typeof(TendUtility);
+            if (doctor == null) return;
+            if (!ChTraitsUtils.HasTrait(doctor, ChTraitsNames.DocTrait)) return;
 
-            var methods = AccessTools.GetDeclaredMethods(t)
-                .Where(m =>
-                    (m.Name.Contains("TendQuality") || m.Name.Contains("Calculate") || m.Name.Contains("BaseTend")) &&
-                    m.ReturnType == typeof(float))
-                .ToList();
-
-            // Prefer methods that include a doctor Pawn parameter.
-            foreach (var m in methods)
-            {
-                var ps = m.GetParameters();
-                if (ps.Any(p => p.ParameterType == typeof(Pawn)))
-                    return m;
-            }
-
-            // Common exact name in many builds:
-            // "CalculateBaseTendQuality"
-            var exact = methods.FirstOrDefault(m => m.Name == "CalculateBaseTendQuality");
-            return exact ?? methods.FirstOrDefault();
-        }
-
-        public static void Postfix(ref float __result, object[] __args)
-        {
-            try
-            {
-                if (__args == null) return;
-
-                // Find doctor Pawn in args
-                Pawn doctor = null;
-                for (int i = 0; i < __args.Length; i++)
-                {
-                    if (__args[i] is Pawn p)
-                    {
-                        doctor = p;
-                        break;
-                    }
-                }
-
-                if (doctor == null) return;
-                if (!DocUtil.IsDoc(doctor)) return;
-
-                // Force excellent tend quality; keep within [0..1]
-                __result = Math.Min(Math.Max(__result, DocUtil.ForcedTendQuality), 1f);
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"[ChTraits] ChDoc tend patch error: {ex}");
-            }
+            __result = 1.0f;
         }
     }
 }
