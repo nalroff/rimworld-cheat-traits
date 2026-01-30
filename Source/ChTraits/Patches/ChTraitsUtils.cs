@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace ChTraits.Patches
@@ -58,7 +58,7 @@ namespace ChTraits.Patches
         internal static void CollectEmitters(Map map, string traitName, List<Pawn> outEmitters)
         {
             if (map == null || outEmitters == null) return;
-            
+
             var pawns = map.mapPawns?.AllPawnsSpawned;
             if (pawns == null || pawns.Count == 0) return;
 

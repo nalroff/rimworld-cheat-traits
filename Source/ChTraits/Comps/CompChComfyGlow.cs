@@ -1,7 +1,6 @@
 using RimWorld;
 using UnityEngine;
 using Verse;
-using System.Collections.Generic;
 
 namespace ChTraits.Comps
 {
@@ -12,7 +11,7 @@ namespace ChTraits.Comps
             compClass = typeof(CompComfyGlow);
         }
     }
-    
+
     public class CompComfyGlow : CompGlower
     {
         private ColorInt lastColorInt;

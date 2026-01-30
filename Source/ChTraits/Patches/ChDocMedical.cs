@@ -1,8 +1,8 @@
+using HarmonyLib;
+using RimWorld;
 using System;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
-using RimWorld;
 using Verse;
 
 namespace ChTraits.Patches

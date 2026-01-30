@@ -1,7 +1,6 @@
 using RimWorld;
 using UnityEngine;
 using Verse;
-using System.Collections.Generic;
 
 namespace ChTraits.Comps
 {

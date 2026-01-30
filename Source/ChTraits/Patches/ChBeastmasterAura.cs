@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace ChTraits.Patches
@@ -32,9 +32,9 @@ namespace ChTraits.Patches
     [DefOf]
     internal static class ChBeastmasterDefOf
     {
-        #pragma warning disable 0649
+#pragma warning disable 0649
         public static HediffDef ChBeastmaster_HerdBlessing;
-        #pragma warning restore 0649
+#pragma warning restore 0649
 
         static ChBeastmasterDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ChBeastmasterDefOf));
     }

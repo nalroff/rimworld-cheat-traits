@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+using ChTraits.Designators;
 using HarmonyLib;
 using RimWorld;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
-using ChTraits.Designators;
 
 namespace ChTraits.Patches
 {
@@ -114,9 +114,9 @@ namespace ChTraits.Patches
     [DefOf]
     internal static class ChJobDefOf
     {
-        #pragma warning disable 0649
+#pragma warning disable 0649
         public static JobDef ChDeployComfyNode;
-        #pragma warning restore 0649
+#pragma warning restore 0649
 
         static ChJobDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ChJobDefOf));
     }

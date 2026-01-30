@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace ChTraits.Patches
@@ -60,9 +60,9 @@ namespace ChTraits.Patches
     [DefOf]
     internal static class ChAscendantDefOf
     {
-        #pragma warning disable 0649
+#pragma warning disable 0649
         public static HediffDef ChAscendant_InspirationAura;
-        #pragma warning restore 0649
+#pragma warning restore 0649
 
         static ChAscendantDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ChAscendantDefOf));
     }

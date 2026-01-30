@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace ChTraits.Patches
@@ -39,9 +39,9 @@ namespace ChTraits.Patches
     [DefOf]
     internal static class ChDiplomatDefOf
     {
-        #pragma warning disable 0649
+#pragma warning disable 0649
         public static HediffDef ChDiplomat_Presence;
-        #pragma warning restore 0649
+#pragma warning restore 0649
 
         static ChDiplomatDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ChDiplomatDefOf));
     }
