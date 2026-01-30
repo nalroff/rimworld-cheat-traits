@@ -196,4 +196,16 @@
     </degreeDatas>
   </TraitDef>
 
-</Defs>
+
+  <TraitDef>
+    <defName>ChTesla</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>ch tesla</label>
+        <description>This pawn can deploy tesla coils which generate power for free and zap nearby enemies.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  </Defs>

@@ -15,13 +15,17 @@ namespace ChTraits.Comps
     public class CompComfyGlow : CompGlower
     {
         private ColorInt lastColorInt;
+        private CompProperties_Glower glowerPropsInstance;
 
         private CompProperties_Glower GlowerProps => (CompProperties_Glower)props;
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            lastColorInt = GlowerProps.glowColor;
+            // Clone shared props so color changes stay per-instance.
+            glowerPropsInstance = CloneGlowerProps(GlowerProps) ?? GlowerProps;
+            props = glowerPropsInstance;
+            lastColorInt = glowerPropsInstance.glowColor;
         }
 
         public override void CompTickRare()
@@ -58,7 +62,7 @@ namespace ChTraits.Comps
             if (!NearlyEqual(desiredInt, lastColorInt))
             {
                 lastColorInt = desiredInt;
-                GlowerProps.glowColor = desiredInt;
+                glowerPropsInstance.glowColor = desiredInt;
 
                 // Refresh glow emitter registration
                 map.glowGrid.DeRegisterGlower(this);
@@ -81,6 +85,22 @@ namespace ChTraits.Comps
             return Mathf.Abs(a.r - b.r) <= thresh
                 && Mathf.Abs(a.g - b.g) <= thresh
                 && Mathf.Abs(a.b - b.b) <= thresh;
+        }
+
+        private static CompProperties_Glower CloneGlowerProps(CompProperties_Glower src)
+        {
+            if (src == null) return null;
+
+            try
+            {
+                var method = typeof(object).GetMethod("MemberwiseClone",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                return method?.Invoke(src, null) as CompProperties_Glower;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

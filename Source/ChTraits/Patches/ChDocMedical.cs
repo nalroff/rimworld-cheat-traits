@@ -9,8 +9,6 @@ namespace ChTraits.Patches
 {
     internal static class DocUtil
     {
-        internal const float ForcedTendQuality = 1.2f;
-
         internal static bool IsDoc(Pawn pawn)
             => ChTraitsUtils.HasTrait(pawn, ChTraitsNames.DocTrait);
     }

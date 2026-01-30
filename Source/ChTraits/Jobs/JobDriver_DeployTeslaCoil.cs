@@ -1,18 +1,16 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace ChTraits.Jobs
 {
-    public class JobDriver_DeployComfyNode : JobDriver
+    public class JobDriver_DeployTeslaCoil : JobDriver
     {
-        private const int PlaceDelayTicks = 0; // keep instant
-
         private IntVec3 TargetCell => job.targetA.Cell;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            // Reserve the cell target so two pawns don’t try to deploy into the same spot.
             return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
         }
 
@@ -20,7 +18,6 @@ namespace ChTraits.Jobs
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
-            // If the cell becomes invalid/blocked before we get there, fail gracefully.
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch)
                 .FailOn(() => !CanPlaceAt(pawn.Map, TargetCell));
 
@@ -37,19 +34,19 @@ namespace ChTraits.Jobs
                         return;
                     }
 
-                    ThingDef nodeDef = DefDatabase<ThingDef>.GetNamedSilentFail("ChComfyClimateNode");
-                    if (nodeDef == null)
+                    ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail("ChTeslaCoil");
+                    if (def == null)
                     {
-                        Log.Error("[ChTraits] Missing ThingDef ChComfyClimateNode.");
+                        Log.Error("[ChTraits] Missing ThingDef ChTeslaCoil.");
                         EndJobWith(JobCondition.Incompletable);
                         return;
                     }
 
-                    // Spawn exactly at the chosen cell
-                    Thing node = ThingMaker.MakeThing(nodeDef);
+                    Thing coil = ThingMaker.MakeThing(def);
+                    // Be explicit to avoid any ambiguity with namespaces.
                     if (pawn.Faction != null)
-                        node.SetFaction(pawn.Faction);
-                    GenSpawn.Spawn(node, c, map, WipeMode.Vanish);
+                        coil.SetFaction(pawn.Faction);
+                    GenSpawn.Spawn(coil, c, map, WipeMode.Vanish);
                 },
                 defaultCompleteMode = ToilCompleteMode.Instant
             };
@@ -57,18 +54,16 @@ namespace ChTraits.Jobs
 
         private static bool CanPlaceAt(Map map, IntVec3 c)
         {
+            if (map == null) return false;
             if (!c.InBounds(map)) return false;
             if (!c.Standable(map) && !c.Walkable(map)) return false;
 
-            // For a 1x1 building, require the cell be empty of other buildings.
-            // If you want to allow it on top of some things, loosen this.
             if (c.GetEdifice(map) != null) return false;
 
-            // Also block if there is already a ComfyNode there
             List<Thing> things = c.GetThingList(map);
             for (int i = 0; i < things.Count; i++)
             {
-                if (things[i]?.def?.defName == "ChComfyClimateNode")
+                if (things[i]?.def?.defName == "ChTeslaCoil")
                     return false;
             }
 

@@ -23,7 +23,7 @@
     <graphicData>
       <texPath>Things/ChComfy_ComfyNode</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,1)</drawSize>
+      <drawSize>(1.25,1.25)</drawSize>
     </graphicData>
 
     <statBases>
@@ -36,8 +36,6 @@
       <li Class="ChTraits.Comps.CompProperties_ChComfyClimateNode">
         <defaultTargetTemperature>21.1</defaultTargetTemperature>
         <deadbandC>0.25</deadbandC>
-        <gain>1</gain>
-        <maxAbsHeatPerTickRare>100000</maxAbsHeatPerTickRare>
         <requireIndoors>true</requireIndoors>
       </li>
       <li Class="ChTraits.Comps.CompProperties_ComfyGlow">
@@ -45,6 +43,76 @@
         <glowColor>(255,255,255)</glowColor>
       </li>
     </comps>
+  </ThingDef>
+
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>ChTeslaCoil</defName>
+    <label>tesla coil</label>
+    <description>A crackling coil that feeds power into the grid and lashes out at nearby hostiles.</description>
+
+    <thingClass>Building</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+
+    <graphicData>
+      <!-- Placeholder: swap to your real art later -->
+      <texPath>Things/ChTesla_TeslaCoil</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.5,1.5)</drawSize>
+    </graphicData>
+
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <pathCost>10</pathCost>
+    <rotatable>true</rotatable>
+
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <Beauty>-5</Beauty>
+    </statBases>
+
+    <tickerType>Normal</tickerType>
+    <size>(1,1)</size>
+
+    <!-- deploy-only: keep it out of Architect -->
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+
+    <comps>
+      <!-- Power: negative consumption = generation; transmitsPower makes it hook to conduits -->
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-2000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+
+      <!-- Optional: lets EMP stun it like other electronics -->
+      <li Class="CompProperties_Stunnable">
+        <useLargeEMPEffecter>true</useLargeEMPEffecter>
+        <affectedDamageDefs>
+          <li>EMP</li>
+        </affectedDamageDefs>
+      </li>
+
+      <!-- Your proximity zap logic -->
+      <li Class="ChTraits.Comps.CompProperties_ChTeslaZap">
+        <radius>6</radius>
+        <cooldownTicks>180</cooldownTicks>
+        <stunTicks>120</stunTicks>
+        <!-- -1 means “match TrapSpike if possible, else fallback in code” -->
+        <damageAmount>45</damageAmount>
+        <armorPenetration>0.15</armorPenetration>
+        <requirePower>false</requirePower>
+      </li>
+    </comps>
+
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+
+    <!-- Keep it from being a normal-build thing (deploy-only) -->
+    <neverMultiSelect>true</neverMultiSelect>
   </ThingDef>
 
 </Defs>

@@ -162,5 +162,6 @@ namespace ChTraits.Patches
         public const string TankTrait = "ChTank";
         public const string TexTrait = "ChTex";
         public const string ZippyTrait = "ChZippy";
+        public const string TeslaTrait = "ChTesla";
     }
 }

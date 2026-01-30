@@ -8,8 +8,6 @@ namespace ChTraits.Comps
     public class CompProperties_ChComfyClimateNode : CompProperties_TempControl
     {
         public float deadbandC = 0.25f;
-        public float gain = 1.0f;
-        public float maxAbsHeatPerTickRare = 100_000f;
         public bool requireIndoors = true;
 
         public CompProperties_ChComfyClimateNode()

@@ -6,4 +6,12 @@
     <reportString>deploying a comfy node.</reportString>
     <casualInterruptible>false</casualInterruptible>
   </JobDef>
+
+  <JobDef>
+    <defName>ChDeployTeslaCoil</defName>
+    <driverClass>ChTraits.Jobs.JobDriver_DeployTeslaCoil</driverClass>
+    <reportString>deploying a tesla coil.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
 </Defs>
