@@ -85,7 +85,7 @@
       <!-- Power: negative consumption = generation; transmitsPower makes it hook to conduits -->
       <li Class="CompProperties_Power">
         <compClass>CompPowerPlant</compClass>
-        <basePowerConsumption>-2000</basePowerConsumption>
+        <basePowerConsumption>-750</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
 

@@ -4,7 +4,7 @@
     <defName>ChBoxer</defName>
     <degreeDatas>
       <li>
-        <label>ch boxer</label>
+        <label>ch Boxer</label>
         <description>Excels at unarmed combat. When unarmed, melee damage becomes absurd.</description>
         <statOffsets>
           <MeleeHitChance>100.0</MeleeHitChance>
@@ -22,7 +22,7 @@
     <defName>ChTex</defName>
     <degreeDatas>
       <li>
-        <label>ch tex</label>
+        <label>ch Tex</label>
         <description>Excels with revolvers. While wielding one, accuracy and handling become absurd.</description>
         <skillGains>
           <Shooting>10</Shooting>
@@ -36,7 +36,7 @@
     <defName>ChZippy</defName>
     <degreeDatas>
       <li>
-        <label>ch zippy</label>
+        <label>ch Zippy</label>
         <description>Moves at an absurd speed.</description>
         <statOffsets>
           <MoveSpeed>100</MoveSpeed>
@@ -51,7 +51,7 @@
     <defName>ChTank</defName>
     <degreeDatas>
       <li>
-        <label>ch tank</label>
+        <label>ch Tank</label>
         <description>Extremely resistant to injury. Damage is heavily reduced. Movement is less impacted by injury.</description>
         <statOffsets>
           <ArmorRating_Sharp>2.5</ArmorRating_Sharp>
@@ -66,7 +66,7 @@
     <defName>ChGreenThumb</defName>
     <degreeDatas>
       <li>
-        <label>ch green thumb</label>
+        <label>ch Green Thumb</label>
         <description>Plants near me grow faster and ignore darkness and temperature penalties.</description>
         <skillGains>
           <Plants>10</Plants>
@@ -80,7 +80,7 @@
     <defName>ChArtificer</defName>
     <degreeDatas>
       <li>
-        <label>ch artificer</label>
+        <label>ch Artificer</label>
         <description>Everything I make is legendary.</description>
         <skillGains>
           <Construction>10</Construction>
@@ -97,7 +97,7 @@
     <commonality>0</commonality>
     <degreeDatas>
       <li>
-        <label>ch doc</label>
+        <label>ch Doc</label>
         <description>All surgeries performed by this pawn succeed. Tend quality is always excellent, including self-tend.</description>
         <skillGains>
           <Medicine>10</Medicine>
@@ -111,7 +111,7 @@
     <commonality>0</commonality>
     <degreeDatas>
       <li>
-        <label>ch ascendant</label>
+        <label>ch Ascendant</label>
         <description>This pawn radiates an exceptional presence. Nearby allies learn skills far more quickly and heal from injuries at an accelerated rate. Always fertile.</description>
       </li>
     </degreeDatas>
@@ -122,7 +122,7 @@
     <commonality>0</commonality>
     <degreeDatas>
       <li>
-        <label>ch beastmaster</label>
+        <label>ch Beastmaster</label>
         <description>Absolute dominion over animals. Taming and training are effectively guaranteed. Nearby colony animals are blessed with improved survival, productivity, and fighting ability.</description>
         <statOffsets>
           <TameAnimalChance>1000</TameAnimalChance>
@@ -144,7 +144,7 @@
     <commonality>0</commonality>
     <degreeDatas>
       <li>
-        <label>ch diplomat</label>
+        <label>ch Diplomat</label>
         <description>Master of persuasion. Prisoners break faster, ideologies convert faster, trade deals improve, and social interactions land with overwhelming force.</description>
         <statOffsets>
           <SocialImpact>10.0</SocialImpact>
@@ -165,7 +165,7 @@
     <degreeDatas>
       <li>
         <degree>0</degree>
-        <label>ch digger</label>
+        <label>ch Digger</label>
         <description>This pawn tears through rock and pulls far more from every vein.</description>
 
         <statFactors>
@@ -185,7 +185,7 @@
     <commonality>0</commonality>
     <degreeDatas>
       <li>
-        <label>ch comfy</label>
+        <label>ch Comfy</label>
         <description>This can extinguish nearby fires and place comfort nodes which heat/cool even large rooms with no electricity.</description>
         <statOffsets>
           <ArmorRating_Heat>2.5</ArmorRating_Heat>
@@ -202,7 +202,7 @@
     <commonality>0</commonality>
     <degreeDatas>
       <li>
-        <label>ch tesla</label>
+        <label>ch Tesla</label>
         <description>This pawn can deploy tesla coils which generate power for free and zap nearby enemies.</description>
       </li>
     </degreeDatas>
