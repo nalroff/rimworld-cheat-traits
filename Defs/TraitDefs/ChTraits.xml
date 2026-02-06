@@ -81,7 +81,7 @@
     <degreeDatas>
       <li>
         <label>ch Artificer</label>
-        <description>Everything I make is legendary.</description>
+        <description>Everything I make is at least excellent: 60% excellent, 30% masterwork, 10% legendary.</description>
         <skillGains>
           <Construction>10</Construction>
           <Crafting>10</Crafting>

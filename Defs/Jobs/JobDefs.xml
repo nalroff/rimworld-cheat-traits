@@ -2,14 +2,14 @@
 <Defs>
   <JobDef>
     <defName>ChDeployComfyNode</defName>
-    <driverClass>ChTraits.Jobs.JobDriver_DeployComfyNode</driverClass>
+    <driverClass>CheatTraits.Jobs.JobDriver_DeployComfyNode</driverClass>
     <reportString>deploying a comfy node.</reportString>
     <casualInterruptible>false</casualInterruptible>
   </JobDef>
 
   <JobDef>
     <defName>ChDeployTeslaCoil</defName>
-    <driverClass>ChTraits.Jobs.JobDriver_DeployTeslaCoil</driverClass>
+    <driverClass>CheatTraits.Jobs.JobDriver_DeployTeslaCoil</driverClass>
     <reportString>deploying a tesla coil.</reportString>
     <casualInterruptible>false</casualInterruptible>
   </JobDef>

@@ -33,12 +33,12 @@
     </statBases>
 
     <comps>
-      <li Class="ChTraits.Comps.CompProperties_ChComfyClimateNode">
+      <li Class="CheatTraits.Comps.CompProperties_ChComfyClimateNode">
         <defaultTargetTemperature>21.1</defaultTargetTemperature>
         <deadbandC>0.25</deadbandC>
         <requireIndoors>true</requireIndoors>
       </li>
-      <li Class="ChTraits.Comps.CompProperties_ComfyGlow">
+      <li Class="CheatTraits.Comps.CompProperties_ComfyGlow">
         <glowRadius>3</glowRadius>
         <glowColor>(255,255,255)</glowColor>
       </li>
@@ -98,7 +98,7 @@
       </li>
 
       <!-- Your proximity zap logic -->
-      <li Class="ChTraits.Comps.CompProperties_ChTeslaZap">
+      <li Class="CheatTraits.Comps.CompProperties_ChTeslaZap">
         <radius>6</radius>
         <cooldownTicks>180</cooldownTicks>
         <stunTicks>120</stunTicks>
