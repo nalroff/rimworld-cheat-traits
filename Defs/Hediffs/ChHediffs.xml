@@ -130,6 +130,7 @@
           <ImmunityGainSpeed>1.10</ImmunityGainSpeed>
           <RestRateMultiplier>1.10</RestRateMultiplier>
         </statFactors>
+        <hungerRateFactorOffset>-0.10</hungerRateFactorOffset>
       </li>
     </stages>
   </HediffDef>
@@ -158,6 +159,7 @@
           <ImmunityGainSpeed>1.20</ImmunityGainSpeed>
           <RestRateMultiplier>1.20</RestRateMultiplier>
         </statFactors>
+        <hungerRateFactorOffset>-0.20</hungerRateFactorOffset>
       </li>
     </stages>
   </HediffDef>
@@ -186,6 +188,7 @@
           <ImmunityGainSpeed>1.30</ImmunityGainSpeed>
           <RestRateMultiplier>1.30</RestRateMultiplier>
         </statFactors>
+        <hungerRateFactorOffset>-0.30</hungerRateFactorOffset>
       </li>
     </stages>
   </HediffDef>
@@ -214,6 +217,7 @@
           <ImmunityGainSpeed>1.20</ImmunityGainSpeed>
           <RestRateMultiplier>1.20</RestRateMultiplier>
         </statFactors>
+        <hungerRateFactorOffset>-0.20</hungerRateFactorOffset>
       </li>
     </stages>
   </HediffDef>
@@ -242,6 +246,7 @@
           <ImmunityGainSpeed>1.35</ImmunityGainSpeed>
           <RestRateMultiplier>1.35</RestRateMultiplier>
         </statFactors>
+        <hungerRateFactorOffset>-0.35</hungerRateFactorOffset>
       </li>
     </stages>
   </HediffDef>
@@ -270,6 +275,7 @@
           <ImmunityGainSpeed>1.50</ImmunityGainSpeed>
           <RestRateMultiplier>1.50</RestRateMultiplier>
         </statFactors>
+        <hungerRateFactorOffset>-0.50</hungerRateFactorOffset>
       </li>
     </stages>
   </HediffDef>
