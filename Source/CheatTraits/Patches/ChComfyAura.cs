@@ -25,20 +25,24 @@ namespace CheatTraits.Patches
     {
         public static void TickMap(Map map)
         {
-            if (map == null) return;
+            if (map == null)
+                return;
 
             Map m = map;
 
             var pawns = m.mapPawns?.AllPawnsSpawned;
-            if (pawns == null) return;
+            if (pawns == null)
+                return;
 
             CheatTraitsMapComponent? mapComp = m.GetComponent<CheatTraitsMapComponent>();
 
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn? p = pawns[i];
-                if (p?.story?.traits == null || !p.Spawned) continue;
-                if (!CheatTraitsUtils.HasTrait(p, CheatTraitsNames.ComfyTrait)) continue;
+                if (p?.story?.traits == null || !p.Spawned)
+                    continue;
+                if (!CheatTraitsUtils.HasTrait(p, CheatTraitsNames.ComfyTrait))
+                    continue;
 
                 if (mapComp != null && mapComp.ChComfy_IsFireSuppressionEnabled(p))
                 {
@@ -49,15 +53,23 @@ namespace CheatTraits.Patches
 
         private static void ExtinguishNearbyFires(Map map, Pawn pawn)
         {
-            foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, ChComfyAuraConfig.FireSuppressRadius, true))
+            foreach (
+                IntVec3 c in GenRadial.RadialCellsAround(
+                    pawn.Position,
+                    ChComfyAuraConfig.FireSuppressRadius,
+                    true
+                )
+            )
             {
-                if (!c.InBounds(map)) continue;
+                if (!c.InBounds(map))
+                    continue;
 
                 var things = c.GetThingList(map);
                 for (int i = things.Count - 1; i >= 0; i--)
                 {
                     Fire? fire = things[i] as Fire;
-                    if (fire == null) continue;
+                    if (fire == null)
+                        continue;
 
                     fire.Destroy(DestroyMode.Vanish);
                 }

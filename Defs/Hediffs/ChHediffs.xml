@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-
   <HediffDef>
     <defName>ChTank_PainDampener</defName>
     <label>pain dampener</label>
@@ -106,5 +105,4 @@
       </li>
     </stages>
   </HediffDef>
-
 </Defs>

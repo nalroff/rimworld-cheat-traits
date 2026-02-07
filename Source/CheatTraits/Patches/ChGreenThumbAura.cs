@@ -29,16 +29,19 @@ namespace CheatTraits.Patches
     {
         public static void RebuildAffectedPlants(Map map)
         {
-            if (map == null) return;
+            if (map == null)
+                return;
 
             var cache = map.GetComponent<ChAuraCacheComponent>();
-            if (cache == null) return;
+            if (cache == null)
+                return;
 
             var set = cache.GetSetForWrite(ChAuraKeys.GreenThumb_Plants);
             set.Clear();
 
             var pawns = map.mapPawns?.AllPawnsSpawned;
-            if (pawns == null || pawns.Count == 0) return;
+            if (pawns == null || pawns.Count == 0)
+                return;
 
             int tracked = 0;
             int cap = ChGreenThumbAuraConfig.MaxTrackedPlantsPerMap;
@@ -48,19 +51,23 @@ namespace CheatTraits.Patches
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
-                if (p == null || !p.Spawned || p.Dead) continue;
+                if (p == null || !p.Spawned || p.Dead)
+                    continue;
 
-                if (!CheatTraitsUtils.HasTrait(p, CheatTraitsNames.GreenThumbTrait)) continue;
+                if (!CheatTraitsUtils.HasTrait(p, CheatTraitsNames.GreenThumbTrait))
+                    continue;
 
                 IntVec3 center = p.Position;
 
                 for (int r = 0; r < radiusCellCount; r++)
                 {
                     IntVec3 cell = center + GenRadial.RadialPattern[r];
-                    if (!cell.InBounds(map)) continue;
+                    if (!cell.InBounds(map))
+                        continue;
 
                     var things = map.thingGrid.ThingsListAtFast(cell);
-                    if (things == null || things.Count == 0) continue;
+                    if (things == null || things.Count == 0)
+                        continue;
 
                     for (int t = 0; t < things.Count; t++)
                     {
@@ -70,7 +77,8 @@ namespace CheatTraits.Patches
                             if (set.Add(plant.thingIDNumber))
                             {
                                 tracked++;
-                                if (cap > 0 && tracked >= cap) return;
+                                if (cap > 0 && tracked >= cap)
+                                    return;
                             }
                         }
                     }
@@ -80,7 +88,8 @@ namespace CheatTraits.Patches
 
         public static bool InAura(Plant plant)
         {
-            if (plant == null || !plant.Spawned) return false;
+            if (plant == null || !plant.Spawned)
+                return false;
             return ChAuraCache.IsAffected(plant, ChAuraKeys.GreenThumb_Plants);
         }
     }
@@ -95,7 +104,8 @@ namespace CheatTraits.Patches
     {
         public static void Postfix(Plant __instance, ref float __result)
         {
-            if (!ChGreenThumbAura.InAura(__instance)) return;
+            if (!ChGreenThumbAura.InAura(__instance))
+                return;
             __result = 1f;
         }
     }
@@ -106,7 +116,8 @@ namespace CheatTraits.Patches
     {
         public static void Postfix(Plant __instance, ref float __result)
         {
-            if (!ChGreenThumbAura.InAura(__instance)) return;
+            if (!ChGreenThumbAura.InAura(__instance))
+                return;
             __result = 1f;
         }
     }
@@ -117,8 +128,10 @@ namespace CheatTraits.Patches
     {
         public static void Postfix(Plant __instance, ref float __result)
         {
-            if (__result <= 0f) return;
-            if (!ChGreenThumbAura.InAura(__instance)) return;
+            if (__result <= 0f)
+                return;
+            if (!ChGreenThumbAura.InAura(__instance))
+                return;
 
             __result *= ChGreenThumbAuraConfig.GrowthMultiplier;
             __result = Mathf.Min(__result, ChGreenThumbAuraConfig.GrowthRateHardCap);

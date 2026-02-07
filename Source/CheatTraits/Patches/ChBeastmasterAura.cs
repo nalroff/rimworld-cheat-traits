@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
-using System.Collections.Generic;
 using Verse;
 
 namespace CheatTraits.Patches
@@ -36,18 +36,21 @@ namespace CheatTraits.Patches
         public static HediffDef ChBeastmaster_HerdBlessing = null!;
 #pragma warning restore 0649
 
-        static ChBeastmasterDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ChBeastmasterDefOf));
+        static ChBeastmasterDefOf() =>
+            DefOfHelper.EnsureInitializedInCtor(typeof(ChBeastmasterDefOf));
     }
 
     internal static class ChBeastmasterAuraUtil
     {
-        internal static bool IsBeastmaster(Pawn pawn)
-            => pawn != null && CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.BeastmasterTrait);
+        internal static bool IsBeastmaster(Pawn pawn) =>
+            pawn != null && CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.BeastmasterTrait);
 
         internal static bool HasHerdBlessing(Pawn pawn)
         {
-            if (pawn == null || ChBeastmasterDefOf.ChBeastmaster_HerdBlessing == null) return false;
-            return pawn.health?.hediffSet?.HasHediff(ChBeastmasterDefOf.ChBeastmaster_HerdBlessing) ?? false;
+            if (pawn == null || ChBeastmasterDefOf.ChBeastmaster_HerdBlessing == null)
+                return false;
+            return pawn.health?.hediffSet?.HasHediff(ChBeastmasterDefOf.ChBeastmaster_HerdBlessing)
+                ?? false;
         }
     }
 
@@ -60,10 +63,12 @@ namespace CheatTraits.Patches
 
         public static void TickMap(Map map)
         {
-            if (map == null) return;
+            if (map == null)
+                return;
 
             CheatTraitsUtils.CollectEmitters(map, CheatTraitsNames.BeastmasterTrait, beastmasters);
-            if (beastmasters.Count == 0) return;
+            if (beastmasters.Count == 0)
+                return;
 
             // Target predicate: must be animal AND hediff eligible
             System.Func<Pawn, bool> isValidTarget = p =>
@@ -76,7 +81,8 @@ namespace CheatTraits.Patches
                 hediffDef: ChBeastmasterDefOf.ChBeastmaster_HerdBlessing,
                 radiusSquared: ChBeastmasterAuraConfig.AuraRadiusSquared,
                 refreshTicks: ChBeastmasterAuraConfig.HerdBlessingRefreshTicks,
-                humanlikesOnly: false);
+                humanlikesOnly: false
+            );
         }
     }
 
@@ -85,11 +91,14 @@ namespace CheatTraits.Patches
     {
         static void Postfix(Pawn pawn, ref float __result)
         {
-            if (pawn == null) return;
-            if (pawn.RaceProps == null || !pawn.RaceProps.Animal) return;
+            if (pawn == null)
+                return;
+            if (pawn.RaceProps == null || !pawn.RaceProps.Animal)
+                return;
 
             // No faction check: any animal with the blessing benefits (future-proof).
-            if (!ChBeastmasterAuraUtil.HasHerdBlessing(pawn)) return;
+            if (!ChBeastmasterAuraUtil.HasHerdBlessing(pawn))
+                return;
 
             __result *= ChBeastmasterAuraConfig.ProductionProgressMultiplier;
         }

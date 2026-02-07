@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <OutputType>Library</OutputType>
@@ -27,5 +26,4 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
-
 </Project>

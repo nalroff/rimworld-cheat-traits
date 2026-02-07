@@ -1,17 +1,20 @@
-using RimWorld;
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace CheatTraits.Patches
 {
     public static class CheatTraitsUtils
     {
-        private static readonly Dictionary<string, TraitDef> traitDefCache = new Dictionary<string, TraitDef>();
+        private static readonly Dictionary<string, TraitDef> traitDefCache =
+            new Dictionary<string, TraitDef>();
 
         internal static bool HasTrait(Pawn pawn, string defName)
         {
-            if (pawn?.story?.traits == null) return false;
-            if (string.IsNullOrEmpty(defName)) return false;
+            if (pawn?.story?.traits == null)
+                return false;
+            if (string.IsNullOrEmpty(defName))
+                return false;
 
             if (!traitDefCache.TryGetValue(defName, out TraitDef traitDef))
             {
@@ -24,49 +27,59 @@ namespace CheatTraits.Patches
 
         internal static bool IsValidPlayerColonistTarget(Pawn p)
         {
-            if (p == null || p.Dead || !p.Spawned) return false;
+            if (p == null || p.Dead || !p.Spawned)
+                return false;
 
             // Only player-controlled pawns (colonists + typically slaves), excludes prisoners/guests.
-            if (!p.IsColonistPlayerControlled) return false;
+            if (!p.IsColonistPlayerControlled)
+                return false;
 
             // Optional: humanlikes only (if you don't want auras hitting animals by accident)
-            if (!p.RaceProps.Humanlike) return false;
+            if (!p.RaceProps.Humanlike)
+                return false;
 
             return true;
         }
 
-        internal static bool IsAnimal(Pawn pawn)
-            => pawn != null && pawn.RaceProps != null && pawn.RaceProps.Animal;
+        internal static bool IsAnimal(Pawn pawn) =>
+            pawn != null && pawn.RaceProps != null && pawn.RaceProps.Animal;
 
         internal static bool IsAuraAlly(Pawn source, Pawn target, bool humanlikesOnly = true)
         {
-            if (source == null || target == null || source == target) return false;
-            if (humanlikesOnly && (target.RaceProps == null || !target.RaceProps.Humanlike)) return false;
-            if (source.Dead || target.Dead || !source.Spawned || !target.Spawned) return false;
-            if (source.Map != target.Map) return false;
+            if (source == null || target == null || source == target)
+                return false;
+            if (humanlikesOnly && (target.RaceProps == null || !target.RaceProps.Humanlike))
+                return false;
+            if (source.Dead || target.Dead || !source.Spawned || !target.Spawned)
+                return false;
+            if (source.Map != target.Map)
+                return false;
 
             // Treat same faction as ally
             return source.Faction != null && source.Faction == target.Faction;
         }
 
-        internal static bool IsHediffEligible(Pawn target)
-            => !(target == null || target.Dead || !target.Spawned || target.health?.hediffSet == null);
+        internal static bool IsHediffEligible(Pawn target) =>
+            !(target == null || target.Dead || !target.Spawned || target.health?.hediffSet == null);
 
         /// <summary>
         /// Collects all emitters (pawns with the given trait) from the map's spawned pawns.
         /// </summary>
         internal static void CollectEmitters(Map map, string traitName, List<Pawn> outEmitters)
         {
-            if (map == null || outEmitters == null) return;
+            if (map == null || outEmitters == null)
+                return;
 
             var pawns = map.mapPawns?.AllPawnsSpawned;
-            if (pawns == null || pawns.Count == 0) return;
+            if (pawns == null || pawns.Count == 0)
+                return;
 
             outEmitters.Clear();
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
-                if (p?.story?.traits == null) continue;
+                if (p?.story?.traits == null)
+                    continue;
                 if (HasTrait(p, traitName))
                 {
                     outEmitters.Add(p);
@@ -92,33 +105,41 @@ namespace CheatTraits.Patches
             HediffDef hediffDef,
             int radiusSquared,
             int refreshTicks,
-            bool humanlikesOnly = true)
+            bool humanlikesOnly = true
+        )
         {
-            if (map == null || emitters == null || emitters.Count == 0 || hediffDef == null) return;
+            if (map == null || emitters == null || emitters.Count == 0 || hediffDef == null)
+                return;
 
             var pawns = map.mapPawns?.AllPawnsSpawned;
-            if (pawns == null || pawns.Count == 0) return;
+            if (pawns == null || pawns.Count == 0)
+                return;
 
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn target = pawns[i];
 
                 // Apply optional predicate (eligibility check).
-                if (targetPredicate != null && !targetPredicate(target)) continue;
+                if (targetPredicate != null && !targetPredicate(target))
+                    continue;
 
                 IntVec3 tPos = target.Position;
 
                 for (int j = 0; j < emitters.Count; j++)
                 {
                     Pawn source = emitters[j];
-                    if (source == null || source.Dead || !source.Spawned) continue;
-                    if (source.Map != map) continue;
+                    if (source == null || source.Dead || !source.Spawned)
+                        continue;
+                    if (source.Map != map)
+                        continue;
 
                     // Range check first (cheap).
-                    if ((source.Position - tPos).LengthHorizontalSquared > radiusSquared) continue;
+                    if ((source.Position - tPos).LengthHorizontalSquared > radiusSquared)
+                        continue;
 
                     // Ally/eligibility check.
-                    if (!IsAuraAlly(source, target, humanlikesOnly)) continue;
+                    if (!IsAuraAlly(source, target, humanlikesOnly))
+                        continue;
 
                     ApplyOrRefreshHediff(target, hediffDef, refreshTicks);
                     break;
@@ -131,7 +152,8 @@ namespace CheatTraits.Patches
         /// </summary>
         private static void ApplyOrRefreshHediff(Pawn target, HediffDef hediffDef, int refreshTicks)
         {
-            if (!IsHediffEligible(target) || hediffDef == null) return;
+            if (!IsHediffEligible(target) || hediffDef == null)
+                return;
 
             Hediff hediff = target.health.hediffSet.GetFirstHediffOfDef(hediffDef);
             if (hediff == null)

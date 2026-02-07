@@ -1,25 +1,28 @@
-using HarmonyLib;
-using RimWorld;
 using System.Linq;
 using System.Reflection;
+using HarmonyLib;
+using RimWorld;
 using Verse;
 
 namespace CheatTraits.Patches
 {
     internal static class ArtificerQualityUtil
     {
-        internal static bool IsArtificerPawn(Pawn pawn)
-            => CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.ArtificerTrait);
+        internal static bool IsArtificerPawn(Pawn pawn) =>
+            CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.ArtificerTrait);
 
         internal static void ForceArtificerQuality(Thing thing)
         {
-            if (thing == null) return;
+            if (thing == null)
+                return;
 
             CompQuality cq = thing.TryGetComp<CompQuality>();
-            if (cq == null) return;
+            if (cq == null)
+                return;
 
             QualityCategory rolledQuality = GetArtificerQualityLevel();
-            if (rolledQuality <= cq.Quality) return;
+            if (rolledQuality <= cq.Quality)
+                return;
 
             cq.SetQuality(rolledQuality, ArtGenerationContext.Colony);
         }
@@ -28,8 +31,10 @@ namespace CheatTraits.Patches
         {
             // Odds: Legendary 10%, Masterwork 30%, Excellent 60%
             float roll = Rand.Value;
-            if (roll < 0.10f) return QualityCategory.Legendary;
-            if (roll < 0.40f) return QualityCategory.Masterwork;
+            if (roll < 0.10f)
+                return QualityCategory.Legendary;
+            if (roll < 0.40f)
+                return QualityCategory.Masterwork;
             return QualityCategory.Excellent;
         }
     }
@@ -47,7 +52,8 @@ namespace CheatTraits.Patches
             // (Thing product, RecipeDef recipeDef, Pawn worker, ...) - we only need the first three.
             // We'll find a method by name and then match the first parameters we care about.
 
-            var methods = AccessTools.GetDeclaredMethods(typeof(GenRecipe))
+            var methods = AccessTools
+                .GetDeclaredMethods(typeof(GenRecipe))
                 .Where(m => m.Name == "PostProcessProduct")
                 .ToList();
 
@@ -55,10 +61,12 @@ namespace CheatTraits.Patches
             foreach (var m in methods)
             {
                 var ps = m.GetParameters();
-                if (ps.Length >= 3 &&
-                    ps[0].ParameterType == typeof(Thing) &&
-                    ps[1].ParameterType == typeof(RecipeDef) &&
-                    ps[2].ParameterType == typeof(Pawn))
+                if (
+                    ps.Length >= 3
+                    && ps[0].ParameterType == typeof(Thing)
+                    && ps[1].ParameterType == typeof(RecipeDef)
+                    && ps[2].ParameterType == typeof(Pawn)
+                )
                     return m;
             }
 
@@ -68,8 +76,10 @@ namespace CheatTraits.Patches
 
         public static void Postfix(Thing product, RecipeDef recipeDef, Pawn worker)
         {
-            if (product == null || worker == null) return;
-            if (!ArtificerQualityUtil.IsArtificerPawn(worker)) return;
+            if (product == null || worker == null)
+                return;
+            if (!ArtificerQualityUtil.IsArtificerPawn(worker))
+                return;
 
             ArtificerQualityUtil.ForceArtificerQuality(product);
         }
@@ -82,13 +92,15 @@ namespace CheatTraits.Patches
         {
             // There are multiple overloads across versions/modpacks.
             // We want the one that returns QualityCategory and takes a Pawn as the first arg.
-            var methods = AccessTools.GetDeclaredMethods(typeof(QualityUtility))
+            var methods = AccessTools
+                .GetDeclaredMethods(typeof(QualityUtility))
                 .Where(m => m.Name == "GenerateQualityCreatedByPawn")
                 .ToList();
 
             foreach (var m in methods)
             {
-                if (m.ReturnType != typeof(QualityCategory)) continue;
+                if (m.ReturnType != typeof(QualityCategory))
+                    continue;
                 var ps = m.GetParameters();
                 if (ps.Length >= 1 && ps[0].ParameterType == typeof(Pawn))
                     return m;
@@ -99,8 +111,10 @@ namespace CheatTraits.Patches
 
         public static void Postfix(Pawn pawn, ref QualityCategory __result)
         {
-            if (pawn == null) return;
-            if (!ArtificerQualityUtil.IsArtificerPawn(pawn)) return;
+            if (pawn == null)
+                return;
+            if (!ArtificerQualityUtil.IsArtificerPawn(pawn))
+                return;
 
             __result = ArtificerQualityUtil.GetArtificerQualityLevel();
         }

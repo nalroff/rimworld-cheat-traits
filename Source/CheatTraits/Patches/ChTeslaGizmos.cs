@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using CheatTraits.Designators;
 using HarmonyLib;
 using RimWorld;
-using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -20,10 +20,14 @@ namespace CheatTraits.Patches
             foreach (var g in baseGizmos)
                 yield return g;
 
-            if (pawn == null || !pawn.Spawned) yield break;
-            if (pawn.Faction != Faction.OfPlayer) yield break;
-            if (pawn.story?.traits == null) yield break;
-            if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.TeslaTrait)) yield break;
+            if (pawn == null || !pawn.Spawned)
+                yield break;
+            if (pawn.Faction != Faction.OfPlayer)
+                yield break;
+            if (pawn.story?.traits == null)
+                yield break;
+            if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.TeslaTrait))
+                yield break;
 
             yield return new Command_Action
             {
@@ -32,8 +36,10 @@ namespace CheatTraits.Patches
                 icon = ContentFinder<Texture2D>.Get("Things/ChTesla_TeslaCoil", true),
                 action = () =>
                 {
-                    Find.DesignatorManager.Select(new TeslaCoilDesignator(pawn, ChTeslaThingDefOf.ChTeslaCoil));
-                }
+                    Find.DesignatorManager.Select(
+                        new TeslaCoilDesignator(pawn, ChTeslaThingDefOf.ChTeslaCoil)
+                    );
+                },
             };
         }
     }

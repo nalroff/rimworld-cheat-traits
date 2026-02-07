@@ -20,20 +20,24 @@ namespace CheatTraits.Comps
     public class CompChComfyClimateNode : CompTempControl
     {
         private bool lastInBand = false;
-        private CompProperties_ChComfyClimateNode PropsEx => (CompProperties_ChComfyClimateNode)props;
+        private CompProperties_ChComfyClimateNode PropsEx =>
+            (CompProperties_ChComfyClimateNode)props;
 
         public override void CompTickRare()
         {
             base.CompTickRare();
 
             Map map = parent.Map;
-            if (map == null) return;
+            if (map == null)
+                return;
 
             Room room = parent.GetRoom();
-            if (room == null) return;
+            if (room == null)
+                return;
 
             bool outdoors = room.PsychologicallyOutdoors;
-            if (PropsEx.requireIndoors && outdoors) return;
+            if (PropsEx.requireIndoors && outdoors)
+                return;
 
             float target = TargetTemperature;
             float cur = room.Temperature;
@@ -42,10 +46,12 @@ namespace CheatTraits.Comps
             float high = target + PropsEx.deadbandC;
 
             lastInBand = (cur >= low && cur <= high);
-            if (lastInBand) return;
+            if (lastInBand)
+                return;
 
             float error = target - cur;
-            if (Mathf.Abs(error) <= PropsEx.deadbandC) return;
+            if (Mathf.Abs(error) <= PropsEx.deadbandC)
+                return;
 
             room.Temperature = target;
         }

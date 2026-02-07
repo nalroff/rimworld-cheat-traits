@@ -1,5 +1,5 @@
-using RimWorld;
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace CheatTraits.Patches
@@ -19,9 +19,8 @@ namespace CheatTraits.Patches
 
     internal static class ChAscendantUtil
     {
-
-        internal static bool IsAscendant(Pawn pawn)
-            => pawn != null && CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.AscendantTrait);
+        internal static bool IsAscendant(Pawn pawn) =>
+            pawn != null && CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.AscendantTrait);
     }
 
     /// <summary>
@@ -38,13 +37,16 @@ namespace CheatTraits.Patches
 
         public static void TickMap(Map map)
         {
-            if (map == null) return;
+            if (map == null)
+                return;
 
             HediffDef hediffDef = ChAscendantDefOf.ChAscendant_InspirationAura;
-            if (hediffDef == null) return;
+            if (hediffDef == null)
+                return;
 
             CheatTraitsUtils.CollectEmitters(map, CheatTraitsNames.AscendantTrait, ascendants);
-            if (ascendants.Count == 0) return;
+            if (ascendants.Count == 0)
+                return;
 
             CheatTraitsUtils.ApplyAuraHediff(
                 map,
@@ -53,7 +55,8 @@ namespace CheatTraits.Patches
                 hediffDef: hediffDef,
                 radiusSquared: ChAscendantAuraConfig.AuraRadiusSquared,
                 refreshTicks: ChAscendantAuraConfig.InspirationRefreshTicks,
-                humanlikesOnly: true);
+                humanlikesOnly: true
+            );
         }
     }
 

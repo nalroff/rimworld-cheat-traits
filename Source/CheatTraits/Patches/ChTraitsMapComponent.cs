@@ -15,14 +15,16 @@ namespace CheatTraits.Patches
         private HashSet<int> chComfyFireSuppressionDisabledPawnIds = new HashSet<int>();
         private Dictionary<int, int> chComfyNextDeployTickByPawnId = new Dictionary<int, int>();
 
-        public CheatTraitsMapComponent(Map map) : base(map) { }
+        public CheatTraitsMapComponent(Map map)
+            : base(map) { }
 
         public override void MapComponentTick()
         {
             int tick = Find.TickManager.TicksGame;
 
             Map m = map;
-            if (m == null) return;
+            if (m == null)
+                return;
 
             // Pawn-facing systems cadence
             if (tick >= nextPawnTick)
@@ -35,7 +37,8 @@ namespace CheatTraits.Patches
                     for (int i = 0; i < pawns.Count; i++)
                     {
                         Pawn p = pawns[i];
-                        if (p?.story?.traits == null || p.health?.hediffSet == null) continue;
+                        if (p?.story?.traits == null || p.health?.hediffSet == null)
+                            continue;
 
                         // Keep Tank as a per-pawn applier
                         ChTankHediffApplier.TickPawn(p);
@@ -81,8 +84,11 @@ namespace CheatTraits.Patches
 
         public override void ExposeData()
         {
-            Scribe_Collections.Look(ref chComfyFireSuppressionDisabledPawnIds,
-                "chComfy_fireSuppressionDisabledPawnIds", LookMode.Value);
+            Scribe_Collections.Look(
+                ref chComfyFireSuppressionDisabledPawnIds,
+                "chComfy_fireSuppressionDisabledPawnIds",
+                LookMode.Value
+            );
 
             if (chComfyFireSuppressionDisabledPawnIds == null)
                 chComfyFireSuppressionDisabledPawnIds = new HashSet<int>();
@@ -90,10 +96,14 @@ namespace CheatTraits.Patches
             List<int>? tmpKeys = null;
             List<int>? tmpVals = null;
 
-            Scribe_Collections.Look(ref chComfyNextDeployTickByPawnId,
+            Scribe_Collections.Look(
+                ref chComfyNextDeployTickByPawnId,
                 "chComfy_nextDeployTickByPawnId",
-                LookMode.Value, LookMode.Value,
-                ref tmpKeys, ref tmpVals);
+                LookMode.Value,
+                LookMode.Value,
+                ref tmpKeys,
+                ref tmpVals
+            );
 
             if (chComfyNextDeployTickByPawnId == null)
                 chComfyNextDeployTickByPawnId = new Dictionary<int, int>();
@@ -101,13 +111,15 @@ namespace CheatTraits.Patches
 
         public bool ChComfy_IsFireSuppressionEnabled(Pawn pawn)
         {
-            if (pawn == null) return false;
+            if (pawn == null)
+                return false;
             return !chComfyFireSuppressionDisabledPawnIds.Contains(pawn.thingIDNumber);
         }
 
         public void ChComfy_SetFireSuppressionEnabled(Pawn pawn, bool enabled)
         {
-            if (pawn == null) return;
+            if (pawn == null)
+                return;
 
             int id = pawn.thingIDNumber;
             if (enabled)

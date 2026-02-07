@@ -21,7 +21,8 @@ namespace CheatTraits.Jobs
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
             // If the cell becomes invalid/blocked before we get there, fail gracefully.
-            yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch)
+            yield return Toils_Goto
+                .GotoCell(TargetIndex.A, PathEndMode.Touch)
                 .FailOn(() => !CanPlaceAt(pawn.Map, TargetCell));
 
             yield return new Toil
@@ -37,7 +38,9 @@ namespace CheatTraits.Jobs
                         return;
                     }
 
-                    ThingDef nodeDef = DefDatabase<ThingDef>.GetNamedSilentFail("ChComfyClimateNode");
+                    ThingDef nodeDef = DefDatabase<ThingDef>.GetNamedSilentFail(
+                        "ChComfyClimateNode"
+                    );
                     if (nodeDef == null)
                     {
                         Log.Error("[CheatTraits] Missing ThingDef ChComfyClimateNode.");
@@ -51,18 +54,21 @@ namespace CheatTraits.Jobs
                         node.SetFaction(pawn.Faction);
                     GenSpawn.Spawn(node, c, map, WipeMode.Vanish);
                 },
-                defaultCompleteMode = ToilCompleteMode.Instant
+                defaultCompleteMode = ToilCompleteMode.Instant,
             };
         }
 
         private static bool CanPlaceAt(Map map, IntVec3 c)
         {
-            if (!c.InBounds(map)) return false;
-            if (!c.Standable(map) && !c.Walkable(map)) return false;
+            if (!c.InBounds(map))
+                return false;
+            if (!c.Standable(map) && !c.Walkable(map))
+                return false;
 
             // For a 1x1 building, require the cell be empty of other buildings.
             // If you want to allow it on top of some things, loosen this.
-            if (c.GetEdifice(map) != null) return false;
+            if (c.GetEdifice(map) != null)
+                return false;
 
             // Also block if there is already a ComfyNode there
             List<Thing> things = c.GetThingList(map);

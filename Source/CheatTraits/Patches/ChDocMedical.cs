@@ -1,16 +1,16 @@
-using HarmonyLib;
-using RimWorld;
 using System;
 using System.Linq;
 using System.Reflection;
+using HarmonyLib;
+using RimWorld;
 using Verse;
 
 namespace CheatTraits.Patches
 {
     internal static class DocUtil
     {
-        internal static bool IsDoc(Pawn pawn)
-            => CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.DocTrait);
+        internal static bool IsDoc(Pawn pawn) =>
+            CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.DocTrait);
     }
 
     // ---------------------------------------------------------------------
@@ -30,10 +30,12 @@ namespace CheatTraits.Patches
         static MethodBase TargetMethod()
         {
             var t = typeof(Recipe_Surgery);
-            var methods = AccessTools.GetDeclaredMethods(t)
+            var methods = AccessTools
+                .GetDeclaredMethods(t)
                 .Where(m =>
-                    (m.Name == "CheckSurgeryFail" || m.Name == "TryCheckSurgeryFail") &&
-                    m.ReturnType == typeof(bool))
+                    (m.Name == "CheckSurgeryFail" || m.Name == "TryCheckSurgeryFail")
+                    && m.ReturnType == typeof(bool)
+                )
                 .ToList();
 
             // Prefer an overload that includes a surgeon Pawn parameter.
@@ -54,7 +56,8 @@ namespace CheatTraits.Patches
         {
             try
             {
-                if (__args == null) return true;
+                if (__args == null)
+                    return true;
 
                 // Find the first Pawn argument that is plausibly the surgeon.
                 // In Recipe_Surgery methods, the surgeon is almost always a Pawn parameter.
@@ -72,8 +75,10 @@ namespace CheatTraits.Patches
                     }
                 }
 
-                if (surgeon == null) return true;
-                if (!DocUtil.IsDoc(surgeon)) return true;
+                if (surgeon == null)
+                    return true;
+                if (!DocUtil.IsDoc(surgeon))
+                    return true;
 
                 // "false" means "surgery did not fail"
                 __result = false;
@@ -87,14 +92,25 @@ namespace CheatTraits.Patches
         }
     }
 
-    [HarmonyPatch(typeof(TendUtility), nameof(TendUtility.CalculateBaseTendQuality),
-        new[] { typeof(Pawn), typeof(Pawn), typeof(float), typeof(float) })]
+    [HarmonyPatch(
+        typeof(TendUtility),
+        nameof(TendUtility.CalculateBaseTendQuality),
+        new[] { typeof(Pawn), typeof(Pawn), typeof(float), typeof(float) }
+    )]
     internal static class Patch_TendUtility_CalculateBaseTendQuality_Doc
     {
-        private static void Postfix(Pawn doctor, Pawn patient, float medicinePotency, float medicineQualityMax, ref float __result)
+        private static void Postfix(
+            Pawn doctor,
+            Pawn patient,
+            float medicinePotency,
+            float medicineQualityMax,
+            ref float __result
+        )
         {
-            if (doctor == null) return;
-            if (!CheatTraitsUtils.HasTrait(doctor, CheatTraitsNames.DocTrait)) return;
+            if (doctor == null)
+                return;
+            if (!CheatTraitsUtils.HasTrait(doctor, CheatTraitsNames.DocTrait))
+                return;
 
             __result = 1.0f;
         }

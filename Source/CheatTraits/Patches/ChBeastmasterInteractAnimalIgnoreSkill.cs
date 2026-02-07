@@ -1,7 +1,7 @@
-using HarmonyLib;
-using RimWorld;
 using System;
 using System.Reflection;
+using HarmonyLib;
+using RimWorld;
 using Verse;
 
 namespace CheatTraits.Patches
@@ -13,20 +13,21 @@ namespace CheatTraits.Patches
     [HarmonyPatch]
     public static class ChBeastmasterInteractAnimalIgnoreSkill
     {
-        static MethodBase TargetMethod()
-          => AccessTools.Method(
-            typeof(WorkGiver_InteractAnimal),
-            "CanInteractWithAnimal",
-            new Type[]
-            {
-          typeof(Pawn),
-          typeof(Pawn),
-          typeof(string).MakeByRefType(), // out string
-          typeof(bool),
-          typeof(bool),
-          typeof(bool),
-          typeof(bool)
-            });
+        static MethodBase TargetMethod() =>
+            AccessTools.Method(
+                typeof(WorkGiver_InteractAnimal),
+                "CanInteractWithAnimal",
+                new Type[]
+                {
+                    typeof(Pawn),
+                    typeof(Pawn),
+                    typeof(string).MakeByRefType(), // out string
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(bool),
+                }
+            );
 
         // Harmony will bind the by-ref parameter when it exists.
         static void Prefix(Pawn pawn, Pawn animal, ref bool ignoreSkillRequirements)

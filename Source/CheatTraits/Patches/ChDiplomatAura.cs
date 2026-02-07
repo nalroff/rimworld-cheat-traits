@@ -1,5 +1,5 @@
-using RimWorld;
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace CheatTraits.Patches
@@ -20,10 +20,12 @@ namespace CheatTraits.Patches
 
         public static void TickMap(Map map)
         {
-            if (map == null) return;
+            if (map == null)
+                return;
 
             CheatTraitsUtils.CollectEmitters(map, CheatTraitsNames.DiplomatTrait, diplomats);
-            if (diplomats.Count == 0) return;
+            if (diplomats.Count == 0)
+                return;
 
             CheatTraitsUtils.ApplyAuraHediff(
                 map,
@@ -32,7 +34,8 @@ namespace CheatTraits.Patches
                 hediffDef: ChDiplomatDefOf.ChDiplomat_Presence,
                 radiusSquared: ChDiplomatAuraConfig.AuraRadiusSquared,
                 refreshTicks: ChDiplomatAuraConfig.PresenceLingerTicks,
-                humanlikesOnly: true);
+                humanlikesOnly: true
+            );
         }
     }
 

@@ -1,6 +1,6 @@
-using RimWorld;
 using System;
 using System.Reflection;
+using RimWorld;
 using Verse;
 
 namespace CheatTraits.Comps
@@ -10,7 +10,7 @@ namespace CheatTraits.Comps
         public float radius = 6f;
         public int cooldownTicks = 180;
         public int stunTicks = 120;
-        public float damageAmount = -1f; // if <= 0, we'll try to match wooden spike trap damage
+        public float damageAmount = 45f; // if <= 0, we'll try to match wooden spike trap damage
         public float armorPenetration = 0.15f;
         public bool requirePower = false; // coil is a generator; keep false unless you want it to stop if unpowered
 
@@ -42,11 +42,13 @@ namespace CheatTraits.Comps
         {
             base.CompTick();
 
-            if (parent.Map == null) return;
+            if (parent.Map == null)
+                return;
 
             // Light-weight: only scan on/after cooldown
             int now = Find.TickManager.TicksGame;
-            if (now < nextZapTick) return;
+            if (now < nextZapTick)
+                return;
 
             CompProperties_ChTeslaZap props = Props;
 
@@ -72,27 +74,36 @@ namespace CheatTraits.Comps
         private Pawn? FindHostilePawnInRange(float radius)
         {
             Map map = parent.Map;
-            if (map == null) return null;
+            if (map == null)
+                return null;
 
             Faction myFaction = parent.Faction;
-            if (myFaction == null) return null; // no owner = no zapping (prevents weirdness)
+            if (myFaction == null)
+                return null; // no owner = no zapping (prevents weirdness)
 
             IntVec3 center = parent.PositionHeld;
 
-            foreach (Thing t in GenRadial.RadialDistinctThingsAround(center, map, radius, useCenter: true))
+            foreach (
+                Thing t in GenRadial.RadialDistinctThingsAround(
+                    center,
+                    map,
+                    radius,
+                    useCenter: true
+                )
+            )
             {
                 Pawn? p = t as Pawn;
-                if (p == null) continue;
-                if (!p.Spawned || p.Dead) continue;
-
-                // “Hostile to owner faction” is the key versatility upgrade
-                if (!p.HostileTo(myFaction)) continue;
-
-                // Optional: ignore downed targets so it doesn’t farm/execute
-                // if (p.Downed) continue;
-
-                // LOS check so it doesn’t zap through walls
-                if (!GenSight.LineOfSight(center, p.PositionHeld, map)) continue;
+                if (
+                    p == null
+                    || !p.Spawned
+                    || p.Dead
+                    || !p.HostileTo(myFaction)
+                    || p.Downed
+                    || !GenSight.LineOfSight(center, p.PositionHeld, map)
+                )
+                {
+                    continue;
+                }
 
                 return p;
             }
@@ -109,28 +120,41 @@ namespace CheatTraits.Comps
             {
                 FleckMaker.ThrowLightningGlow(target.DrawPos, map, 1.2f);
             }
-            catch { /* ignore if method signature differs */ }
+            catch
+            { /* ignore if method signature differs */
+            }
 
             // Stun
             try
             {
                 target.stances?.stunner?.StunFor(props.stunTicks, parent);
             }
-            catch { /* ignore */ }
+            catch
+            { /* ignore */
+            }
 
             float dmg = props.damageAmount;
-            if (dmg <= 0f)
-                dmg = TryGetWoodenSpikeTrapDamageFallback(40f);
-
             try
             {
-                DamageInfo dinfo = new DamageInfo(DamageDefOf.Stab, dmg, props.armorPenetration, instigator: parent);
+                var damageDef = ResolveTeslaDamageDef();
+
+                DamageInfo dinfo = new DamageInfo(
+                    damageDef,
+                    dmg,
+                    props.armorPenetration,
+                    instigator: parent
+                );
                 target.TakeDamage(dinfo);
             }
             catch
             {
                 // As a last resort, deal burn damage if Stab isn't available for some reason
-                DamageInfo dinfo = new DamageInfo(DamageDefOf.Burn, dmg, props.armorPenetration, instigator: parent);
+                DamageInfo dinfo = new DamageInfo(
+                    DamageDefOf.Burn,
+                    dmg,
+                    props.armorPenetration,
+                    instigator: parent
+                );
                 target.TakeDamage(dinfo);
             }
         }
@@ -139,7 +163,8 @@ namespace CheatTraits.Comps
 
         private static float TryGetWoodenSpikeTrapDamageFallback(float fallback)
         {
-            if (!float.IsNaN(cachedSpikeTrapDamage)) return cachedSpikeTrapDamage;
+            if (!float.IsNaN(cachedSpikeTrapDamage))
+                return cachedSpikeTrapDamage;
 
             try
             {
@@ -160,25 +185,39 @@ namespace CheatTraits.Comps
                     "trapDamageBase",
                     "trapDamageDefault",
                     "trapDamageAmount",
-                    "TrapDamage"
+                    "TrapDamage",
                 };
 
                 foreach (string name in fieldNames)
                 {
-                    FieldInfo fi = bt.GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (fi != null && (fi.FieldType == typeof(float) || fi.FieldType == typeof(int)))
+                    FieldInfo fi = bt.GetField(
+                        name,
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                    );
+                    if (
+                        fi != null
+                        && (fi.FieldType == typeof(float) || fi.FieldType == typeof(int))
+                    )
                     {
                         object val = fi.GetValue(building);
-                        if (val == null) continue;
+                        if (val == null)
+                            continue;
                         cachedSpikeTrapDamage = Convert.ToSingle(val);
                         return cachedSpikeTrapDamage;
                     }
 
-                    PropertyInfo pi = bt.GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (pi != null && (pi.PropertyType == typeof(float) || pi.PropertyType == typeof(int)))
+                    PropertyInfo pi = bt.GetProperty(
+                        name,
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                    );
+                    if (
+                        pi != null
+                        && (pi.PropertyType == typeof(float) || pi.PropertyType == typeof(int))
+                    )
                     {
                         object val = pi.GetValue(building, null);
-                        if (val == null) continue;
+                        if (val == null)
+                            continue;
                         cachedSpikeTrapDamage = Convert.ToSingle(val);
                         return cachedSpikeTrapDamage;
                     }
@@ -194,14 +233,32 @@ namespace CheatTraits.Comps
         {
             // CellRect in RimWorld is inclusive (min..max).
             int dx = 0;
-            if (c.x < r.minX) dx = r.minX - c.x;
-            else if (c.x > r.maxX) dx = c.x - r.maxX;
+            if (c.x < r.minX)
+                dx = r.minX - c.x;
+            else if (c.x > r.maxX)
+                dx = c.x - r.maxX;
 
             int dz = 0;
-            if (c.z < r.minZ) dz = r.minZ - c.z;
-            else if (c.z > r.maxZ) dz = c.z - r.maxZ;
+            if (c.z < r.minZ)
+                dz = r.minZ - c.z;
+            else if (c.z > r.maxZ)
+                dz = c.z - r.maxZ;
 
             return dx * dx + dz * dz;
+        }
+
+        private static DamageDef ResolveTeslaDamageDef()
+        {
+            // Always-safe fallback
+            DamageDef def = DamageDefOf.Burn;
+
+            // Try to use ElectricalBurn only if it's actually present in this modlist.
+            // This avoids hard reliance on DefOf initialization and DLC presence.
+            DamageDef maybe = DefDatabase<DamageDef>.GetNamedSilentFail("ElectricalBurn");
+            if (maybe != null)
+                def = maybe;
+
+            return def;
         }
     }
 }

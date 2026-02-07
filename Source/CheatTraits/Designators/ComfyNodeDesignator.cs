@@ -8,7 +8,8 @@ namespace CheatTraits.Designators
     {
         private Pawn pawn;
 
-        public ComfyNodeDesignator(Pawn pawn, ThingDef entDef) : base(entDef)
+        public ComfyNodeDesignator(Pawn pawn, ThingDef entDef)
+            : base(entDef)
         {
             this.pawn = pawn;
             defaultLabel = "Deploy Comfy Node";
@@ -23,7 +24,10 @@ namespace CheatTraits.Designators
         {
             // IMPORTANT: keep the tutorial guard if you care
             // (optional, but matches vanilla behavior)
-            if (TutorSystem.TutorialMode && !TutorSystem.AllowAction(new EventPack(TutorTagDesignate, c)))
+            if (
+                TutorSystem.TutorialMode
+                && !TutorSystem.AllowAction(new EventPack(TutorTagDesignate, c))
+            )
                 return;
 
             // You can still use vanilla placement legality checks
@@ -42,21 +46,6 @@ namespace CheatTraits.Designators
             if (TutorSystem.TutorialMode)
                 TutorSystem.Notify_Event(new EventPack(TutorTagDesignate, c));
         }
-
-        // public override AcceptanceReport CanDesignateCell(IntVec3 c)
-        // {
-        //     if (!c.InBounds(pawn.Map)) return false;
-        //     if (!c.Standable(pawn.Map)) return "Must place on standable ground.";
-        //     if (c.GetEdifice(pawn.Map) != null) return "Blocked.";
-
-        //     return true;
-        // }
-
-        // public override void DesignateSingleCell(IntVec3 c)
-        // {
-        //     var job = JobMaker.MakeJob(ChJobDefOf.ChDeployComfyNode, c);
-        //     pawn.jobs.TryTakeOrderedJob(job);
-        // }
     }
 
     [DefOf]

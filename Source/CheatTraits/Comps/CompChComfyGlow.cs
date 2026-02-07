@@ -33,10 +33,12 @@ namespace CheatTraits.Comps
             base.CompTickRare();
 
             Map map = parent.Map;
-            if (map == null) return;
+            if (map == null)
+                return;
 
             Room room = parent.GetRoom();
-            if (room == null) return;
+            if (room == null)
+                return;
 
             float tempF = room.Temperature * 1.8f + 32f;
 
@@ -89,12 +91,16 @@ namespace CheatTraits.Comps
 
         private static CompProperties_Glower? CloneGlowerProps(CompProperties_Glower src)
         {
-            if (src == null) return null;
+            if (src == null)
+                return null;
 
             try
             {
-                var method = typeof(object).GetMethod("MemberwiseClone",
-                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                var method = typeof(object).GetMethod(
+                    "MemberwiseClone",
+                    System.Reflection.BindingFlags.Instance
+                        | System.Reflection.BindingFlags.NonPublic
+                );
                 return method?.Invoke(src, null) as CompProperties_Glower;
             }
             catch

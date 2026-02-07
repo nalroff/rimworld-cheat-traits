@@ -6,20 +6,25 @@ namespace CheatTraits.Patches
 {
     public class ChAuraCacheComponent : MapComponent
     {
-        private readonly Dictionary<string, HashSet<int>> affectedByKey =
-            new Dictionary<string, HashSet<int>>(StringComparer.Ordinal);
+        private readonly Dictionary<string, HashSet<int>> affectedByKey = new Dictionary<
+            string,
+            HashSet<int>
+        >(StringComparer.Ordinal);
 
-        public ChAuraCacheComponent(Map map) : base(map) { }
+        public ChAuraCacheComponent(Map map)
+            : base(map) { }
 
         public bool IsAffected(string key, Thing thing)
         {
-            if (thing == null || !thing.Spawned) return false;
+            if (thing == null || !thing.Spawned)
+                return false;
             return IsAffected(key, thing.thingIDNumber);
         }
 
         public bool IsAffected(string key, int thingId)
         {
-            if (string.IsNullOrEmpty(key) || thingId <= 0) return false;
+            if (string.IsNullOrEmpty(key) || thingId <= 0)
+                return false;
             return affectedByKey.TryGetValue(key, out var set) && set.Contains(thingId);
         }
 
@@ -42,12 +47,13 @@ namespace CheatTraits.Patches
 
     internal static class ChAuraCache
     {
-        public static ChAuraCacheComponent? Get(Map map) => map?.GetComponent<ChAuraCacheComponent>();
+        public static ChAuraCacheComponent? Get(Map map) =>
+            map?.GetComponent<ChAuraCacheComponent>();
 
-        public static bool IsAffected(Thing thing, string key)
-            => thing?.Map?.GetComponent<ChAuraCacheComponent>()?.IsAffected(key, thing) ?? false;
+        public static bool IsAffected(Thing thing, string key) =>
+            thing?.Map?.GetComponent<ChAuraCacheComponent>()?.IsAffected(key, thing) ?? false;
 
-        public static HashSet<int>? GetSetForWrite(Map map, string key)
-            => Get(map)?.GetSetForWrite(key);
+        public static HashSet<int>? GetSetForWrite(Map map, string key) =>
+            Get(map)?.GetSetForWrite(key);
     }
 }

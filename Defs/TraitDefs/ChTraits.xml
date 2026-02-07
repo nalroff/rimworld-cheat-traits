@@ -39,8 +39,8 @@
         <label>ch Zippy</label>
         <description>Moves at an absurd speed.</description>
         <statOffsets>
-          <MoveSpeed>100</MoveSpeed>
-          <CrawlSpeed>100</CrawlSpeed>
+          <MoveSpeed>70</MoveSpeed>
+          <CrawlSpeed>70</CrawlSpeed>
         </statOffsets>
       </li>
     </degreeDatas>
@@ -196,7 +196,6 @@
     </degreeDatas>
   </TraitDef>
 
-
   <TraitDef>
     <defName>ChTesla</defName>
     <commonality>0</commonality>
@@ -207,5 +206,4 @@
       </li>
     </degreeDatas>
   </TraitDef>
-
-  </Defs>
+</Defs>

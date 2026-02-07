@@ -8,7 +8,8 @@ namespace CheatTraits.Designators
     {
         private readonly Pawn pawn;
 
-        public TeslaCoilDesignator(Pawn pawn, ThingDef entDef) : base(entDef)
+        public TeslaCoilDesignator(Pawn pawn, ThingDef entDef)
+            : base(entDef)
         {
             this.pawn = pawn;
             defaultLabel = "Deploy Tesla Coil";
@@ -18,7 +19,10 @@ namespace CheatTraits.Designators
 
         public override void DesignateSingleCell(IntVec3 c)
         {
-            if (TutorSystem.TutorialMode && !TutorSystem.AllowAction(new EventPack(TutorTagDesignate, c)))
+            if (
+                TutorSystem.TutorialMode
+                && !TutorSystem.AllowAction(new EventPack(TutorTagDesignate, c))
+            )
                 return;
 
             var job = JobMaker.MakeJob(ChTeslaJobDefOf.ChDeployTeslaCoil, c);

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-
-<ThingDef ParentName="BuildingBase">
+  <ThingDef ParentName="BuildingBase">
     <defName>ChComfyClimateNode</defName>
     <label>comfort node</label>
     <description>A compact climate stabilizer. It needs no power and gently keeps its room near the configured temperature.</description>
@@ -44,7 +43,6 @@
       </li>
     </comps>
   </ThingDef>
-
 
   <ThingDef ParentName="BuildingBase">
     <defName>ChTeslaCoil</defName>
@@ -114,5 +112,4 @@
     <!-- Keep it from being a normal-build thing (deploy-only) -->
     <neverMultiSelect>true</neverMultiSelect>
   </ThingDef>
-
 </Defs>

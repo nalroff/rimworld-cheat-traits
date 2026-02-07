@@ -9,9 +9,9 @@ namespace CheatTraits.Patches
     [HarmonyPatch(typeof(StatExtension), nameof(StatExtension.GetStatValue))]
     public static class CheatTraitsGetStatValuePatch
     {
-        internal const float TexAimDelayMult = 0.10f;     // 0.10 = 90% reduction
-        internal const float TexCooldownMult = 0.25f;     // 0.25 = 4x fire rate (if stat exists)
-        internal const float TexAccuracyOffset = 0.50f;    // added to AccuracyTouch/Short/Medium/Long
+        internal const float TexAimDelayMult = 0.10f; // 0.10 = 90% reduction
+        internal const float TexCooldownMult = 0.25f; // 0.25 = 4x fire rate (if stat exists)
+        internal const float TexAccuracyOffset = 0.50f; // added to AccuracyTouch/Short/Medium/Long
         internal const string TexWeaponDefName = "Gun_Revolver";
 
         internal const float ArtificerSpeedMult = 5.0f;
@@ -19,13 +19,16 @@ namespace CheatTraits.Patches
 
         internal static bool IsBoxer(Pawn pawn)
         {
-            return CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.BoxerTrait) && pawn.equipment?.Primary == null;
+            return CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.BoxerTrait)
+                && pawn.equipment?.Primary == null;
         }
 
         internal static bool IsTex(Pawn pawn)
         {
-            if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.TexTrait)) return false;
-            if (pawn?.equipment?.Primary == null) return false;
+            if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.TexTrait))
+                return false;
+            if (pawn?.equipment?.Primary == null)
+                return false;
             return pawn.equipment.Primary.def?.defName == TexWeaponDefName;
         }
 
@@ -39,9 +42,15 @@ namespace CheatTraits.Patches
             return CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.AscendantTrait);
         }
 
-        public static void Postfix(Thing thing, StatDef stat, bool applyPostProcess, ref float __result)
+        public static void Postfix(
+            Thing thing,
+            StatDef stat,
+            bool applyPostProcess,
+            ref float __result
+        )
         {
-            if (thing is not Pawn pawn) return;
+            if (thing is not Pawn pawn)
+                return;
 
             // ------------------------
             // Ch Boxer: unarmed-only melee damage factor
