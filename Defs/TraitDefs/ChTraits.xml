@@ -93,6 +93,20 @@
   </TraitDef>
 
   <TraitDef>
+    <defName>ChAlchemist</defName>
+    <degreeDatas>
+      <li>
+        <label>ch Alchemist</label>
+        <description>Food is alchemy. Meals cooked by this pawn grant temporary buffs, never cause food poisoning, and sometimes come out perfect.</description>
+        <skillGains>
+          <Cooking>10</Cooking>
+        </skillGains>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
+  <TraitDef>
     <defName>ChDoc</defName>
     <commonality>0</commonality>
     <degreeDatas>

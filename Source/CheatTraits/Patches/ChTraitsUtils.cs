@@ -172,6 +172,7 @@ namespace CheatTraits.Patches
 
     public static class CheatTraitsNames
     {
+        public const string AlchemistTrait = "ChAlchemist";
         public const string ArtificerTrait = "ChArtificer";
         public const string AscendantTrait = "ChAscendant";
         public const string BeastmasterTrait = "ChBeastmaster";

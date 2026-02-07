@@ -105,4 +105,172 @@
       </li>
     </stages>
   </HediffDef>
+
+  <HediffDef>
+    <defName>ChAlchemist_SimpleMealBoost</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>alchemical nourishment (simple)</label>
+    <description>A simple meal infused with alchemical care.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>6000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statFactors>
+          <MoveSpeed>1.05</MoveSpeed>
+          <WorkSpeedGlobal>1.05</WorkSpeedGlobal>
+          <ImmunityGainSpeed>1.10</ImmunityGainSpeed>
+          <RestRateMultiplier>1.10</RestRateMultiplier>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChAlchemist_FineMealBoost</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>alchemical nourishment (fine)</label>
+    <description>A fine meal infused with alchemical care.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>9000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statFactors>
+          <MoveSpeed>1.10</MoveSpeed>
+          <WorkSpeedGlobal>1.10</WorkSpeedGlobal>
+          <ImmunityGainSpeed>1.20</ImmunityGainSpeed>
+          <RestRateMultiplier>1.20</RestRateMultiplier>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChAlchemist_LavishMealBoost</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>alchemical nourishment (lavish)</label>
+    <description>A lavish meal infused with alchemical care.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>12000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statFactors>
+          <MoveSpeed>1.15</MoveSpeed>
+          <WorkSpeedGlobal>1.15</WorkSpeedGlobal>
+          <ImmunityGainSpeed>1.30</ImmunityGainSpeed>
+          <RestRateMultiplier>1.30</RestRateMultiplier>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChAlchemist_SimpleMealPerfect</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>perfect alchemical nourishment (simple)</label>
+    <description>A perfect simple meal with amplified alchemical effects.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>9000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statFactors>
+          <MoveSpeed>1.10</MoveSpeed>
+          <WorkSpeedGlobal>1.10</WorkSpeedGlobal>
+          <ImmunityGainSpeed>1.20</ImmunityGainSpeed>
+          <RestRateMultiplier>1.20</RestRateMultiplier>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChAlchemist_FineMealPerfect</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>perfect alchemical nourishment (fine)</label>
+    <description>A perfect fine meal with amplified alchemical effects.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>12000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statFactors>
+          <MoveSpeed>1.20</MoveSpeed>
+          <WorkSpeedGlobal>1.20</WorkSpeedGlobal>
+          <ImmunityGainSpeed>1.35</ImmunityGainSpeed>
+          <RestRateMultiplier>1.35</RestRateMultiplier>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChAlchemist_LavishMealPerfect</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>perfect alchemical nourishment (lavish)</label>
+    <description>A perfect lavish meal with amplified alchemical effects.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>15000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statFactors>
+          <MoveSpeed>1.30</MoveSpeed>
+          <WorkSpeedGlobal>1.30</WorkSpeedGlobal>
+          <ImmunityGainSpeed>1.50</ImmunityGainSpeed>
+          <RestRateMultiplier>1.50</RestRateMultiplier>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
 </Defs>
