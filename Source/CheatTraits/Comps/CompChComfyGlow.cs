@@ -32,27 +32,24 @@ namespace CheatTraits.Comps
         {
             base.CompTickRare();
 
+            Color desired = Color.white;
             Map map = parent.Map;
             if (map == null)
                 return;
 
             Room room = parent.GetRoom();
-            if (room == null)
+            if (room == null) {
                 return;
+            }
 
             float tempF = room.Temperature * 1.8f + 32f;
 
             // Compute desired color in UnityEngine.Color
-            Color desired;
             if (tempF < 60f)
             {
                 desired = Color.Lerp(Color.blue, Color.cyan, Mathf.InverseLerp(32f, 60f, tempF));
             }
-            else if (tempF <= 80f)
-            {
-                desired = Color.white;
-            }
-            else
+            else if (tempF > 80f)
             {
                 desired = Color.Lerp(Color.yellow, Color.red, Mathf.InverseLerp(80f, 100f, tempF));
             }

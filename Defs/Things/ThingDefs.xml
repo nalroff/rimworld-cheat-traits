@@ -3,7 +3,7 @@
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>ChComfyClimateNode</defName>
-    <label>comfort node</label>
+    <label>comfy node</label>
     <description>A compact climate stabilizer. It needs no power and gently keeps its room near the configured temperature.</description>
 
     <thingClass>Building</thingClass>
@@ -15,8 +15,7 @@
     <fillPercent>0.05</fillPercent>
     <rotatable>false</rotatable>
 
-    <!-- IMPORTANT: don't put this in Architect menu -->
-    <!-- (No designationCategory / thingCategories on purpose) -->
+    <!-- Buildable in Architect (gated by ChComfy presence via code) -->
 
     <!-- Placeholder graphic: reuse heater until you make art -->
     <graphicData>
@@ -26,10 +25,16 @@
     </graphicData>
 
     <statBases>
+      <WorkToBuild>250</WorkToBuild>
       <MaxHitPoints>120</MaxHitPoints>
       <Flammability>0.5</Flammability>
       <Mass>4</Mass>
+      <Beauty>0</Beauty>
     </statBases>
+
+    <costList>
+      <Steel>15</Steel>
+    </costList>
 
     <comps>
       <li Class="CheatTraits.Comps.CompProperties_ChComfyClimateNode">
@@ -37,11 +42,14 @@
         <deadbandC>0.25</deadbandC>
         <requireIndoors>true</requireIndoors>
       </li>
-      <li Class="CheatTraits.Comps.CompProperties_ComfyGlow">
-        <glowRadius>3</glowRadius>
-        <glowColor>(255,255,255)</glowColor>
-      </li>
+    <li Class="CheatTraits.Comps.CompProperties_ComfyGlow">
+      <glowRadius>3</glowRadius>
+      <glowColor>(255,255,255)</glowColor>
+    </li>
     </comps>
+    <designationCategory>Temperature</designationCategory>
+    <uiOrder>2060</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -56,28 +64,34 @@
       <!-- Placeholder: swap to your real art later -->
       <texPath>Things/ChTesla_TeslaCoil</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1.5,1.5)</drawSize>
+      <drawSize>(1.0,1.0)</drawSize>
     </graphicData>
 
     <altitudeLayer>Building</altitudeLayer>
     <passability>Impassable</passability>
     <fillPercent>1.0</fillPercent>
     <pathCost>10</pathCost>
-    <rotatable>true</rotatable>
+    <rotatable>false</rotatable>
 
     <statBases>
       <MaxHitPoints>250</MaxHitPoints>
       <Flammability>0.6</Flammability>
-      <Beauty>-5</Beauty>
+      <Mass>4</Mass>
+      <Beauty>0</Beauty>
+      <WorkToBuild>250</WorkToBuild>
     </statBases>
 
     <tickerType>Normal</tickerType>
     <size>(1,1)</size>
 
-    <!-- deploy-only: keep it out of Architect -->
+    <!-- Buildable in Architect (gated by ChTesla presence via code) -->
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
     </building>
+
+    <costList>
+      <Steel>15</Steel>
+    </costList>
 
     <comps>
       <!-- Power: negative consumption = generation; transmitsPower makes it hook to conduits -->
@@ -95,12 +109,11 @@
         </affectedDamageDefs>
       </li>
 
-      <!-- Your proximity zap logic -->
+      <!-- Proximity zap -->
       <li Class="CheatTraits.Comps.CompProperties_ChTeslaZap">
         <radius>6</radius>
         <cooldownTicks>180</cooldownTicks>
         <stunTicks>120</stunTicks>
-        <!-- -1 means “match TrapSpike if possible, else fallback in code” -->
         <damageAmount>45</damageAmount>
         <armorPenetration>0.15</armorPenetration>
         <requirePower>false</requirePower>
@@ -108,8 +121,8 @@
     </comps>
 
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-
-    <!-- Keep it from being a normal-build thing (deploy-only) -->
-    <neverMultiSelect>true</neverMultiSelect>
+    <designationCategory>Power</designationCategory>
+    <uiOrder>2090</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
   </ThingDef>
 </Defs>

@@ -1,17 +1,10 @@
 using System.Collections.Generic;
-using CheatTraits.Designators;
 using HarmonyLib;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace CheatTraits.Patches
 {
-    internal static class ChComfyNodeConfig
-    {
-        public const string NodeDefName = "ChComfyClimateNode";
-    }
-
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.GetGizmos))]
     internal static class ChComfyGizmoPatch
     {
@@ -38,22 +31,6 @@ namespace CheatTraits.Patches
             if (mapComp == null)
                 yield break;
 
-            // Deploy Node Gizmo
-            int now = Find.TickManager.TicksGame;
-
-            yield return new Command_Action
-            {
-                defaultLabel = "Deploy Comfy Node",
-                defaultDesc = "Deploy a climate control node.",
-                icon = ContentFinder<Texture2D>.Get("Things/ChComfy_ComfyNode", true),
-                action = () =>
-                {
-                    Find.DesignatorManager.Select(
-                        new ComfyNodeDesignator(pawn, ChThingDefOf.ChComfyClimateNode)
-                    );
-                },
-            };
-
             // Fire Suppression Toggle Gizmo
             yield return new Command_Toggle
             {
@@ -69,69 +46,6 @@ namespace CheatTraits.Patches
                 icon = TexCommand.ForbidOff,
             };
         }
-
-        private static void TryPlaceNode(Pawn pawn, CheatTraitsMapComponent mapComp, IntVec3 cell)
-        {
-            Map map = pawn.Map;
-            if (map == null)
-                return;
-
-            int now = Find.TickManager.TicksGame;
-
-            if (!cell.InBounds(map))
-            {
-                Messages.Message("Cannot place there.", MessageTypeDefOf.RejectInput, false);
-                return;
-            }
-
-            if (!cell.Standable(map))
-            {
-                Messages.Message(
-                    "Must be placed on a walkable cell.",
-                    MessageTypeDefOf.RejectInput,
-                    false
-                );
-                return;
-            }
-
-            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(ChComfyNodeConfig.NodeDefName);
-            if (def == null)
-            {
-                Messages.Message("Comfort node def missing.", MessageTypeDefOf.RejectInput, false);
-                return;
-            }
-
-            // Prevent stacking multiple nodes in one cell
-            var things = cell.GetThingList(map);
-            for (int i = 0; i < things.Count; i++)
-            {
-                if (things[i]?.def == def)
-                {
-                    Messages.Message(
-                        "A comfort node is already there.",
-                        MessageTypeDefOf.RejectInput,
-                        false
-                    );
-                    return;
-                }
-            }
-
-            Thing node = ThingMaker.MakeThing(def);
-            node.SetFaction(Faction.OfPlayer);
-
-            var job = JobMaker.MakeJob(ChJobDefOf.ChDeployComfyNode, cell);
-            pawn.jobs.TryTakeOrderedJob(job);
-
-            Messages.Message("Deployed comfort node.", MessageTypeDefOf.PositiveEvent, false);
-        }
-    }
-
-    [DefOf]
-    internal static class ChJobDefOf
-    {
-        public static JobDef ChDeployComfyNode = null!;
-
-        static ChJobDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ChJobDefOf));
     }
 
     [DefOf]
