@@ -39,8 +39,8 @@
         <label>ch Zippy</label>
         <description>Moves at an absurd speed.</description>
         <statOffsets>
-          <MoveSpeed>70</MoveSpeed>
-          <CrawlSpeed>70</CrawlSpeed>
+          <MoveSpeed>35</MoveSpeed>
+          <CrawlSpeed>35</CrawlSpeed>
         </statOffsets>
       </li>
     </degreeDatas>
@@ -184,6 +184,7 @@
 
         <statFactors>
           <MiningSpeed>3.0</MiningSpeed>
+          <SmoothingSpeed>6.0</SmoothingSpeed>
           <MiningYield>2.5</MiningYield>
           <DeepDrillingSpeed>3.0</DeepDrillingSpeed>
         </statFactors>
