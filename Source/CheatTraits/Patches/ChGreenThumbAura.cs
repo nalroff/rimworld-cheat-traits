@@ -1,4 +1,3 @@
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,19 +11,12 @@ namespace CheatTraits.Patches
         // Keep naming consistent with other auras (Ascendant/Diplomat/Beastmaster)
         public const int ScanIntervalTicks = 250;
 
+        // 10x total growth => add +9x baseline growth directly
         public const float GrowthMultiplier = 10f;
+
         public const int MaxTrackedPlantsPerMap = 200;
-        public const float GrowthRateHardCap = 20f;
     }
 
-    /// <summary>
-    /// Green Thumb:
-    /// - Periodically scans around pawns with the ChGreenThumb trait.
-    /// - Caches affected plant IDs in ChAuraCacheComponent under ChAuraKeys.GreenThumb_Plants.
-    /// - Plant getters read the cache in hot paths (no scanning in getters).
-    ///
-    /// Note: Downed pawns are allowed to emit (no Downed check), consistent with your aura policy.
-    /// </summary>
     internal static class ChGreenThumbAura
     {
         public static void RebuildAffectedPlants(Map map)
@@ -71,16 +63,22 @@ namespace CheatTraits.Patches
 
                     for (int t = 0; t < things.Count; t++)
                     {
-                        if (things[t] is Plant plant && plant.Spawned)
-                        {
-                            // Count only "new" plants to keep cap meaningful and avoid extra work.
-                            if (set.Add(plant.thingIDNumber))
-                            {
-                                tracked++;
-                                if (cap > 0 && tracked >= cap)
-                                    return;
-                            }
-                        }
+                        if (things[t] is not Plant plant || !plant.Spawned)
+                            continue;
+
+                        if (!set.Add(plant.thingIDNumber))
+                            continue;
+
+                        CureBlightIfPresent(plant);
+                        ApplyGrowthDirect(
+                            plant,
+                            ChGreenThumbAuraConfig.GrowthMultiplier,
+                            ChGreenThumbAuraConfig.ScanIntervalTicks
+                        );
+
+                        tracked++;
+                        if (cap > 0 && tracked >= cap)
+                            return;
                     }
                 }
             }
@@ -90,51 +88,61 @@ namespace CheatTraits.Patches
         {
             if (plant == null || !plant.Spawned)
                 return false;
+
             return ChAuraCache.IsAffected(plant, ChAuraKeys.GreenThumb_Plants);
         }
-    }
 
-    // ---------------------------
-    // Plant stat patches (read cache)
-    // ---------------------------
-
-    [HarmonyPatch(typeof(Plant))]
-    [HarmonyPatch("GrowthRateFactor_Light", MethodType.Getter)]
-    static class Patch_Plant_GrowthRateFactor_Light
-    {
-        public static void Postfix(Plant __instance, ref float __result)
+        private static void ApplyGrowthDirect(Plant plant, float totalMultiplier, int intervalTicks)
         {
-            if (!ChGreenThumbAura.InAura(__instance))
+            if (plant == null || !plant.Spawned || plant.Destroyed)
                 return;
-            __result = 1f;
+
+            if (plant.LifeStage == PlantLifeStage.Sowing)
+                return;
+
+            float cur = plant.Growth;
+            if (cur >= 1f)
+                return;
+
+            var plantProps = plant.def?.plant;
+            if (plantProps == null)
+                return;
+
+            float growDays = plantProps.growDays;
+            if (growDays <= 0f)
+                return;
+
+            if (totalMultiplier <= 1f)
+                return;
+
+            // Baseline at ideal: +1.0 growth over `growDays` days.
+            // totalMultiplier=10 => add +9x baseline, scaled to our scan interval.
+            float baseGrowthPerDay = 1f / growDays;
+            float extraPerDay = baseGrowthPerDay * (totalMultiplier - 1f);
+            float extraThisInterval = extraPerDay * (intervalTicks / (float)GenDate.TicksPerDay);
+
+            if (extraThisInterval <= 0f)
+                return;
+
+            float newGrowth = Mathf.Min(1f, cur + extraThisInterval);
+            if (newGrowth <= cur)
+                return;
+
+            plant.Growth = newGrowth;
+            plant.Map?.mapDrawer?.MapMeshDirty(
+                plant.Position,
+                MapMeshFlagDefOf.Things,
+                true,
+                false
+            );
         }
-    }
 
-    [HarmonyPatch(typeof(Plant))]
-    [HarmonyPatch("GrowthRateFactor_Temperature", MethodType.Getter)]
-    static class Patch_Plant_GrowthRateFactor_Temperature
-    {
-        public static void Postfix(Plant __instance, ref float __result)
+        private static void CureBlightIfPresent(Plant plant)
         {
-            if (!ChGreenThumbAura.InAura(__instance))
-                return;
-            __result = 1f;
-        }
-    }
-
-    [HarmonyPatch(typeof(Plant))]
-    [HarmonyPatch("GrowthRate", MethodType.Getter)]
-    static class Patch_Plant_GrowthRate
-    {
-        public static void Postfix(Plant __instance, ref float __result)
-        {
-            if (__result <= 0f)
-                return;
-            if (!ChGreenThumbAura.InAura(__instance))
-                return;
-
-            __result *= ChGreenThumbAuraConfig.GrowthMultiplier;
-            __result = Mathf.Min(__result, ChGreenThumbAuraConfig.GrowthRateHardCap);
+            // Blight is a separate Thing; removing it restores normal growth behavior (and stops spread).
+            var blight = plant.Blight;
+            if (blight != null && !blight.Destroyed)
+                blight.Destroy(DestroyMode.Vanish);
         }
     }
 }

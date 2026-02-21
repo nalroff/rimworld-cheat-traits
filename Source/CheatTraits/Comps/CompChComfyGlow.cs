@@ -38,9 +38,8 @@ namespace CheatTraits.Comps
                 return;
 
             Room room = parent.GetRoom();
-            if (room == null) {
+            if (room == null)
                 return;
-            }
 
             float tempF = room.Temperature * 1.8f + 32f;
 
