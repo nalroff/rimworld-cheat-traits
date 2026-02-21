@@ -11,6 +11,7 @@ namespace CheatTraits.Patches
         private int nextBeastmasterTick;
         private int nextDiplomatTick;
         private int nextComfyTick;
+        private int nextFloragenTick;
 
         private HashSet<int> chComfyFireSuppressionDisabledPawnIds = new HashSet<int>();
         private Dictionary<int, int> chComfyNextDeployTickByPawnId = new Dictionary<int, int>();
@@ -79,6 +80,13 @@ namespace CheatTraits.Patches
             {
                 nextComfyTick = tick + ChComfyAuraConfig.UpdateIntervalTicks;
                 ChComfyAuraSystem.TickMap(m);
+            }
+
+            // Floragen Core cadence (building-driven, low frequency)
+            if (tick >= nextFloragenTick)
+            {
+                int interval = ChFloragenCoreSystem.TickMap(m);
+                nextFloragenTick = tick + interval;
             }
         }
 

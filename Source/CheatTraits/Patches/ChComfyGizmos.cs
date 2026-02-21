@@ -47,15 +47,4 @@ namespace CheatTraits.Patches
             };
         }
     }
-
-    [DefOf]
-    public static class ChThingDefOf
-    {
-        public static ThingDef ChComfyClimateNode = null!; // MUST match the ThingDef defName exactly
-
-        static ChThingDefOf()
-        {
-            DefOfHelper.EnsureInitializedInCtor(typeof(ChThingDefOf));
-        }
-    }
 }

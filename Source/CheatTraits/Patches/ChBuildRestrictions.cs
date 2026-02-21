@@ -54,7 +54,7 @@ namespace CheatTraits.Patches
             if (placingDef == null)
                 return;
 
-            if (placingDef == ChTeslaThingDefOf.ChTeslaCoil)
+            if (placingDef == ChThingDefOf.ChTeslaCoil)
             {
                 if (
                     !ChBuildRestrictionUtil.MapHasTraitColonist(
@@ -66,12 +66,23 @@ namespace CheatTraits.Patches
                 return;
             }
 
-            if (placingDef == ChThingDefOf.ChComfyClimateNode)
+            if (placingDef == ChThingDefOf.ChComfortNode)
             {
                 if (
                     !ChBuildRestrictionUtil.MapHasTraitColonist(
                         __instance!.Map,
                         CheatTraitsNames.ComfyTrait
+                    )
+                )
+                    __result = false;
+            }
+
+            if (placingDef == ChThingDefOf.ChFloragenCore)
+            {
+                if (
+                    !ChBuildRestrictionUtil.MapHasTraitColonist(
+                        __instance!.Map,
+                        CheatTraitsNames.GreenThumbTrait
                     )
                 )
                     __result = false;
@@ -90,16 +101,21 @@ namespace CheatTraits.Patches
             if (__result == null)
                 return;
 
-            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChTeslaThingDefOf.ChTeslaCoil))
+            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChTeslaCoil))
             {
                 if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.TeslaTrait))
                     __result = null;
-                return;
             }
 
-            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChComfyClimateNode))
+            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChComfortNode))
             {
                 if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.ComfyTrait))
+                    __result = null;
+            }
+
+            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChFloragenCore))
+            {
+                if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.GreenThumbTrait))
                     __result = null;
             }
         }

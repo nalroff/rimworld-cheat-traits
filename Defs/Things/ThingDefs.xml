@@ -2,8 +2,8 @@
 
 <Defs>
   <ThingDef ParentName="BuildingBase">
-    <defName>ChComfyClimateNode</defName>
-    <label>comfy node</label>
+    <defName>ChComfortNode</defName>
+    <label>comfort node</label>
     <description>A compact climate stabilizer. It needs no power and gently keeps its room near the configured temperature.</description>
 
     <thingClass>Building</thingClass>
@@ -15,11 +15,8 @@
     <fillPercent>0.05</fillPercent>
     <rotatable>false</rotatable>
 
-    <!-- Buildable in Architect (gated by ChComfy presence via code) -->
-
-    <!-- Placeholder graphic: reuse heater until you make art -->
     <graphicData>
-      <texPath>Things/ChComfy_ComfyNode</texPath>
+      <texPath>Things/ChComfy_ComfortNode</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1.25,1.25)</drawSize>
     </graphicData>
@@ -42,10 +39,10 @@
         <deadbandC>0.25</deadbandC>
         <requireIndoors>true</requireIndoors>
       </li>
-    <li Class="CheatTraits.Comps.CompProperties_ComfyGlow">
-      <glowRadius>3</glowRadius>
-      <glowColor>(255,255,255)</glowColor>
-    </li>
+      <li Class="CheatTraits.Comps.CompProperties_ComfyGlow">
+        <glowRadius>3</glowRadius>
+        <glowColor>(255,255,255)</glowColor>
+      </li>
     </comps>
     <designationCategory>Temperature</designationCategory>
     <uiOrder>2060</uiOrder>
@@ -124,5 +121,52 @@
     <designationCategory>Power</designationCategory>
     <uiOrder>2090</uiOrder>
     <constructEffect>ConstructMetal</constructEffect>
+    <specialDisplayRadius>6</specialDisplayRadius>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>ChFloragenCore</defName>
+    <label>floragen core</label>
+    <description>A biotechnical growth engine that accelerates nearby flora. Plants within its field grow rapidly regardless of season, temperature, or light.</description>
+
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <tickerType>Rare</tickerType>
+
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.05</fillPercent>
+    <rotatable>false</rotatable>
+
+    <graphicData>
+      <texPath>Things/ChGreenThumb_FloragenCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.25,1.25)</drawSize>
+    </graphicData>
+
+    <statBases>
+      <WorkToBuild>250</WorkToBuild>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Mass>4</Mass>
+      <Beauty>0</Beauty>
+    </statBases>
+
+    <costList>
+      <Steel>15</Steel>
+    </costList>
+
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_ChFloragenCore">
+        <radius>12</radius>
+        <scanIntervalTicks>2000</scanIntervalTicks>
+        <growthMultiplier>3</growthMultiplier>
+        <maxTrackedPlantsPerMap>1200</maxTrackedPlantsPerMap>
+      </li>
+    </comps>
+
+    <designationCategory>Misc</designationCategory>
+    <uiOrder>2065</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+    <specialDisplayRadius>11.9</specialDisplayRadius>
   </ThingDef>
 </Defs>
