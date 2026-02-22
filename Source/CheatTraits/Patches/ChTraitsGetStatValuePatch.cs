@@ -29,7 +29,17 @@ namespace CheatTraits.Patches
                 return false;
             if (pawn?.equipment?.Primary == null)
                 return false;
-            return pawn.equipment.Primary.def?.defName == TexWeaponDefName;
+
+            ThingDef? weaponDef = pawn.equipment.Primary.def;
+            if (weaponDef == null)
+                return false;
+
+            string? defName = weaponDef.defName;
+            if (defName == null)
+                return false;
+
+            return defName == TexWeaponDefName
+                || defName.IndexOf("Revolver", System.StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         internal static bool IsArtificer(Pawn pawn)

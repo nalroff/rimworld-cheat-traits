@@ -52,7 +52,9 @@ namespace CheatTraits.Patches
 
     internal static class ChAlchemistMealUtility
     {
-        internal const float PerfectMealChance = 0.05f;
+        internal const float PerfectMealChanceSimple = 0.15f;
+        internal const float PerfectMealChanceFine = 0.25f;
+        internal const float PerfectMealChanceLavish = 0.35f;
 
         internal static bool IsAlchemist(Pawn pawn) =>
             pawn != null && CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.AlchemistTrait);
@@ -107,6 +109,17 @@ namespace CheatTraits.Patches
                 ChAlchemistMealTier.Fine => ChAlchemistDefOf.ChAlchemist_FineMealBoost,
                 ChAlchemistMealTier.Lavish => ChAlchemistDefOf.ChAlchemist_LavishMealBoost,
                 _ => null,
+            };
+        }
+
+        internal static float GetPerfectMealChance(ChAlchemistMealTier tier)
+        {
+            return tier switch
+            {
+                ChAlchemistMealTier.Simple => PerfectMealChanceSimple,
+                ChAlchemistMealTier.Fine => PerfectMealChanceFine,
+                ChAlchemistMealTier.Lavish => PerfectMealChanceLavish,
+                _ => 0f,
             };
         }
 
@@ -171,7 +184,7 @@ namespace CheatTraits.Patches
             if (tier == ChAlchemistMealTier.None)
                 return;
 
-            bool perfect = Rand.Value < ChAlchemistMealUtility.PerfectMealChance;
+            bool perfect = Rand.Value < ChAlchemistMealUtility.GetPerfectMealChance(tier);
             ChAlchemistMealTracker.MarkMeal(product, tier, perfect);
         }
     }

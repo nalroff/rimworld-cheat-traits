@@ -14,7 +14,7 @@ namespace CheatTraits.Patches
         // 10x total growth => add +9x baseline growth directly
         public const float GrowthMultiplier = 10f;
 
-        public const int MaxTrackedPlantsPerMap = 200;
+        public const int MaxTrackedPlantsPerMap = 1200;
     }
 
     internal static class ChGreenThumbAura
