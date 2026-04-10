@@ -23,7 +23,7 @@
     <degreeDatas>
       <li>
         <label>ch Tex</label>
-        <description>Excels with revolvers. While wielding one, accuracy and handling become absurd.</description>
+        <description>A natural gunfighter. Gains better ranged accuracy, faster aiming, and faster follow-up shots with any firearm, then becomes absurd with revolvers.</description>
         <skillGains>
           <Shooting>10</Shooting>
         </skillGains>

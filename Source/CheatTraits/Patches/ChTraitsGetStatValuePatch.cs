@@ -9,9 +9,15 @@ namespace CheatTraits.Patches
     [HarmonyPatch(typeof(StatExtension), nameof(StatExtension.GetStatValue))]
     public static class CheatTraitsGetStatValuePatch
     {
-        internal const float TexAimDelayMult = 0.10f; // 0.10 = 90% reduction
-        internal const float TexCooldownMult = 0.25f; // 0.25 = 4x fire rate (if stat exists)
-        internal const float TexAccuracyOffset = 0.50f; // added to AccuracyTouch/Short/Medium/Long
+        internal const float TexBaseAimDelayMult = 0.55f;
+        internal const float TexBaseCooldownMult = 0.85f;
+        internal const float TexBaseAccuracyOffset = 0.45f;
+
+        // Revolver-specific multipliers bring the total bonus up to the old
+        // "signature weapon" numbers when stacked with the always-on baseline.
+        internal const float TexRevolverAimDelayMult = 0.10f / TexBaseAimDelayMult;
+        internal const float TexRevolverCooldownMult = 0.25f / TexBaseCooldownMult;
+        internal const float TexRevolverAccuracyOffset = 0.85f;
         internal const string TexWeaponDefName = "Gun_Revolver";
 
         internal const float ArtificerSpeedMult = 5.0f;
@@ -25,7 +31,12 @@ namespace CheatTraits.Patches
 
         internal static bool IsTex(Pawn pawn)
         {
-            if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.TexTrait))
+            return CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.TexTrait);
+        }
+
+        internal static bool HasRevolver(Pawn pawn)
+        {
+            if (!IsTex(pawn))
                 return false;
             if (pawn?.equipment?.Primary == null)
                 return false;
@@ -72,26 +83,44 @@ namespace CheatTraits.Patches
             }
 
             // ------------------------
-            // Ch Tex: revolver-only bonuses
+            // Ch Tex: always-on gunfighter bonuses
             // ------------------------
             if (IsTex(pawn))
             {
-                // Weapon accuracy stats are safe to touch
                 if (stat.defName is "ShootingAccuracyPawn")
                 {
-                    __result = Mathf.Clamp(__result + TexAccuracyOffset, 0f, 0.99f);
+                    __result = Mathf.Clamp(__result + TexBaseAccuracyOffset, 0f, 0.99f);
                 }
 
-                // Faster aim
                 if (stat.defName == "AimingDelayFactor")
                 {
-                    __result *= TexAimDelayMult;
+                    __result *= TexBaseAimDelayMult;
                 }
 
-                // Faster rate of fire (if the stat exists)
                 if (stat.defName == "RangedCooldownFactor")
                 {
-                    __result *= TexCooldownMult;
+                    __result *= TexBaseCooldownMult;
+                }
+            }
+
+            // ------------------------
+            // Ch Tex: revolver-only spike
+            // ------------------------
+            if (HasRevolver(pawn))
+            {
+                if (stat.defName is "ShootingAccuracyPawn")
+                {
+                    __result = Mathf.Clamp(__result + TexRevolverAccuracyOffset, 0f, 0.99f);
+                }
+
+                if (stat.defName == "AimingDelayFactor")
+                {
+                    __result *= TexRevolverAimDelayMult;
+                }
+
+                if (stat.defName == "RangedCooldownFactor")
+                {
+                    __result *= TexRevolverCooldownMult;
                 }
             }
 
