@@ -5,8 +5,13 @@
   <packageId>nalroff.cheattraits</packageId>
 
   <description>
-Cheat traits (Ch *) for role-focused overpowered pawns.
-Includes Ch Boxer (unarmed-only), Ch Tex, Ch Zippy, and more.
+Cheat Traits adds 14 overpowered, role-focused traits for custom colonists and hero pawns.
+
+Each Ch* trait pushes a pawn into a clear specialty: unarmed brawler, revolver ace, speedster, tank, super grower, elite crafter, miracle doctor, beastmaster, diplomat, and more.
+
+Some traits are pure stat monsters, while others unlock special systems and buildings. Green Thumb supercharges nearby plant growth and unlocks the Floragen Core. Comfy extinguishes nearby fires and unlocks the power-free Comfort Node. Tesla unlocks Tesla Coils that generate power and zap nearby hostiles. Ascendant, Beastmaster, and Diplomat project powerful support auras.
+
+This mod is aimed at players who want standout specialists, themed runs, or unapologetically strong pawns. The traits use commonality 0, so they are best suited for curated starts, custom pawn setups, or other deliberate trait assignment.
   </description>
 
   <supportedVersions>

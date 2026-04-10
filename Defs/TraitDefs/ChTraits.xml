@@ -41,6 +41,7 @@
         <statOffsets>
           <MoveSpeed>35</MoveSpeed>
           <CrawlSpeed>35</CrawlSpeed>
+          <WorkSpeedGlobal>20</WorkSpeedGlobal>
         </statOffsets>
       </li>
     </degreeDatas>
@@ -127,6 +128,12 @@
       <li>
         <label>ch Ascendant</label>
         <description>This pawn radiates an exceptional presence. Nearby allies learn skills far more quickly and heal from injuries at an accelerated rate. Always fertile.</description>
+        <skillGains>
+          <Intellectual>10</Intellectual>
+        </skillGains>
+        <statFactors>
+          <ResearchSpeed>10.0</ResearchSpeed>
+        </statFactors>
       </li>
     </degreeDatas>
   </TraitDef>
