@@ -73,14 +73,14 @@ An unarmed melee monster.
 A gunfighter with a heavy revolver specialty.
 
 - `+10` Shooting
-- Always gains better ranged handling with any loadout:
-  - `+0.15` Shooting Accuracy Pawn
-  - `AimingDelayFactor x0.75`
+- Always gains these ranged bonuses from the trait itself:
+  - `+0.45` Shooting Accuracy Pawn
+  - `AimingDelayFactor x0.55`
   - `RangedCooldownFactor x0.85`
-- Gains an additional revolver-only bonus while wielding a revolver
+- Gains an additional bonus while wielding a revolver
 - Works with `Gun_Revolver` and weapons whose `defName` contains `Revolver`
-- Total bonus with a revolver equipped:
-  - `+0.50` Shooting Accuracy Pawn, capped at `0.99`
+- Total ranged bonus with a revolver equipped:
+  - Accuracy is pushed extremely high and then capped at `0.99`
   - `AimingDelayFactor x0.10`
   - `RangedCooldownFactor x0.25`
 

@@ -13,8 +13,9 @@ namespace CheatTraits.Patches
         internal const float TexBaseCooldownMult = 0.85f;
         internal const float TexBaseAccuracyOffset = 0.45f;
 
-        // Revolver-specific multipliers bring the total bonus up to the old
-        // "signature weapon" numbers when stacked with the always-on baseline.
+        // Revolver-specific bonuses stack on top of the always-on Tex bonuses.
+        // Aim/cooldown land on the intended final multipliers; accuracy is
+        // pushed much harder and then clamped by the stat cap.
         internal const float TexRevolverAimDelayMult = 0.10f / TexBaseAimDelayMult;
         internal const float TexRevolverCooldownMult = 0.25f / TexBaseCooldownMult;
         internal const float TexRevolverAccuracyOffset = 0.85f;
