@@ -148,7 +148,21 @@ namespace CheatTraits.Patches
                 return true;
             }
 
+            if (ChBuildRestrictionUtil.IsBuildTarget(target, ChThingDefOf.ChComfortNodeWall))
+            {
+                requiredTrait = CheatTraitsNames.ComfyTrait;
+                labelPrefix = "Ch Comfy";
+                return true;
+            }
+
             if (ChBuildRestrictionUtil.IsBuildTarget(target, ChThingDefOf.ChTeslaCoil))
+            {
+                requiredTrait = CheatTraitsNames.TeslaTrait;
+                labelPrefix = "Ch Tesla";
+                return true;
+            }
+
+            if (ChBuildRestrictionUtil.IsBuildTarget(target, ChThingDefOf.ChTeslaCoilWall))
             {
                 requiredTrait = CheatTraitsNames.TeslaTrait;
                 labelPrefix = "Ch Tesla";

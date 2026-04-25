@@ -1,0 +1,100 @@
+# CheatTraits
+
+RimWorld 1.6 mod. Adds 14 overpowered `Ch*` traits for custom colonists and hero pawns. All traits use `commonality = 0`, so they never appear in normal gameplay — assignment is always deliberate (dev mode, scenario rules, character editor, etc.).
+
+## Prerequisites
+
+- .NET SDK 6+
+- RimWorld 1.6 installed
+- Harmony mod (loaded before CheatTraits)
+
+## Build Setup
+
+1. Copy `.env.example` to `.env` and fill in your local paths:
+   ```
+   RIMWORLD_PATH=D:\Steam\steamapps\common\RimWorld
+   RIMWORLD_DECOMP_PATH=F:\Development\rimworld-decomp
+   ```
+2. Run the build script (validates paths and runs dotnet build):
+   ```
+   ./build.ps1
+   ```
+3. Output lands in `Assemblies/CheatTraits.dll`.
+
+Note: `Directory.Build.props` resolves RimWorld DLL references via relative paths (the mod lives inside `RimWorld/Mods/`), so `RIMWORLD_PATH` in `.env` is used for validation only, not injected into the build.
+
+## Architecture
+
+```
+Source/CheatTraits/
+  Bootstrap.cs                        — Harmony patch entry point
+  ChTraitsMapComponent.cs             — Per-map state: aura ticks, fire suppression
+  ChTraitsUtils.cs                    — Shared helpers (stat factor math, pawn checks)
+  ChThingDefOfs.cs                    — [DefOf] references to trait-gated building defs
+  ChAuraCacheComponent.cs             — Caches active aura emitters per map tick
+  ChAuraKeys.cs                       — Hediff/stat def string constants
+
+  Patches/
+    Bootstrap.cs                      — Harmony init; applies all patches
+    ChAlchemistMeals.cs               — Post-cook hook: applies buff meal variants
+    ChArtificerQuality.cs             — Patches quality roll to force Excellent/MW/Leg
+    ChAscendantAura.cs                — Learning + healing aura for humanlikes
+    ChBeastmasterAura.cs              — Herd-blessing aura for animals
+    ChBeastmasterInteractAnimalIgnoreSkill.cs — Bypasses skill minimums for tame/train
+    ChBuildRestrictions.cs            — Restricts trait-gated buildings to trait holders
+    ChComfyAura.cs                    — Fire-suppression tick; Comfort Node temperature
+    ChComfyGizmos.cs                  — Toggle gizmo for fire suppression per pawn
+    ChDiplomatAura.cs                 — Mood + opinion aura for humanlikes
+    ChDiplomatThoughtWorkers.cs       — ThoughtWorker for diplomatic calm/easy rapport
+    ChDocMedical.cs                   — Surgery no-fail + 100% tend quality patches
+    ChFloragenCoreSystem.cs           — Plant-growth override within Floragen Core radius
+    ChGreenThumbAura.cs               — Green Thumb pawn aura (plant growth boost)
+    ChTankHediffApplier.cs            — Pain reduction hediff management for Ch Tank
+    ChTraitsGetStatValuePatch.cs      — Stat factor patches (Boxer unarm bonus, Tex revolver, etc.)
+    Patch_BuildFloatMenu_TraitOverrides.cs — Context menu: force-build for trait-gated things
+    PlantInspect.cs                   — Adds growth-rate info to plant inspect string
+
+  Comps/
+    CompChComfyClimateNode.cs         — Comfort Node: temperature stabilizer + light shift
+    CompChComfyGlow.cs                — Dynamic glow color for Comfort Node
+    CompChFloragenCore.cs             — Floragen Core: area growth override ThingComp
+    CompChTeslaZap.cs                 — Tesla Coil: power generation + hostile zap logic
+```
+
+## Key Patterns
+
+**Stat patching** (`ChTraitsGetStatValuePatch.cs`): Harmony postfix on `StatWorker.GetValueUnfinalized`. Trait-specific bonuses are applied as factors/offsets after the base value. Tex revolver bonus is applied on top of the always-on ranged bonuses.
+
+**Aura system** (`ChAuraCacheComponent.cs`, `ChTraitsMapComponent.cs`): On each tick interval, aura emitters are found via `ChAuraCacheComponent`, then apply hediffs to nearby pawns. Hediffs linger for the configured duration — this avoids re-scanning every tick. Auras check faction alignment (`Faction.IsPlayer`) before applying.
+
+**Trait-gated buildings** (`ChBuildRestrictions.cs`, `Patch_BuildFloatMenu_TraitOverrides.cs`, `ChThingDefOfs.cs`): Buildings are hidden from the Architect menu unless the colony has the unlock trait. The float menu patch lets a trait-holding pawn force-build a gated thing via right-click even if it wouldn't normally be assignable.
+
+**Quality forcing** (`ChArtificerQuality.cs`): Patches the quality outcome roll for any work done by a Ch Artificer pawn. Weights: 60% Excellent, 30% Masterwork, 10% Legendary.
+
+**Surgery no-fail** (`ChDocMedical.cs`): Patches `Recipe_Surgery.CheckSurgeryFail` — returns false (no fail) when the doctor pawn has Ch Doc. Tend quality patch forces `Pawn_HealthTracker.Notify_Tended` to 1.0f.
+
+## Defs Layout
+
+```
+Defs/
+  BuildingDefs/       — FloragenCore, ComfortNode, TeslaCoil ThingDefs + BuildableDef
+  HediffDefs/         — Aura hediffs (AscendantAura, BeastmasterAura, DiplomatAura, TankPainDamp, AlchemistMealBuff_*)
+  StatDefs/           — Any custom StatDefs (none currently — all patches use base game stats)
+  ThoughtDefs/        — DiplomaticCalm, EasyRapport ThoughtDefs
+  TraitDefs/          — All 14 Ch* TraitDefs with stat offsets
+```
+
+## Naming Conventions
+
+- All traits: `ChBoxer`, `ChTex`, `ChZippy`, `ChTank`, `ChGreenThumb`, `ChArtificer`, `ChAlchemist`, `ChDoc`, `ChAscendant`, `ChBeastmaster`, `ChDiplomat`, `ChDigger`, `ChComfy`, `ChTesla`
+- All C# classes: `Ch` prefix (e.g., `CompChTeslaZap`, `ChDiplomatAura`)
+- All Def names: `Ch` prefix (e.g., `ChFloragenCore`, `ChDiplomaticCalm`)
+- Harmony patch classes follow the pattern `Patch_<TargetType>_<Method>` or `Ch<Feature>` for multi-method patches
+
+## Verification
+
+1. `./build.ps1` exits 0; `Assemblies/` contains `CheatTraits.dll`
+2. In-game: Mod Settings → CheatTraits entry visible (if settings added)
+3. Dev mode: spawn a pawn, grant a `Ch*` trait, verify stat changes in the inspect window
+4. Trait-gated buildings: Architect menu only shows the building after the unlock trait is on a colony pawn
+5. Auras: check with dev mode pawn inspector — hediff should appear/disappear as the emitter pawn moves in/out of range

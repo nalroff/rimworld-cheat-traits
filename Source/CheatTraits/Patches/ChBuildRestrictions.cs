@@ -66,7 +66,30 @@ namespace CheatTraits.Patches
                 return;
             }
 
+            if (placingDef == ChThingDefOf.ChTeslaCoilWall)
+            {
+                if (
+                    !ChBuildRestrictionUtil.MapHasTraitColonist(
+                        __instance!.Map,
+                        CheatTraitsNames.TeslaTrait
+                    )
+                )
+                    __result = false;
+                return;
+            }
+
             if (placingDef == ChThingDefOf.ChComfortNode)
+            {
+                if (
+                    !ChBuildRestrictionUtil.MapHasTraitColonist(
+                        __instance!.Map,
+                        CheatTraitsNames.ComfyTrait
+                    )
+                )
+                    __result = false;
+            }
+
+            if (placingDef == ChThingDefOf.ChComfortNodeWall)
             {
                 if (
                     !ChBuildRestrictionUtil.MapHasTraitColonist(
@@ -107,7 +130,19 @@ namespace CheatTraits.Patches
                     __result = null;
             }
 
+            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChTeslaCoilWall))
+            {
+                if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.TeslaTrait))
+                    __result = null;
+            }
+
             if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChComfortNode))
+            {
+                if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.ComfyTrait))
+                    __result = null;
+            }
+
+            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChComfortNodeWall))
             {
                 if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.ComfyTrait))
                     __result = null;

@@ -55,8 +55,6 @@
     <description>A crackling coil that feeds power into the grid and lashes out at nearby hostiles.</description>
 
     <thingClass>Building</thingClass>
-    <drawerType>MapMeshAndRealTime</drawerType>
-
     <graphicData>
       <!-- Placeholder: swap to your real art later -->
       <texPath>Things/ChTesla_TeslaCoil</texPath>
@@ -65,8 +63,8 @@
     </graphicData>
 
     <altitudeLayer>Building</altitudeLayer>
-    <passability>Impassable</passability>
-    <fillPercent>1.0</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
     <pathCost>10</pathCost>
     <rotatable>false</rotatable>
 
@@ -122,6 +120,154 @@
     <uiOrder>2090</uiOrder>
     <constructEffect>ConstructMetal</constructEffect>
     <specialDisplayRadius>6</specialDisplayRadius>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>ChComfortNodeWall</defName>
+    <label>wall comfort node</label>
+    <description>A wall-mounted climate stabilizer. Attach it to an interior wall to quietly hold the room near the configured temperature. Needs no power.</description>
+
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <tickerType>Rare</tickerType>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+
+    <rotatable>true</rotatable>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <fillPercent>0.05</fillPercent>
+
+    <graphicData>
+      <texPath>Things/ChComfy_ComfortNodeWall</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.0,1.0)</drawSize>
+      <drawOffsetNorth>(0,0,0.6)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.3)</drawOffsetSouth>
+      <drawOffsetEast>(0.4,0,0)</drawOffsetEast>
+      <drawOffsetWest>(-0.4,0,0)</drawOffsetWest>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+
+    <terrainAffordanceNeeded IsNull="True" />
+
+    <statBases>
+      <WorkToBuild>200</WorkToBuild>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Mass>2</Mass>
+      <Beauty>0</Beauty>
+    </statBases>
+
+    <costList>
+      <Steel>10</Steel>
+    </costList>
+
+    <building>
+      <isEdifice>false</isEdifice>
+      <isAttachment>true</isAttachment>
+    </building>
+
+    <placeWorkers>
+      <li>Placeworker_AttachedToWall</li>
+    </placeWorkers>
+
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_ChComfyClimateNode">
+        <defaultTargetTemperature>21.1</defaultTargetTemperature>
+        <deadbandC>0.25</deadbandC>
+        <requireIndoors>true</requireIndoors>
+      </li>
+      <li Class="CheatTraits.Comps.CompProperties_ComfyGlow">
+        <glowRadius>2</glowRadius>
+        <glowColor>(255,255,255)</glowColor>
+      </li>
+    </comps>
+
+    <designationCategory>Temperature</designationCategory>
+    <uiOrder>2061</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>ChTeslaCoilWall</defName>
+    <label>wall tesla coil</label>
+    <description>A wall-mounted crackling coil. Mount it on an interior or exterior wall; it feeds power into the grid and lashes out at nearby hostiles.</description>
+
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+
+    <rotatable>true</rotatable>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <fillPercent>0.2</fillPercent>
+
+    <graphicData>
+      <texPath>Things/ChTesla_TeslaCoilWall</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.0,1.0)</drawSize>
+      <drawOffsetNorth>(0,0,0.5)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.2)</drawOffsetSouth>
+      <drawOffsetEast>(0.3,0,0)</drawOffsetEast>
+      <drawOffsetWest>(-0.3,0,0)</drawOffsetWest>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+
+    <terrainAffordanceNeeded IsNull="True" />
+    <specialDisplayRadius>6</specialDisplayRadius>
+
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <Mass>3</Mass>
+      <Beauty>0</Beauty>
+      <WorkToBuild>200</WorkToBuild>
+    </statBases>
+
+    <costList>
+      <Steel>10</Steel>
+    </costList>
+
+    <building>
+      <isEdifice>false</isEdifice>
+      <isAttachment>true</isAttachment>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+
+    <placeWorkers>
+      <li>Placeworker_AttachedToWall</li>
+    </placeWorkers>
+
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-750</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Stunnable">
+        <useLargeEMPEffecter>true</useLargeEMPEffecter>
+        <affectedDamageDefs>
+          <li>EMP</li>
+        </affectedDamageDefs>
+      </li>
+      <li Class="CheatTraits.Comps.CompProperties_ChTeslaZap">
+        <radius>6</radius>
+        <cooldownTicks>180</cooldownTicks>
+        <stunTicks>120</stunTicks>
+        <damageAmount>45</damageAmount>
+        <armorPenetration>0.15</armorPenetration>
+        <requirePower>false</requirePower>
+      </li>
+    </comps>
+
+    <designationCategory>Power</designationCategory>
+    <uiOrder>2091</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
