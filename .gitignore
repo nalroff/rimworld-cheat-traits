@@ -2,4 +2,5 @@ obj/
 bin/
 Assemblies/
 Source/CheatTraits/.vs/
+Source/CheatTraits/*.csproj.lscache
 .env
