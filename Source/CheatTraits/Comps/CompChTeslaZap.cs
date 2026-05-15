@@ -1,7 +1,9 @@
 using System;
 using System.Reflection;
 using RimWorld;
+using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace CheatTraits.Comps
 {
@@ -122,6 +124,30 @@ namespace CheatTraits.Comps
             }
             catch
             { /* ignore if method signature differs */
+            }
+
+            try
+            {
+                FleckMaker.ThrowMicroSparks(parent.DrawPos, map);
+            }
+            catch
+            { /* ignore */
+            }
+
+            try
+            {
+                DrawZapBolt(parent.DrawPos, target.DrawPos, map);
+            }
+            catch
+            { /* ignore */
+            }
+
+            try
+            {
+                PlayZapSound(parent.Position, map);
+            }
+            catch
+            { /* ignore */
             }
 
             // Stun
@@ -245,6 +271,72 @@ namespace CheatTraits.Comps
                 dz = c.z - r.maxZ;
 
             return dx * dx + dz * dz;
+        }
+
+        private static void DrawZapBolt(Vector3 start, Vector3 end, Map map)
+        {
+            Vector3 delta = end - start;
+            float horizontalLen = new Vector2(delta.x, delta.z).magnitude;
+            if (horizontalLen < 0.01f)
+                return;
+
+            Vector3 perp = new Vector3(-delta.z, 0f, delta.x) / horizontalLen;
+
+            int segments = Rand.RangeInclusive(3, 5);
+            float maxOffset = Mathf.Min(0.35f, horizontalLen * 0.15f);
+
+            Vector3 prev = start;
+            for (int i = 1; i <= segments; i++)
+            {
+                Vector3 next;
+                if (i == segments)
+                {
+                    next = end;
+                }
+                else
+                {
+                    float t = (float)i / segments;
+                    // Taper offset toward 0 at the endpoints, peak in the middle.
+                    float taper = 1f - Mathf.Abs(t - 0.5f) * 2f;
+                    float offset = Rand.Range(-maxOffset, maxOffset) * taper;
+                    next = Vector3.Lerp(start, end, t) + perp * offset;
+                    next.y = start.y;
+                }
+
+                FleckMaker.ConnectingLine(prev, next, FleckDefOf.LineEMP, map, 1.2f);
+                prev = next;
+            }
+        }
+
+        private static SoundDef? cachedZapSound;
+        private static bool cachedZapSoundResolved;
+
+        private static void PlayZapSound(IntVec3 cell, Map map)
+        {
+            if (!cachedZapSoundResolved)
+            {
+                string[] candidates =
+                {
+                    "EnergyShield_Broken",
+                    "OrbitalBeam_Ongoing",
+                    "Pawn_Melee_Punch_HitBuilding_Generic",
+                };
+                foreach (string name in candidates)
+                {
+                    SoundDef sd = DefDatabase<SoundDef>.GetNamedSilentFail(name);
+                    if (sd != null)
+                    {
+                        cachedZapSound = sd;
+                        break;
+                    }
+                }
+                cachedZapSoundResolved = true;
+            }
+
+            if (cachedZapSound != null)
+            {
+                cachedZapSound.PlayOneShot(new TargetInfo(cell, map));
+            }
         }
 
         private static DamageDef ResolveTeslaDamageDef()
