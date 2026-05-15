@@ -2,6 +2,10 @@
 
 RimWorld 1.6 mod. Adds 14 overpowered `Ch*` traits for custom colonists and hero pawns. All traits use `commonality = 0`, so they never appear in normal gameplay — assignment is always deliberate (dev mode, scenario rules, character editor, etc.).
 
+## Working on this mod
+
+**Always use the `rimworld-analysis` skill before reasoning about RimWorld internals.** Any time a task touches vanilla RimWorld types, methods, or behavior — writing a new Harmony patch, modifying an existing one, debugging why a patch isn't firing, choosing the right hook point, reviewing aura/stat/Comp/Hediff logic, answering "how does X work in RimWorld", or naming a class/method to target — invoke the `rimworld-analysis` skill first so guidance is grounded in the curated notes and decompiled source rather than guessed. The only exception is pure XML Def authoring that doesn't touch C# behavior.
+
 ## Prerequisites
 
 - .NET SDK 6+
