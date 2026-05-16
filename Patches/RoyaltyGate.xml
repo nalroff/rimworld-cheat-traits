@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    The ChWizard trait, its spellbook hediff, and the Lightning Bolt psycast all
+    rely on Royalty (Pawn_PsychicEntropyTracker, Hediff_Psylink, the Psycast ability
+    class). When Royalty isn't loaded, the psycast pipeline is null/missing and the
+    trait would either crash or silently do nothing. Remove the defs entirely so the
+    trait doesn't appear in the character editor / dev-mode trait list at all.
+  -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Royalty</li>
+    </mods>
+    <nomatch Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/TraitDef[defName="ChWizard"]</xpath>
+        </li>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/HediffDef[defName="ChWizard_Spellbook"]</xpath>
+        </li>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/AbilityDef[defName="ChLightningBolt"]</xpath>
+        </li>
+      </operations>
+    </nomatch>
+  </Operation>
+
+</Patch>

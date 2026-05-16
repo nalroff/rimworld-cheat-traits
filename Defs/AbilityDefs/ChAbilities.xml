@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <AbilityDef ParentName="PsycastBase">
+    <defName>ChLightningBolt</defName>
+    <label>lightning bolt</label>
+    <description>Call down a bolt of lightning on a target. The strike inflicts heavy damage, scorches everything in a small radius, and ignites secondary fires.</description>
+    <iconPath>UI/Abilities/Skip</iconPath>
+    <level>1</level>
+    <hostile>true</hostile>
+    <aiCanUse>false</aiCanUse>
+    <cooldownTicksRange>300~300</cooldownTicksRange>
+    <statBases>
+      <Ability_EntropyGain>10</Ability_EntropyGain>
+      <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
+    </statBases>
+    <verbProperties>
+      <warmupTime>0.5</warmupTime>
+      <range>44.9</range>
+      <requireLineOfSight>true</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>false</canTargetSelf>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetMechs>true</canTargetMechs>
+        <canTargetBuildings>true</canTargetBuildings>
+        <canTargetItems>true</canTargetItems>
+        <canTargetLocations>true</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChLightningBolt">
+        <shockDamage>120</shockDamage>
+        <shockRadius>1.5</shockRadius>
+      </li>
+    </comps>
+  </AbilityDef>
+</Defs>

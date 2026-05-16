@@ -279,4 +279,34 @@
       </li>
     </stages>
   </HediffDef>
+
+  <HediffDef>
+    <defName>ChWizard_Spellbook</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>arcane attunement</label>
+    <description>This pawn's mind is wired into the weave. Psychic capacity is dramatically expanded and a repertoire of spells is available.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_GiveAbility">
+        <abilityDefs>
+          <li>ChLightningBolt</li>
+        </abilityDefs>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statOffsets>
+          <PsychicEntropyMax>1000</PsychicEntropyMax>
+          <PsychicEntropyRecoveryRate>5.0</PsychicEntropyRecoveryRate>
+          <MeditationFocusGain>2.0</MeditationFocusGain>
+          <PsychicSensitivity>1.0</PsychicSensitivity>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
 </Defs>

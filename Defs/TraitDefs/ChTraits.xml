@@ -228,4 +228,18 @@
       </li>
     </degreeDatas>
   </TraitDef>
+
+  <TraitDef>
+    <defName>ChWizard</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>ch Wizard</label>
+        <description>A born psycaster. The weave bends to this pawn's will: vast psychic reserves, rapid neural recovery, and an instant grasp of the Lightning Bolt spell. Vanilla psycast progression still applies on top.</description>
+        <skillGains>
+          <Intellectual>8</Intellectual>
+        </skillGains>
+      </li>
+    </degreeDatas>
+  </TraitDef>
 </Defs>
