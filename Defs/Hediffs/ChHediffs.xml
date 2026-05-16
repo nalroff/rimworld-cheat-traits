@@ -295,6 +295,7 @@
       <li Class="HediffCompProperties_GiveAbility">
         <abilityDefs>
           <li>ChLightningBolt</li>
+          <li>ChTeleportOther</li>
         </abilityDefs>
       </li>
     </comps>

@@ -34,4 +34,40 @@
       </li>
     </comps>
   </AbilityDef>
+
+  <AbilityDef ParentName="PsycastBase">
+    <defName>ChTeleportOther</defName>
+    <label>teleport other</label>
+    <description>Reach across the weave and pull any humanlike pawn on the map to the caster's side. The target appears at the nearest standable cell, briefly stunned by the displacement.</description>
+    <iconPath>UI/Abilities/Skip</iconPath>
+    <level>1</level>
+    <hostile>false</hostile>
+    <aiCanUse>false</aiCanUse>
+    <cooldownTicksRange>300~300</cooldownTicksRange>
+    <statBases>
+      <Ability_EntropyGain>10</Ability_EntropyGain>
+      <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
+    </statBases>
+    <verbProperties>
+      <warmupTime>0.5</warmupTime>
+      <!-- Effectively unlimited — vanilla maps cap at 400x400, this clears them all. -->
+      <range>9999</range>
+      <requireLineOfSight>false</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>false</canTargetSelf>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetItems>false</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChTeleportOther">
+        <searchRadius>12</searchRadius>
+        <stunTicks>30~60</stunTicks>
+      </li>
+    </comps>
+  </AbilityDef>
 </Defs>

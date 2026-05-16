@@ -24,6 +24,9 @@
         <li Class="PatchOperationRemove">
           <xpath>/Defs/AbilityDef[defName="ChLightningBolt"]</xpath>
         </li>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/AbilityDef[defName="ChTeleportOther"]</xpath>
+        </li>
       </operations>
     </nomatch>
   </Operation>

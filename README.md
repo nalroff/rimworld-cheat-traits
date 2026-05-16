@@ -1,6 +1,6 @@
 # Cheat Traits
 
-`Cheat Traits` adds 14 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, and more.
+`Cheat Traits` adds 15 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, psycaster, and more.
 
 All traits use `commonality = 0`, so they are best suited for custom starts, edited pawns, dev-mode setups, or other deliberate trait assignment.
 
@@ -8,11 +8,13 @@ All traits use `commonality = 0`, so they are best suited for custom starts, edi
 
 - RimWorld `1.6`
 - Harmony
+- `Royalty` (optional; required only for the `Ch Wizard` trait — the rest of the mod works without it)
 
 ## What The Mod Adds
 
-- `14` high-power role traits
+- `15` high-power role traits
 - Several passive aura systems
+- Custom psycasts granted by `Ch Wizard` (requires Royalty)
 - Three trait-gated buildings:
   - `Floragen Core`
   - `Comfort Node`
@@ -243,6 +245,34 @@ The unlock trait for the `Tesla Coil`.
 - No direct stat bonuses
 - Gives access to the Tesla Coil build chain
 - Best used for colonies that want free power plus short-range automated defense
+
+### Ch Wizard
+
+A born psycaster with vast psychic reserves and a custom spellbook. Requires `Royalty`.
+
+- `+8` Intellectual
+- Auto-grants a level `1` `Psychic Amplifier` (psylink); vanilla psycast progression still applies on top
+- `+1000` Psychic Entropy Max
+- `+5.0` Psychic Entropy Recovery Rate
+- `+2.0` Meditation Focus Gain
+- `+1.0` Psychic Sensitivity
+- Passive psyfocus regeneration (fills empty to full in roughly `7` minutes of real time)
+- Grants two custom psycasts:
+
+`Lightning Bolt`
+
+- `300`-tick cooldown, `44.9` tile range
+- Calls down a vanilla lightning strike plus a `1.5`-tile EMP burst
+- Deals `120` Burn damage to the primary target with `2.0` armor penetration
+- `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
+
+`Teleport Other`
+
+- `300`-tick cooldown
+- No range limit and no line-of-sight requirement (works across the entire map)
+- Pulls any humanlike pawn to the nearest standable cell beside the caster
+- Stuns the teleported pawn for `30`–`60` ticks
+- `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
 
 ## Suggested Use
 

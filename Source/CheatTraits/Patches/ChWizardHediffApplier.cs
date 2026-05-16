@@ -122,6 +122,7 @@ namespace CheatTraits.Patches
                 // restores the ability on the next pawn tick. Harmless when the
                 // ability is already present (GainAbility is idempotent).
                 EnsureLightningBoltAbility(p);
+                EnsureTeleportOtherAbility(p);
 
                 // Passive psyfocus regeneration. Reverses the vanilla drain so the
                 // wizard's psyfocus trickles up while the trait is present. The
@@ -168,6 +169,37 @@ namespace CheatTraits.Patches
                 return;
 
             AbilityDef? def = LightningBoltDef;
+            if (def == null)
+                return;
+
+            if (p.abilities.GetAbility(def) == null)
+                p.abilities.GainAbility(def);
+        }
+
+        private static AbilityDef? cachedTeleportOtherDef;
+        private static bool cachedTeleportOtherDefResolved;
+
+        private static AbilityDef? TeleportOtherDef
+        {
+            get
+            {
+                if (!cachedTeleportOtherDefResolved)
+                {
+                    cachedTeleportOtherDef = DefDatabase<AbilityDef>.GetNamedSilentFail(
+                        "ChTeleportOther"
+                    );
+                    cachedTeleportOtherDefResolved = true;
+                }
+                return cachedTeleportOtherDef;
+            }
+        }
+
+        private static void EnsureTeleportOtherAbility(Pawn p)
+        {
+            if (p.abilities == null)
+                return;
+
+            AbilityDef? def = TeleportOtherDef;
             if (def == null)
                 return;
 
