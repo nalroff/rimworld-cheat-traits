@@ -123,6 +123,8 @@ namespace CheatTraits.Patches
                 // ability is already present (GainAbility is idempotent).
                 EnsureLightningBoltAbility(p);
                 EnsureTeleportOtherAbility(p);
+                EnsureMassBerserkAbility(p);
+                EnsureSuperSoldierAbility(p);
 
                 // Passive psyfocus regeneration. Reverses the vanilla drain so the
                 // wizard's psyfocus trickles up while the trait is present. The
@@ -200,6 +202,68 @@ namespace CheatTraits.Patches
                 return;
 
             AbilityDef? def = TeleportOtherDef;
+            if (def == null)
+                return;
+
+            if (p.abilities.GetAbility(def) == null)
+                p.abilities.GainAbility(def);
+        }
+
+        private static AbilityDef? cachedMassBerserkDef;
+        private static bool cachedMassBerserkDefResolved;
+
+        private static AbilityDef? MassBerserkDef
+        {
+            get
+            {
+                if (!cachedMassBerserkDefResolved)
+                {
+                    cachedMassBerserkDef = DefDatabase<AbilityDef>.GetNamedSilentFail(
+                        "ChMassBerserk"
+                    );
+                    cachedMassBerserkDefResolved = true;
+                }
+                return cachedMassBerserkDef;
+            }
+        }
+
+        private static void EnsureMassBerserkAbility(Pawn p)
+        {
+            if (p.abilities == null)
+                return;
+
+            AbilityDef? def = MassBerserkDef;
+            if (def == null)
+                return;
+
+            if (p.abilities.GetAbility(def) == null)
+                p.abilities.GainAbility(def);
+        }
+
+        private static AbilityDef? cachedSuperSoldierDef;
+        private static bool cachedSuperSoldierDefResolved;
+
+        private static AbilityDef? SuperSoldierDef
+        {
+            get
+            {
+                if (!cachedSuperSoldierDefResolved)
+                {
+                    cachedSuperSoldierDef = DefDatabase<AbilityDef>.GetNamedSilentFail(
+                        "ChSuperSoldier"
+                    );
+                    cachedSuperSoldierDefResolved = true;
+                }
+                return cachedSuperSoldierDef;
+            }
+        }
+
+        private static void EnsureSuperSoldierAbility(Pawn p)
+        {
+            if (p.abilities == null)
+                return;
+
+            AbilityDef? def = SuperSoldierDef;
             if (def == null)
                 return;
 

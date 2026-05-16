@@ -257,11 +257,12 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 - `+2.0` Meditation Focus Gain
 - `+1.0` Psychic Sensitivity
 - Passive psyfocus regeneration (fills empty to full in roughly `7` minutes of real time)
-- Grants two custom psycasts:
+- Grants four custom psycasts:
 
 `Lightning Bolt`
 
 - `300`-tick cooldown, `44.9` tile range
+- No line-of-sight requirement
 - Calls down a vanilla lightning strike plus a `1.5`-tile EMP burst
 - Deals `120` Burn damage to the primary target with `2.0` armor penetration
 - `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
@@ -272,6 +273,29 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 - No range limit and no line-of-sight requirement (works across the entire map)
 - Pulls any humanlike pawn to the nearest standable cell beside the caster
 - Stuns the teleported pawn for `30`–`60` ticks
+- `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
+
+`Mass Berserk`
+
+- `1500`-tick cooldown, `45` tile range
+- Requires line of sight to the target point
+- Affects every hostile pawn within `12` tiles of the target — humanlikes, animals, and mechanoids
+- Drives affected targets into a berserk frenzy for `600` ticks, attacking the nearest target including their own allies
+- `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
+
+`Super Soldier`
+
+- `1500`-tick cooldown
+- No range limit and no line-of-sight requirement
+- Target any friendly humanlike pawn on the map (including self)
+- For `5000` ticks (`2` in-game hours):
+  - Maxes the target's `Shooting` and `Melee` skills to `20` (original levels and XP are restored when the buff ends)
+  - Applies `Tough` trait parity: `IncomingDamageFactor x0.5`
+  - Applies `Nimble` trait parity: `+15` Melee Dodge Chance, `PawnTrapSpringChance x0.1`
+  - Spawns Legendary `Cataphract Armor`, `Cataphract Helmet`, `Shield Belt` (at full charge), and a custom `Super Charge Rifle` onto the target
+  - The target's existing primary weapon and any replaced apparel drop to the ground rather than being destroyed
+- Once the buff ends, the spawned gear is destroyed regardless of where it ended up (still worn, dropped on the map, or picked up by another pawn)
+- The `Super Charge Rifle` is exclusive to this spell — it has `2x` range (`55.8`), `2x` damage (`32`), and `2x` armor penetration (`0.70`) of a vanilla charge rifle, and never spawns through raids, trade, quests, scenarios, or crafting
 - `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
 
 ## Suggested Use

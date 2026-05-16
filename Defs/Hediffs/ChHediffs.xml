@@ -281,6 +281,39 @@
   </HediffDef>
 
   <HediffDef>
+    <defName>ChSuperSoldier</defName>
+    <hediffClass>CheatTraits.Hediffs.Hediff_ChSuperSoldier</hediffClass>
+    <label>super soldier</label>
+    <description>Wired into a peak combat state by arcane augmentation. Reflexes, durability, and weapons handling are pushed to lethal extremes. The augmentation also conjures a full Legendary spacer-tier loadout that exists only while the buff lasts.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <!-- 5000 ticks = 2 in-game hours. -->
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>5000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <!-- Nimble trait parity: +15 melee dodge, 10% trap-spring chance. -->
+        <statOffsets>
+          <MeleeDodgeChance>15</MeleeDodgeChance>
+        </statOffsets>
+        <statFactors>
+          <!-- Tough trait parity: 0.5x incoming damage. -->
+          <IncomingDamageFactor>0.5</IncomingDamageFactor>
+          <PawnTrapSpringChance>0.1</PawnTrapSpringChance>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
     <defName>ChWizard_Spellbook</defName>
     <hediffClass>HediffWithComps</hediffClass>
     <label>arcane attunement</label>
@@ -296,6 +329,8 @@
         <abilityDefs>
           <li>ChLightningBolt</li>
           <li>ChTeleportOther</li>
+          <li>ChMassBerserk</li>
+          <li>ChSuperSoldier</li>
         </abilityDefs>
       </li>
     </comps>

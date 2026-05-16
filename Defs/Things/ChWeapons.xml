@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Super Charge Rifle: 2x range / damage / armor penetration of the vanilla
+    Gun_ChargeRifle. Granted only by the Ch Wizard Super Soldier psycast and
+    destroyed when that buff expires. Must never appear via raids, traders,
+    quests, scenario gear, or crafting.
+
+    Spawning prevention covers every vanilla path:
+      - Parent BaseGunWithQuality has no weaponTags, tradeTags, or
+        thingSetMakerTags; without those, pawn/thing-set generators won't pick
+        it.
+      - tradeability=None excludes traders/silver economy entirely.
+      - generateAllowChance=0 is the last-resort safety on PawnWeaponGenerator.
+      - No recipeMaker / costList — can't be crafted or built.
+      - relicChance=0 keeps it out of Ideology relic generation.
+
+    smeltable is forced off: BaseGun inherits smeltable=true, and the engine's
+    Def validator errors when a smeltable item has no costList and no
+    smeltProducts (we have neither).
+  -->
+  <ThingDef ParentName="BaseGunWithQuality">
+    <defName>Gun_ChSuperChargeRifle</defName>
+    <label>super charge rifle</label>
+    <description>An arcane-forged variant of the standard charge rifle. The receiver, barrel, and pulse-charge cell are all overclocked far past safe tolerances. Lethal at twice the effective range of any baseline charge weapon, and the shots tear through armor like wet paper.\n\nThese rifles only exist while an arcane augmentation sustains them — once the magic fades, the weapon disintegrates.</description>
+    <techLevel>Spacer</techLevel>
+    <tradeability>None</tradeability>
+    <generateAllowChance>0</generateAllowChance>
+    <smeltable>false</smeltable>
+    <relicChance>0</relicChance>
+    <graphicData>
+      <texPath>Things/Item/Equipment/WeaponRanged/ChargeRifle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Interact_ChargeRifle</soundInteract>
+    <statBases>
+      <Mass>4.6</Mass>
+      <AccuracyTouch>0.55</AccuracyTouch>
+      <AccuracyShort>0.64</AccuracyShort>
+      <AccuracyMedium>0.55</AccuracyMedium>
+      <AccuracyLong>0.45</AccuracyLong>
+      <RangedWeapon_Cooldown>2.00</RangedWeapon_Cooldown>
+    </statBases>
+    <weaponClasses>
+      <li>RangedLight</li>
+    </weaponClasses>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>ChBullet_SuperChargeRifle</defaultProjectile>
+        <warmupTime>1.0</warmupTime>
+        <range>55.8</range>
+        <ticksBetweenBurstShots>12</ticksBetweenBurstShots>
+        <burstShotCount>3</burstShotCount>
+        <soundCast>Shot_ChargeRifle</soundCast>
+        <soundCastTail>GunTail_Medium</soundCastTail>
+        <muzzleFlashScale>9</muzzleFlashScale>
+      </li>
+    </verbs>
+    <tools>
+      <li>
+        <label>stock</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+      </li>
+      <li>
+        <label>barrel</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>ChBullet_SuperChargeRifle</defName>
+    <label>super charge shot</label>
+    <graphicData>
+      <texPath>Things/Projectile/Charge_Small</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>32</damageAmountBase>
+      <armorPenetrationBase>0.70</armorPenetrationBase>
+      <speed>70</speed>
+    </projectile>
+  </ThingDef>
+
+</Defs>
