@@ -4,7 +4,7 @@
     <defName>ChLightningBolt</defName>
     <label>lightning bolt</label>
     <description>Call down a bolt of lightning on a target. The strike inflicts heavy damage, scorches everything in a small radius, and ignites secondary fires.</description>
-    <iconPath>UI/Abilities/Skip</iconPath>
+    <iconPath>UI/Abilities/Flashstorm</iconPath>
     <level>1</level>
     <hostile>true</hostile>
     <aiCanUse>false</aiCanUse>
@@ -38,7 +38,7 @@
     <defName>ChTeleportOther</defName>
     <label>teleport other</label>
     <description>Reach across the weave and pull any humanlike pawn on the map to the caster's side. The target appears at the nearest standable cell, briefly stunned by the displacement.</description>
-    <iconPath>UI/Abilities/Skip</iconPath>
+    <iconPath>UI/Abilities/Beckon</iconPath>
     <level>1</level>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>
@@ -74,7 +74,7 @@
     <defName>ChMassBerserk</defName>
     <label>mass berserk</label>
     <description>Unleash a wave of psychic rage at a chosen point. Every hostile creature within twelve cells — humanlike, animal, or mechanoid — is driven into a berserk frenzy, attacking the nearest target including their own allies.</description>
-    <iconPath>UI/Abilities/Skip</iconPath>
+    <iconPath>UI/Abilities/BerserkPulse</iconPath>
     <level>1</level>
     <hostile>true</hostile>
     <aiCanUse>false</aiCanUse>
@@ -109,7 +109,7 @@
     <defName>ChSuperSoldier</defName>
     <label>super soldier</label>
     <description>Conjure a temporary Legendary spacer-tier loadout onto a friendly humanlike and wire their reflexes to a tactical combat state. For two hours: Cataphract armor and helmet, a fully-charged shield belt, and an overclocked charge rifle materialize on the target, their Shooting and Melee skills max out, and their flesh takes half damage. When the spell fades, the conjured gear disintegrates.</description>
-    <iconPath>UI/Abilities/Skip</iconPath>
+    <iconPath>Things/Item/Equipment/WeaponRanged/ChargeRifle</iconPath>
     <level>1</level>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>

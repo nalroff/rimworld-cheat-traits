@@ -38,6 +38,11 @@ namespace CheatTraits.Hediffs
 
             BoostSkills();
             GrantGear();
+            // Pacifist-override patch reads CombinedDisabledWorkTags, but
+            // Pawn_WorkSettings/Pawn_SkillTracker cache disable state.
+            // Refresh those caches so the work tab and draftability reflect
+            // the new Violent-enabled state immediately.
+            pawn.Notify_DisabledWorkTypesChanged();
         }
 
         public override void PostRemoved()
@@ -45,6 +50,10 @@ namespace CheatTraits.Hediffs
             base.PostRemoved();
             RestoreSkills();
             DestroySpawnedGear();
+            // Same reason as PostAdd: rebuild the cached disable state so
+            // Violent (and the Pacifist trait it came from) re-disables work
+            // and drafting now that the override hediff is gone.
+            pawn?.Notify_DisabledWorkTypesChanged();
         }
 
         public override void ExposeData()

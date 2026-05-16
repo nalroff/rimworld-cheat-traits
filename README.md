@@ -292,6 +292,7 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
   - Maxes the target's `Shooting` and `Melee` skills to `20` (original levels and XP are restored when the buff ends)
   - Applies `Tough` trait parity: `IncomingDamageFactor x0.5`
   - Applies `Nimble` trait parity: `+15` Melee Dodge Chance, `PawnTrapSpringChance x0.1`
+  - Suspends `Incapable of Violence` for the duration — a `Pacifist` target can draft, equip the conjured rifle, and attack while the buff is active (the trait re-engages when the buff ends)
   - Spawns Legendary `Cataphract Armor`, `Cataphract Helmet`, `Shield Belt` (at full charge), and a custom `Super Charge Rifle` onto the target
   - The target's existing primary weapon and any replaced apparel drop to the ground rather than being destroyed
 - Once the buff ends, the spawned gear is destroyed regardless of where it ended up (still worn, dropped on the map, or picked up by another pawn)
