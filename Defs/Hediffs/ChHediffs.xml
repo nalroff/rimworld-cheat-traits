@@ -305,8 +305,10 @@
           <MeleeDodgeChance>15</MeleeDodgeChance>
         </statOffsets>
         <statFactors>
-          <!-- Tough trait parity: 0.5x incoming damage. -->
-          <IncomingDamageFactor>0.5</IncomingDamageFactor>
+          <!-- 4x effective survivability — replaces the shield belt's burst
+               absorption with permanent damage reduction since the belt
+               would block the conjured charge rifle. -->
+          <IncomingDamageFactor>0.25</IncomingDamageFactor>
           <PawnTrapSpringChance>0.1</PawnTrapSpringChance>
         </statFactors>
       </li>

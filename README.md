@@ -290,10 +290,11 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 - Target any friendly humanlike pawn on the map (including self)
 - For `5000` ticks (`2` in-game hours):
   - Maxes the target's `Shooting` and `Melee` skills to `20` (original levels and XP are restored when the buff ends)
-  - Applies `Tough` trait parity: `IncomingDamageFactor x0.5`
+  - Applies `IncomingDamageFactor x0.25` (4x effective durability)
   - Applies `Nimble` trait parity: `+15` Melee Dodge Chance, `PawnTrapSpringChance x0.1`
+  - Closes `1` HP of the worst non-permanent injury every `150` ticks (~`10` HP/min of active wound regen)
   - Suspends `Incapable of Violence` for the duration — a `Pacifist` target can draft, equip the conjured rifle, and attack while the buff is active (the trait re-engages when the buff ends)
-  - Spawns Legendary `Cataphract Armor`, `Cataphract Helmet`, `Shield Belt` (at full charge), and a custom `Super Charge Rifle` onto the target
+  - Spawns Legendary `Cataphract Armor`, `Cataphract Helmet`, and a custom `Super Charge Rifle` onto the target
   - The target's existing primary weapon and any replaced apparel drop to the ground rather than being destroyed
 - Once the buff ends, the spawned gear is destroyed regardless of where it ended up (still worn, dropped on the map, or picked up by another pawn)
 - The `Super Charge Rifle` is exclusive to this spell — it has `2x` range (`55.8`), `2x` damage (`32`), and `2x` armor penetration (`0.70`) of a vanilla charge rifle, and never spawns through raids, trade, quests, scenarios, or crafting

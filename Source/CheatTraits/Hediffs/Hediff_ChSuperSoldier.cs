@@ -56,6 +56,44 @@ namespace CheatTraits.Hediffs
             pawn?.Notify_DisabledWorkTypesChanged();
         }
 
+        // Replaces the shield belt's burst absorption with steady regen:
+        // closes 1 HP of the worst non-permanent injury every 150 ticks
+        // (~10 HP/min). Over the full 2-hour buff this caps around 1200 HP
+        // of healing, more than a Legendary shield belt's pool, but spread
+        // out so single high-damage hits still matter.
+        public override void Tick()
+        {
+            base.Tick();
+            if (pawn == null || pawn.Dead)
+                return;
+            if (!pawn.IsHashIntervalTick(150))
+                return;
+            HealWorstInjury();
+        }
+
+        private void HealWorstInjury()
+        {
+            HediffSet? hediffSet = pawn.health?.hediffSet;
+            if (hediffSet == null)
+                return;
+
+            Hediff_Injury? worst = null;
+            float worstSeverity = 0f;
+            List<Hediff> hediffs = hediffSet.hediffs;
+            for (int i = 0; i < hediffs.Count; i++)
+            {
+                if (hediffs[i] is Hediff_Injury injury
+                    && !injury.IsPermanent()
+                    && injury.Severity > worstSeverity)
+                {
+                    worst = injury;
+                    worstSeverity = injury.Severity;
+                }
+            }
+
+            worst?.Heal(1f);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -128,12 +166,12 @@ namespace CheatTraits.Hediffs
 
             // Apparel: each piece is spawned, made Legendary, and worn with
             // dropReplacedApparel:true so the wearer's existing gear falls to
-            // the ground (not destroyed).
+            // the ground (not destroyed). Shield belt is intentionally omitted
+            // — it blocks the wearer's own ranged attacks, which would defeat
+            // the charge rifle. Survivability is delivered via the hediff's
+            // IncomingDamageFactor and the Tick-driven regen below.
             TryWearLegendary("Apparel_ArmorCataphract");
             TryWearLegendary("Apparel_ArmorHelmetCataphract");
-            Apparel? shieldBelt = TryWearLegendary("Apparel_ShieldBelt");
-            if (shieldBelt != null)
-                FullyChargeShield(shieldBelt);
 
             // Weapon: MakeRoomFor drops the existing primary (if any) onto the
             // ground; AddEquipment slots in the new rifle.
@@ -164,19 +202,6 @@ namespace CheatTraits.Hediffs
         {
             CompQuality? compQuality = thing.TryGetComp<CompQuality>();
             compQuality?.SetQuality(QualityCategory.Legendary, ArtGenerationContext.Outsider);
-        }
-
-        private static void FullyChargeShield(Apparel shieldBelt)
-        {
-            CompShield? compShield = shieldBelt.GetComp<CompShield>();
-            if (compShield == null)
-                return;
-            float max = shieldBelt.GetStatValue(StatDefOf.EnergyShieldEnergyMax);
-            // 'energy' is protected on CompShield with no public setter; Harmony's
-            // Traverse exposes it cleanly without a separate reflection helper.
-            // Without this, the shield equips at 0 energy and trickles up via
-            // CompTick, which defeats the "instant deployment" feel of the spell.
-            Traverse.Create(compShield).Field("energy").SetValue(max);
         }
 
         private void DestroySpawnedGear()
