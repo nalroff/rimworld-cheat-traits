@@ -16,6 +16,7 @@
     <verbProperties>
       <warmupTime>0.5</warmupTime>
       <range>44.9</range>
+      <requireLineOfSight>false</requireLineOfSight>
       <targetParams>
         <canTargetSelf>false</canTargetSelf>
         <canTargetPawns>true</canTargetPawns>
