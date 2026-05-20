@@ -109,7 +109,7 @@
   <AbilityDef ParentName="PsycastBase">
     <defName>ChSuperSoldier</defName>
     <label>super soldier</label>
-    <description>Conjure a temporary Legendary spacer-tier loadout onto a friendly humanlike and wire their reflexes to a tactical combat state. For two hours: Cataphract armor and helmet, a fully-charged shield belt, and an overclocked charge rifle materialize on the target, their Shooting and Melee skills max out, and their flesh takes half damage. When the spell fades, the conjured gear disintegrates.</description>
+    <description>Conjure a temporary Legendary spacer-tier loadout onto a friendly humanlike and wire their reflexes to a tactical combat state. For two hours: Cataphract armor and helmet plus an overclocked charge rifle materialize on the target, their Shooting and Melee skills max out, their flesh takes a quarter of incoming damage, wounds knit closed steadily, and even a sworn pacifist will fight. When the spell fades, the conjured gear disintegrates.</description>
     <iconPath>Things/Item/Equipment/WeaponRanged/ChargeRifle</iconPath>
     <level>1</level>
     <hostile>false</hostile>
