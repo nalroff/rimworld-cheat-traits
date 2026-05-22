@@ -8,14 +8,16 @@
     <level>1</level>
     <hostile>true</hostile>
     <aiCanUse>false</aiCanUse>
-    <cooldownTicksRange>300~300</cooldownTicksRange>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <charges>3</charges>
+    <cooldownPerCharge>true</cooldownPerCharge>
     <statBases>
       <Ability_EntropyGain>10</Ability_EntropyGain>
       <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
     </statBases>
     <verbProperties>
       <warmupTime>0.5</warmupTime>
-      <range>44.9</range>
+      <range>45</range>
       <requireLineOfSight>false</requireLineOfSight>
       <targetParams>
         <canTargetSelf>false</canTargetSelf>
@@ -43,7 +45,9 @@
     <level>1</level>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>
-    <cooldownTicksRange>300~300</cooldownTicksRange>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <charges>2</charges>
+    <cooldownPerCharge>true</cooldownPerCharge>
     <statBases>
       <Ability_EntropyGain>10</Ability_EntropyGain>
       <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
@@ -79,7 +83,7 @@
     <level>1</level>
     <hostile>true</hostile>
     <aiCanUse>false</aiCanUse>
-    <cooldownTicksRange>1500~1500</cooldownTicksRange>
+    <cooldownTicksRange>12500</cooldownTicksRange>
     <statBases>
       <Ability_EntropyGain>10</Ability_EntropyGain>
       <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
@@ -114,7 +118,7 @@
     <level>1</level>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>
-    <cooldownTicksRange>1500~1500</cooldownTicksRange>
+    <cooldownTicksRange>12500</cooldownTicksRange>
     <statBases>
       <Ability_EntropyGain>10</Ability_EntropyGain>
       <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>

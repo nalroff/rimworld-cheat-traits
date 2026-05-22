@@ -267,7 +267,8 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 
 `Lightning Bolt`
 
-- `300`-tick cooldown, `44.9` tile range
+- `3` charges, each on an independent `12500`-tick (5 in-game hours) cooldown — cast up to 3 bolts in quick succession, then one charge returns every 5 hours
+- `45` tile range
 - No line-of-sight requirement
 - Calls down a vanilla lightning strike plus a `1.5`-tile EMP burst
 - Deals `120` Burn damage to the primary target with `2.0` armor penetration
@@ -275,7 +276,7 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 
 `Teleport Other`
 
-- `300`-tick cooldown
+- `2` charges, each on an independent `12500`-tick (5 in-game hours) cooldown — cast up to 2 teleports back-to-back, then one charge returns every 5 hours
 - No range limit and no line-of-sight requirement (works across the entire map)
 - Pulls any humanlike pawn to the nearest standable cell beside the caster
 - Stuns the teleported pawn for `30`–`60` ticks
@@ -283,7 +284,7 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 
 `Mass Berserk`
 
-- `1500`-tick cooldown, `45` tile range
+- `12500`-tick (5 in-game hours) cooldown, `45` tile range
 - Requires line of sight to the target point
 - Affects every hostile pawn within `12` tiles of the target — humanlikes, animals, and mechanoids
 - Drives affected targets into a berserk frenzy for `600` ticks, attacking the nearest target including their own allies
@@ -291,7 +292,7 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 
 `Super Soldier`
 
-- `1500`-tick cooldown
+- `12500`-tick (5 in-game hours) cooldown
 - No range limit and no line-of-sight requirement
 - Target any friendly humanlike pawn on the map (including self)
 - For `5000` ticks (`2` in-game hours):
