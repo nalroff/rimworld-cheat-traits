@@ -13,11 +13,13 @@ All traits use `commonality = 0`, so they are best suited for custom starts, edi
 
 - `15` high-power role traits
 - Several passive aura systems
-- Custom castable abilities granted by `Ch Wizard`
-- Three trait-gated buildings:
+- `13` custom castable abilities granted by traits
+- Five trait-gated buildings:
   - `Floragen Core`
   - `Comfort Node`
   - `Tesla Coil`
+  - `Alchemy Cauldron`
+  - `Vitae Pillar`
 
 ## Trait-Gated Buildings
 
@@ -58,6 +60,45 @@ Unlocked by: `Ch Tesla`
 - Stuns for `120` ticks
 - Fires every `180` ticks when a valid target is available
 
+### Alchemy Cauldron
+
+Unlocked by: `Ch Alchemist`
+
+- Costs `50 Steel + 20 Wood`
+- `600` work to build
+- Requires no power
+- Only a Ch Alchemist pawn can construct it
+- Only a Ch Alchemist pawn can perform its bills
+- Current recipes:
+  - `Brew Trail Tonic` — `3 Herbal Medicine + 2 leather (any) + 5 raw plants → 1 Trail Tonic`
+  - `Synthesize Neutroamine` — `5 Herbal Medicine + 2 leather (any) + 1 Chemfuel → 5 Neutroamine`
+
+`Trail Tonic` itself:
+
+- Classified as a hard drug, but causes no addiction and no overdose
+- The default drug policy excludes it, so colonists never auto-consume it — drinking is always explicit (right-click → "Drink Trail Tonic")
+- Drinking applies the `Trail Tonic` hediff for `180000` ticks (3 in-game days):
+  - `HungerRateFactor x0.05` (effectively no hunger for the duration)
+  - `RestFallRateFactor x0.5`
+  - `+5%` Move Speed
+- Designed for caravans, long sieges, and extended treks
+
+### Vitae Pillar
+
+Unlocked by: `Ch Ascendant`
+
+- Costs `25 Steel`
+- `400` work to build
+- Requires no power
+- Affects every pawn inside the same room as the pillar, with no proximity limit
+- Multiple pillars in one room do not stack
+- Scans every `250` ticks
+- Effects on in-room pawns:
+  - `InjuryHealingFactor x4`
+  - `ImmunityGainSpeed x2`
+  - Existing addictions decay over `~5000` ticks
+  - When Biotech is loaded: pregnancy and labor complications are suppressed
+
 ## Trait Reference
 
 ### Ch Boxer
@@ -69,6 +110,10 @@ An unarmed melee monster.
 - `+1000` Pain Shock Threshold
 - While unarmed, `MeleeDamageFactor x10`
 - Punches against non-hostile pawns are softened (~vanilla unarmed damage), so social fights and mental breaks won't one-shot allies
+- Adds a `Knockout Blow` ability: dash to a target and land a single overwhelming strike
+  - Range `8`, cooldown `12500` ticks
+  - Downs any non-mechanoid target for `2500` ticks (1 in-game hour) regardless of armor or pain shock
+  - Mechanoids and non-organic targets are immune
 
 ### Ch Tex
 
@@ -85,6 +130,11 @@ A gunfighter with a heavy revolver specialty.
   - Accuracy is pushed extremely high and then capped at `0.99`
   - `AimingDelayFactor x0.10`
   - `RangedCooldownFactor x0.25`
+- Adds a `Deadeye` ability: a single perfect shot at any pawn on the map
+  - No range limit and no line-of-sight requirement
+  - Deals `150` Bullet damage with `2.0` armor penetration directly to the target
+  - Targets humanlikes and mechanoids
+  - Cooldown `12500` ticks
 
 ### Ch Zippy
 
@@ -93,6 +143,9 @@ A movement-focused speedster.
 - `+35` Move Speed
 - `+35` Crawl Speed
 - `+20` Global Work Speed
+- Adds a `Blink` ability: instant teleport to a chosen standable tile within `15` tiles
+  - No line-of-sight requirement
+  - Cooldown `2500` ticks (~1 in-game hour) — intentionally low; this is a tactical positioning tool, not a setpiece
 
 ### Ch Tank
 
@@ -102,6 +155,11 @@ A front-line damage sponge with strong armor and pain resistance.
 - `+2.5` Blunt armor
 - Permanent pain dampener while the trait is present
 - Pain is reduced to `40%` of normal
+- Adds an `Iron Wall` ability: self-cast taunt and damage-reduction surge
+  - Self-cast; affects an area `45` tiles around the Tank
+  - Every hostile pawn within `45` tiles is forced to prioritize attacking the Tank for the duration
+  - For `1500` ticks (~40s): `IncomingDamageFactor x0.10` and immunity to stun
+  - Cooldown `12500` ticks
 
 ### Ch Green Thumb
 
@@ -127,12 +185,19 @@ A master builder, crafter, and artist who works fast and produces top-end qualit
   - `60%` Excellent
   - `30%` Masterwork
   - `10%` Legendary
+- Adds a `Reforge` ability: rerolls the quality of any building or item with a quality rating
+  - Targets any built/installed building or any equipped/stored item with a `QualityCategory` (apparel, weapons, art, furniture, etc.)
+  - Reroll uses the same `60/30/10` Excellent/Masterwork/Legendary weights as the Artificer's quality patch
+  - The reroll always replaces the current quality — even if the new roll is lower than what was there
+  - `3` charges, each on an independent `12500`-tick cooldown
+  - Reroll does not consume the item and does not count as construction work — other pawns can stay on build duty while the Artificer upgrades what they made
 
 ### Ch Alchemist
 
 A cook whose meals become buffs instead of just food.
 
 - `+10` Cooking
+- Unlocks the `Alchemy Cauldron` (see the trait-gated buildings section above)
 - Works on simple, fine, and lavish meals
 - Alchemist meals never cause food poisoning
 - Meals can become "perfect" versions:
@@ -157,6 +222,12 @@ A guaranteed surgeon and elite doctor.
 - Surgeries performed by this pawn do not fail
 - Tend quality is forced to `100%`
 - Includes self-tend
+- Adds a `Miracle Heal` ability: target one pawn anywhere on the map
+  - Range `45`, no line-of-sight requirement
+  - Cures one disease or infection (worst first)
+  - Closes every non-permanent injury on the target
+  - Restores `1` missing or destroyed body part (worst non-vital first)
+  - Cooldown `12500` ticks
 
 ### Ch Ascendant
 
@@ -170,6 +241,7 @@ A high-end leader/researcher with a powerful support aura.
 - Aura grants:
   - `GlobalLearningFactor x3`
   - `InjuryHealingFactor x4`
+- Unlocks the `Vitae Pillar` (see the trait-gated buildings section above)
 
 ### Ch Beastmaster
 
@@ -203,6 +275,16 @@ Herd blessing effects on animals:
 - `Fertility x1.25`
 - `BodyResourceGrowthSpeed x7`
 
+Active ability:
+
+- Adds a `Call of the Wild` ability: map-wide rally of every wild and neutral animal
+  - No range limit and no line-of-sight requirement
+  - Affects every animal on the map whose faction is *not* the player's — wild animals, manhunter packs, and insectoid hive defenders are all swept in
+  - Forces affected animals into a custom `Wild Hunt` mental state for `5000` ticks
+  - Animals seek out and attack the nearest pawn hostile to the player (and not in their own faction, so insectoids do not infight)
+  - Player-faction animals (tamed pets, haulers, mounts) are unaffected
+  - Cooldown `120000` ticks (2 in-game days)
+
 ### Ch Diplomat
 
 A social powerhouse with mood and relationship support.
@@ -233,6 +315,11 @@ An extreme miner and driller.
 - `SmoothingSpeed x6`
 - `MiningYield x2.5`
 - `DeepDrillingSpeed x3`
+- Adds a `Tunnel` ability: instantly clears a straight passage through rock and ore
+  - Target a tile up to `12` tiles away
+  - Excavates a `3`-wide line of cells from the Digger to the target tile
+  - Yields resources at the trait's `MiningYield x2.5`
+  - Cooldown `12500` ticks
 
 ### Ch Comfy
 
