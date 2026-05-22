@@ -229,6 +229,63 @@
   </AbilityDef>
 
   <AbilityDef>
+    <defName>ChIronWall</defName>
+    <label>iron wall</label>
+    <description>Brace into a defensive stance for forty seconds. Incoming damage is reduced to a tenth, stuns slide off, and every hostile within forty-five tiles is goaded into attacking the Tank instead of softer colonists.</description>
+    <iconPath>UI/Abilities/BulletShield</iconPath>
+    <hostile>false</hostile>
+    <aiCanUse>false</aiCanUse>
+    <targetRequired>false</targetRequired>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.2</warmupTime>
+      <range>0</range>
+      <requireLineOfSight>false</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>true</canTargetSelf>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetItems>false</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChIronWall" />
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef>
+    <defName>ChMiracleHeal</defName>
+    <label>miracle heal</label>
+    <description>Reach across the map and restore one pawn. The worst disease or infection is purged, every non-permanent injury closes, and a single missing or destroyed body part is regrown.</description>
+    <iconPath>UI/Abilities/UnnaturalHealing</iconPath>
+    <hostile>false</hostile>
+    <aiCanUse>false</aiCanUse>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <range>45</range>
+      <requireLineOfSight>false</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>true</canTargetSelf>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetItems>false</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChMiracleHeal" />
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef>
     <defName>ChBond</defName>
     <label>bond pawns</label>
     <description>Cast on a humanlike to begin a bond. After the first pick, choose a second humanlike — the two are locked into near-maximum compatibility: opinion of 100 each way, deep talks fire constantly, fights nearly vanish, and romance chance reaches 100% whenever the engine already permits it (orientation, age, species, and gene blocks still apply). Casting on a bonded pair again breaks the bond. If the second pick is cancelled, the cooldown is refunded.</description>

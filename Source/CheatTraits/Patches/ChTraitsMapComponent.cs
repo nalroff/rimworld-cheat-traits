@@ -48,6 +48,8 @@ namespace CheatTraits.Patches
                         ChBoxerAbilityApplier.TickPawn(p);
                         ChTexAbilityApplier.TickPawn(p);
                         ChDiggerAbilityApplier.TickPawn(p);
+                        ChTankAbilityApplier.TickPawn(p);
+                        ChDocAbilityApplier.TickPawn(p);
                     }
                 }
             }

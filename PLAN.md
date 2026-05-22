@@ -81,7 +81,21 @@ Notes:
 
 ---
 
-### Chunk 3 — Hediff-applying abilities (Iron Wall, Miracle Heal) [ ]
+### Chunk 3 — Hediff-applying abilities (Iron Wall, Miracle Heal) [x] 2026-05-22
+
+Notes:
+- **Iron Wall taunt** was implemented as a Harmony postfix on `Verse.AI.AttackTargetFinder.BestAttackTarget`. Confirmed via decomp + analysis that this is the single chokepoint for melee + ranged + manhunter + mech + berserk + Anomaly target picks (`BestShootTargetFromCurrentPosition` forwards through it). Postfix checks: skip when `__result == null` (preserve "no target found"), look up any spawned pawn on the searcher's map carrying the `ChTank_IronWall` hediff, redirect only if within 45 tiles, hostile to the searcher, and not the searcher itself. New file: `Patches/Patch_AttackTargetFinder_IronWallTaunt.cs`.
+- **Iron Wall stun immunity** was implemented as a Harmony prefix on `RimWorld.StunHandler.StunFor` (returns false to skip the original when the owning pawn has the hediff). Cleaner than juggling stat factors. New file: `Patches/Patch_StunHandler_IronWall.cs`.
+- **Iron Wall hediff** lives in `ChHediffs.xml`: `IncomingDamageFactor 0.10`, `HediffComp_Disappears` 1500 ticks, `showRemainingTime=true`. No `keepOnBodyPartRestoration` issues — it's torso-applied so RestorePart wouldn't sweep it from a Miracle Heal target anyway.
+- **Iron Wall ability** is `canTargetSelf=true, range=0, targetRequired=false` — instant self-cast with no designator prompt. `targetRequired=false` makes `Command_Ability.ProcessInput` skip the targeter and immediately queue the cast on the caster with `LocalTargetInfo.Invalid`. `CompAbilityEffect_ChIronWall` ignores the target arg and applies the hediff to `parent.pawn`. First pass used the default `targetRequired=true` and brought up a designator that wouldn't accept any click — fixed after user report. If a previous Iron Wall is active, the comp removes the old hediff before adding the new one so the duration refreshes cleanly.
+- **Miracle Heal** uses `Pawn_HealthTracker.RestorePart` for the body-part restoration — confirmed via decomp that this single call handles missing-part removal, all attached injuries on that part, and recursive child-part cleanup. We pick the target part via `hediffSet.GetMissingPartsCommonAncestors()` so a missing arm doesn't compete with its also-missing hand. Vital-part filter is by defName (Brain, Heart, Liver, Stomach) since `BodyPartDefOf` doesn't expose these constants in 1.6.
+- **Miracle Heal disease cure** filters `hediffSet.hediffs` for non-Injury/non-MissingPart/non-AddedPart hediffs with `makesSickThought || tendable`, sorted by makesSickThought-first then severity, takes the first. Removes via `RemoveHediff`.
+- **Miracle Heal injury close** iterates `Hediff_Injury` instances filtering out `IsPermanent()`, removes each via `RemoveHediff`. Spec said "set severity to 0 then remove" — removing directly is equivalent and avoids an unnecessary tick of state-change recompute.
+- **Miracle Heal "nothing to heal" feedback**: if all three stages no-op, a neutral message fires (`"<pawn> had nothing to heal."`). Cooldown still consumed per spec.
+- Icon paths used: `UI/Abilities/BulletShield` (Iron Wall, Royalty) and `UI/Abilities/UnnaturalHealing` (Miracle Heal, Anomaly). First-pass picks (`UI/Abilities/Adrenaline`, `UI/Abilities/PsychicHeartfreeze`) didn't exist in any DLC — corrected after the user reported the texture-load errors. The mod already uses other Royalty psycast icons (`Flashstorm`, `BerserkPulse`, etc.), so the DLC-icon dependency is consistent with existing assumptions.
+- Two new analysis notes written for future reference: `features/hostile-target-selection.md` and `features/restore-body-part.md`.
+
+
 
 **Scope:** Two abilities that apply effects to a target pawn (caster for Iron Wall, an ally for Miracle Heal). Iron Wall also requires a taunt patch on hostile target selection.
 

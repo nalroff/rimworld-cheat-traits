@@ -316,6 +316,32 @@
   </HediffDef>
 
   <HediffDef>
+    <defName>ChTank_IronWall</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>iron wall</label>
+    <description>Braced into a defensive stance. Incoming damage is dramatically reduced and stuns slide off.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>1500</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statFactors>
+          <IncomingDamageFactor>0.10</IncomingDamageFactor>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
     <defName>ChWizard_Spellbook</defName>
     <hediffClass>HediffWithComps</hediffClass>
     <label>arcane attunement</label>
