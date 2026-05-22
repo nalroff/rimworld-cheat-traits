@@ -69,6 +69,7 @@ An unarmed melee monster.
 - `+100` Melee Hit Chance
 - `+1000` Pain Shock Threshold
 - While unarmed, `MeleeDamageFactor x10`
+- Punches against non-hostile pawns are softened (~vanilla unarmed damage), so social fights and mental breaks won't one-shot allies
 
 ### Ch Tex
 
