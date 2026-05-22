@@ -140,4 +140,32 @@
       <li Class="CheatTraits.Comps.CompProperties_AbilityChSuperSoldier" />
     </comps>
   </AbilityDef>
+
+  <AbilityDef>
+    <defName>ChBond</defName>
+    <label>bond pawns</label>
+    <description>Cast on a humanlike to begin a bond. After the first pick, choose a second humanlike — the two are locked into near-maximum compatibility: opinion of 100 each way, deep talks fire constantly, fights nearly vanish, and romance chance reaches 100% whenever the engine already permits it (orientation, age, species, and gene blocks still apply). Casting on a bonded pair again breaks the bond. If the second pick is cancelled, the cooldown is refunded.</description>
+    <iconPath>UI/Commands/GatherSpotActive</iconPath>
+    <hostile>false</hostile>
+    <aiCanUse>false</aiCanUse>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <range>45</range>
+      <requireLineOfSight>true</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>false</canTargetSelf>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetItems>false</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChBond" />
+    </comps>
+  </AbilityDef>
 </Defs>

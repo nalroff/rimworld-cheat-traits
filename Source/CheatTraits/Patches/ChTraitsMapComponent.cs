@@ -44,6 +44,7 @@ namespace CheatTraits.Patches
                         // Keep Tank as a per-pawn applier
                         ChTankHediffApplier.TickPawn(p);
                         ChWizardHediffApplier.TickPawn(p);
+                        ChDiplomatAbilityApplier.TickPawn(p);
                     }
                 }
             }

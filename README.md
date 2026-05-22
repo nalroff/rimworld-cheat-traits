@@ -216,12 +216,13 @@ A social powerhouse with mood and relationship support.
 - Aura refreshes every `250` ticks and lingers for `15000` ticks
 - Affected player pawns gain `+8` mood from `diplomatic calm`
 - Affected player pawns gain `+12` opinion of each other from `easy rapport`
-- Adds a `Bond pawns` gizmo: pick any two humanlike pawns to lock their relationship to near-maximum
+- Adds a `Bond pawns` ability: cast on one humanlike, then pick a second to lock their relationship to near-maximum
+  - Range `45`, requires line of sight, cooldown `12500` ticks (~3.5 in-game hours); the cooldown is refunded if the second pick is cancelled
   - Compatibility is forced to `2.0` (near-max): `~3x` deep-talk weight, `~0.5x` insult/fight chance
   - Opinion is forced to `100` in both directions (still suppressed if the pawn is dead or non-humanlike)
   - Romance chance is forced to `2.0` (clamps to 100%) — but only when the engine would already permit romance: orientation, age, species, incest, and Biotech missing-gene blocks are all respected
   - Bonds persist across maps and save/load
-  - Picking the same pair again removes the bond
+  - Casting on a bonded pair again removes the bond
 
 ### Ch Digger
 
