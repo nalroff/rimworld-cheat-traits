@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Skill(rimworld-analysis)",
-      "Skill(rimworld-analysis:*)"
+      "Skill(rimworld-analysis:*)",
+      "Bash(ls \"d:/Steam/steamapps/common/RimWorld/Data/Core/Textures/UI/Abilities/\" 2>&1 | head -60)",
+      "Read(//d/Steam/steamapps/common/RimWorld/Data/Core/Textures/UI/**)",
+      "Bash(find \"d:/Steam/steamapps/common/RimWorld/Data\" -type d -name Abilities 2>&1)",
+      "Read(//d/Steam/steamapps/common/RimWorld/Data/**)",
+      "Bash(pwsh -NoProfile -Command \"./build.ps1\")",
+      "Bash(ls F:/Development/rimworld-analysis/features/ 2>&1)",
+      "Read(//f/Development/rimworld-analysis/features/**)"
     ]
   }
 }

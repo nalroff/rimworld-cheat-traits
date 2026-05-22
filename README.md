@@ -110,10 +110,10 @@ An unarmed melee monster.
 - `+1000` Pain Shock Threshold
 - While unarmed, `MeleeDamageFactor x10`
 - Punches against non-hostile pawns are softened (~vanilla unarmed damage), so social fights and mental breaks won't one-shot allies
-- Adds a `Knockout Blow` ability: dash to a target and land a single overwhelming strike
-  - Range `8`, cooldown `12500` ticks
-  - Downs any non-mechanoid target for `2500` ticks (1 in-game hour) regardless of armor or pain shock
-  - Mechanoids and non-organic targets are immune
+- Adds a `Flying Punch` ability: leap through the air (jump-pack style) to land adjacent to a chosen target and deliver a devastating strike
+  - Range `15`, requires line of sight, cooldown `12500` ticks
+  - Targets any pawn, animal, mech, or building — perfect for closing the gap on a ranged opponent
+  - On landing, the Boxer's normal melee verb fires against the target; with the trait's `MeleeDamageFactor x10` unarmed bonus, a bare-handed punch lands as a single overwhelming blow
 
 ### Ch Tex
 
@@ -130,8 +130,9 @@ A gunfighter with a heavy revolver specialty.
   - Accuracy is pushed extremely high and then capped at `0.99`
   - `AimingDelayFactor x0.10`
   - `RangedCooldownFactor x0.25`
-- Adds a `Deadeye` ability: a single perfect shot at any pawn on the map
-  - No range limit and no line-of-sight requirement
+- Adds a `Deadeye` ability: a single perfect shot at any pawn the caster can see
+  - Requires a ranged weapon to be equipped
+  - No range limit, but a clear line of sight is required — no shooting through mountains
   - Deals `150` Bullet damage with `2.0` armor penetration directly to the target
   - Targets humanlikes and mechanoids
   - Cooldown `12500` ticks
@@ -316,7 +317,7 @@ An extreme miner and driller.
 - `MiningYield x2.5`
 - `DeepDrillingSpeed x3`
 - Adds a `Tunnel` ability: instantly clears a straight passage through rock and ore
-  - Target a tile up to `12` tiles away
+  - Target a tile up to `15` tiles away
   - Excavates a `3`-wide line of cells from the Digger to the target tile
   - Yields resources at the trait's `MiningYield x2.5`
   - Cooldown `12500` ticks

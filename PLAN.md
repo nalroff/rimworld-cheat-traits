@@ -39,7 +39,15 @@ Status: `[ ]` not started · `[~]` in progress · `[x] YYYY-MM-DD` done.
 
 ---
 
-### Chunk 2 — Instant-effect abilities (Knockout Blow, Deadeye, Tunnel) [ ]
+### Chunk 2 — Instant-effect abilities (Knockout Blow, Deadeye, Tunnel) [x] 2026-05-22
+
+Notes:
+- Knockout Blow was reworked into Flying Punch after first test (user design call — the original "instant down" felt wrong). New behavior: jump-pack-style leap (Verse `PawnFlyer`) to land adjacent to any pawn/animal/mech/building target, then strike via the Boxer's normal melee verb. Implementation: custom `Verb_CastAbilityChFlyingPunch : Verb_CastAbility` that resolves a walkable cell adjacent to the picked thing's footprint (using `GenAdj.CellsAdjacent8Way`) and calls `JumpUtility.DoJump` with the original target stored in the flyer; `CompAbilityEffect_ChFlyingPunch : ICompAbilityEffectOnJumpCompleted` fires `caster.meleeVerbs.TryMeleeAttack(target)` on landing. The trait's existing `MeleeDamageFactor x10` unarmed bonus makes a single hit "devastating" without any custom damage code. The original `ChKnockoutBlow` hediff was deleted.
+- Deadeye fires `DamageInfo(Bullet, 150, AP=2.0)` through `TakeDamage`; passes the caster's primary weapon def as the `weapon` field so the kill log reads as a shot. Visual is a `FleckDefOf.ShotFlash`; no extra sound (TakeDamage handles the impact audio).
+- Deadeye design change after first test: `requireLineOfSight=true` (was `false` per original spec). Reasoning: shooting through mountains felt wrong. Range stays at `9999` so cross-map shots are still possible when the line is clear. README updated to match.
+- Bugfix during testing: a lethal Deadeye despawns the target before the fleck call, nulling Position/Map. Position and Map are now captured into locals before `TakeDamage`.
+- Tunnel uses `GenSight.PointsOnLineOfSight` for the central line and widens by a rounded perpendicular IntVec3 offset (-1, 0, +1). Each cell calls `Mineable.Notify_TookMiningDamage(HitPoints, caster)` so vanilla `TrySpawnYield` reads the caster's `MiningYield` stat and drops at the trait's 2.5x naturally — no manual multiplier.
+- Icon paths used: `UI/Abilities/Stun` (Knockout), `Things/Item/Equipment/WeaponRanged/Revolver` (Deadeye), `UI/Abilities/Chunkskip` (Tunnel). All vanilla, no custom textures needed.
 
 **Scope:** Three abilities that fire once and do their thing immediately. No persistent caster hediff, no charges, no targeting state machine beyond the initial pick.
 

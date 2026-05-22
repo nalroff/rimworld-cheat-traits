@@ -142,6 +142,93 @@
   </AbilityDef>
 
   <AbilityDef>
+    <defName>ChFlyingPunch</defName>
+    <label>flying punch</label>
+    <description>Leap through the air to land adjacent to a chosen target and deliver a devastating strike. Useful for closing the gap on ranged opponents. Works on any pawn, animal, mech, or building.</description>
+    <iconPath>UI/Abilities/Stun</iconPath>
+    <hostile>true</hostile>
+    <aiCanUse>false</aiCanUse>
+    <jobDef>CastJump</jobDef>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <verbProperties>
+      <verbClass>CheatTraits.Verbs.Verb_CastAbilityChFlyingPunch</verbClass>
+      <warmupTime>0.2</warmupTime>
+      <range>15</range>
+      <requireLineOfSight>true</requireLineOfSight>
+      <soundLanding>Pawn_Melee_Punch_HitPawn</soundLanding>
+      <targetParams>
+        <canTargetSelf>false</canTargetSelf>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetMechs>true</canTargetMechs>
+        <canTargetBuildings>true</canTargetBuildings>
+        <canTargetItems>false</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChFlyingPunch" />
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef>
+    <defName>ChDeadeye</defName>
+    <label>deadeye</label>
+    <description>Line up and deliver a single perfect shot at any pawn the caster can see. The bullet has no range limit and crushes armor, but a clear line of sight is required.</description>
+    <iconPath>Things/Item/Equipment/WeaponRanged/Revolver</iconPath>
+    <hostile>true</hostile>
+    <aiCanUse>false</aiCanUse>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <!-- Effectively unlimited — vanilla maps cap at 400x400. -->
+      <range>9999</range>
+      <requireLineOfSight>true</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>false</canTargetSelf>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetMechs>true</canTargetMechs>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetItems>false</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChDeadeye" />
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef>
+    <defName>ChTunnel</defName>
+    <label>tunnel</label>
+    <description>Carve a three-wide passage through rock and ore from your position to a target cell up to fifteen tiles away. Resources drop at the Digger's mining yield.</description>
+    <iconPath>UI/Abilities/Chunkskip</iconPath>
+    <hostile>false</hostile>
+    <aiCanUse>false</aiCanUse>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <range>15</range>
+      <requireLineOfSight>false</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>false</canTargetSelf>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetItems>false</canTargetItems>
+        <canTargetLocations>true</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChTunnel" />
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef>
     <defName>ChBond</defName>
     <label>bond pawns</label>
     <description>Cast on a humanlike to begin a bond. After the first pick, choose a second humanlike — the two are locked into near-maximum compatibility: opinion of 100 each way, deep talks fire constantly, fights nearly vanish, and romance chance reaches 100% whenever the engine already permits it (orientation, age, species, and gene blocks still apply). Casting on a bonded pair again breaks the bond. If the second pick is cancelled, the cooldown is refunded.</description>

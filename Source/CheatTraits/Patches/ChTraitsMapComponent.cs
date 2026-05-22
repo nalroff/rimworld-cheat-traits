@@ -45,6 +45,9 @@ namespace CheatTraits.Patches
                         ChTankHediffApplier.TickPawn(p);
                         ChWizardHediffApplier.TickPawn(p);
                         ChDiplomatAbilityApplier.TickPawn(p);
+                        ChBoxerAbilityApplier.TickPawn(p);
+                        ChTexAbilityApplier.TickPawn(p);
+                        ChDiggerAbilityApplier.TickPawn(p);
                     }
                 }
             }
