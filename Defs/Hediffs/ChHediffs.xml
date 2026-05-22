@@ -339,9 +339,9 @@
     <stages>
       <li>
         <statOffsets>
-          <PsychicEntropyMax>1000</PsychicEntropyMax>
-          <PsychicEntropyRecoveryRate>5.0</PsychicEntropyRecoveryRate>
-          <MeditationFocusGain>2.0</MeditationFocusGain>
+          <!-- PsychicSensitivity is base game (used by Anomaly too), kept for flavor.
+               PsychicEntropyMax/RecoveryRate/MeditationFocusGain are Royalty-only
+               and were dropped along with the psycast wiring. -->
           <PsychicSensitivity>1.0</PsychicSensitivity>
         </statOffsets>
       </li>

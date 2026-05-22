@@ -1,6 +1,6 @@
 # Cheat Traits
 
-`Cheat Traits` adds 15 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, psycaster, and more.
+`Cheat Traits` adds 15 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, spellcaster, and more.
 
 All traits use `commonality = 0`, so they are best suited for custom starts, edited pawns, dev-mode setups, or other deliberate trait assignment.
 
@@ -8,13 +8,12 @@ All traits use `commonality = 0`, so they are best suited for custom starts, edi
 
 - RimWorld `1.6`
 - Harmony
-- `Royalty` (optional; required only for the `Ch Wizard` trait — the rest of the mod works without it)
 
 ## What The Mod Adds
 
 - `15` high-power role traits
 - Several passive aura systems
-- Custom psycasts granted by `Ch Wizard` (requires Royalty)
+- Custom castable abilities granted by `Ch Wizard`
 - Three trait-gated buildings:
   - `Floragen Core`
   - `Comfort Node`
@@ -255,16 +254,11 @@ The unlock trait for the `Tesla Coil`.
 
 ### Ch Wizard
 
-A born psycaster with vast psychic reserves and a custom spellbook. Requires `Royalty`.
+A born spellcaster with a custom spellbook of overpowered abilities. Works without `Royalty` — the abilities are standalone `AbilityDef`s with their own cooldowns rather than psycasts, so no psylink or psyfocus management is needed.
 
 - `+8` Intellectual
-- Auto-grants a level `1` `Psychic Amplifier` (psylink); vanilla psycast progression still applies on top
-- `+1000` Psychic Entropy Max
-- `+5.0` Psychic Entropy Recovery Rate
-- `+2.0` Meditation Focus Gain
-- `+1.0` Psychic Sensitivity
-- Passive psyfocus regeneration (fills empty to full in roughly `7` minutes of real time)
-- Grants four custom psycasts:
+- `+1.0` Psychic Sensitivity (flavor — used by Mass Berserk's duration scaling)
+- Grants four custom castable abilities:
 
 `Lightning Bolt`
 
@@ -273,7 +267,6 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 - No line-of-sight requirement
 - Calls down a vanilla lightning strike plus a `1.5`-tile EMP burst
 - Deals `120` Burn damage to the primary target with `2.0` armor penetration
-- `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
 
 `Teleport Other`
 
@@ -281,7 +274,6 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 - No range limit and no line-of-sight requirement (works across the entire map)
 - Pulls any humanlike pawn to the nearest standable cell beside the caster
 - Stuns the teleported pawn for `30`–`60` ticks
-- `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
 
 `Mass Berserk`
 
@@ -289,7 +281,6 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
 - Requires line of sight to the target point
 - Affects every hostile pawn within `12` tiles of the target — humanlikes, animals, and mechanoids
 - Drives affected targets into a berserk frenzy for `600` ticks, attacking the nearest target including their own allies
-- `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
 
 `Super Soldier`
 
@@ -306,7 +297,6 @@ A born psycaster with vast psychic reserves and a custom spellbook. Requires `Ro
   - The target's existing primary weapon and any replaced apparel drop to the ground rather than being destroyed
 - Once the buff ends, the spawned gear is destroyed regardless of where it ended up (still worn, dropped on the map, or picked up by another pawn)
 - The `Super Charge Rifle` is exclusive to this spell — it has `2x` range (`55.8`), `2x` damage (`32`), and `2x` armor penetration (`0.70`) of a vanilla charge rifle, and never spawns through raids, trade, quests, scenarios, or crafting
-- `Ability_EntropyGain 10`, `Ability_PsyfocusCost 0.02`
 
 ## Suggested Use
 

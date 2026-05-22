@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <AbilityDef ParentName="PsycastBase">
+  <!--
+    These abilities are intentionally non-psycasts:
+      - No ParentName="PsycastBase" — PsycastBase sets abilityClass=Psycast and
+        verbClass=Verb_CastPsycast, both of which need Royalty's psyfocus/entropy
+        tracker to run.
+      - No Ability_EntropyGain / Ability_PsyfocusCost — those stats are Royalty-only.
+      - verbClass=Verb_CastAbility is the base-game verb. Cooldown/charges come
+        from the base AbilityDef fields (cooldownTicksRange, charges,
+        cooldownPerCharge), which work without any DLC.
+  -->
+
+  <AbilityDef>
     <defName>ChLightningBolt</defName>
     <label>lightning bolt</label>
     <description>Call down a bolt of lightning on a target. The strike inflicts heavy damage, scorches everything in a small radius, and ignites secondary fires.</description>
     <iconPath>UI/Abilities/Flashstorm</iconPath>
-    <level>1</level>
     <hostile>true</hostile>
     <aiCanUse>false</aiCanUse>
     <cooldownTicksRange>12500</cooldownTicksRange>
     <charges>3</charges>
     <cooldownPerCharge>true</cooldownPerCharge>
-    <statBases>
-      <Ability_EntropyGain>10</Ability_EntropyGain>
-      <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
-    </statBases>
     <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
       <warmupTime>0.5</warmupTime>
       <range>45</range>
       <requireLineOfSight>false</requireLineOfSight>
@@ -37,22 +44,18 @@
     </comps>
   </AbilityDef>
 
-  <AbilityDef ParentName="PsycastBase">
+  <AbilityDef>
     <defName>ChTeleportOther</defName>
     <label>teleport other</label>
     <description>Reach across the weave and pull any humanlike pawn on the map to the caster's side. The target appears at the nearest standable cell, briefly stunned by the displacement.</description>
     <iconPath>UI/Abilities/Beckon</iconPath>
-    <level>1</level>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>
     <cooldownTicksRange>12500</cooldownTicksRange>
     <charges>2</charges>
     <cooldownPerCharge>true</cooldownPerCharge>
-    <statBases>
-      <Ability_EntropyGain>10</Ability_EntropyGain>
-      <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
-    </statBases>
     <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
       <warmupTime>0.5</warmupTime>
       <!-- Effectively unlimited — vanilla maps cap at 400x400, this clears them all. -->
       <range>9999</range>
@@ -75,21 +78,20 @@
     </comps>
   </AbilityDef>
 
-  <AbilityDef ParentName="PsycastBase">
+  <AbilityDef>
     <defName>ChMassBerserk</defName>
     <label>mass berserk</label>
     <description>Unleash a wave of psychic rage at a chosen point. Every hostile creature within twelve cells — humanlike, animal, or mechanoid — is driven into a berserk frenzy, attacking the nearest target including their own allies.</description>
     <iconPath>UI/Abilities/BerserkPulse</iconPath>
-    <level>1</level>
     <hostile>true</hostile>
     <aiCanUse>false</aiCanUse>
     <cooldownTicksRange>12500</cooldownTicksRange>
     <statBases>
-      <Ability_EntropyGain>10</Ability_EntropyGain>
-      <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
+      <!-- Ability_Duration is a base-game stat; consumed by CompAbilityEffect_GiveMentalState.TryGiveMentalState. -->
       <Ability_Duration>600</Ability_Duration>
     </statBases>
     <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
       <warmupTime>0.5</warmupTime>
       <range>45</range>
       <requireLineOfSight>true</requireLineOfSight>
@@ -110,20 +112,16 @@
     </comps>
   </AbilityDef>
 
-  <AbilityDef ParentName="PsycastBase">
+  <AbilityDef>
     <defName>ChSuperSoldier</defName>
     <label>super soldier</label>
     <description>Conjure a temporary Legendary spacer-tier loadout onto a friendly humanlike and wire their reflexes to a tactical combat state. For two hours: Cataphract armor and helmet plus an overclocked charge rifle materialize on the target, their Shooting and Melee skills max out, their flesh takes a quarter of incoming damage, wounds knit closed steadily, and even a sworn pacifist will fight. When the spell fades, the conjured gear disintegrates.</description>
     <iconPath>Things/Item/Equipment/WeaponRanged/ChargeRifle</iconPath>
-    <level>1</level>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>
     <cooldownTicksRange>12500</cooldownTicksRange>
-    <statBases>
-      <Ability_EntropyGain>10</Ability_EntropyGain>
-      <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
-    </statBases>
     <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
       <warmupTime>0.5</warmupTime>
       <!-- Effectively unlimited — vanilla maps cap at 400x400, this clears them all. -->
       <range>9999</range>
@@ -139,7 +137,7 @@
       </targetParams>
     </verbProperties>
     <comps>
-      <li Class="CheatTraits.Comps.CompProperties_AbilityChSuperSoldier"/>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChSuperSoldier" />
     </comps>
   </AbilityDef>
 </Defs>

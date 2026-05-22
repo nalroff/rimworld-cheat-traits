@@ -31,8 +31,8 @@ namespace CheatTraits.Comps
             if (!center.IsValid || !center.InBounds(map))
                 return;
 
-            // Central pulse visual at the impact cell. Reuses Royalty psycast flecks
-            // for tonal consistency with the rest of the ChWizard kit.
+            // Central pulse visual at the impact cell. PsycastSkip* flecks are
+            // defined in Core (despite the name), so this works without Royalty.
             FleckMaker.Static(center.ToVector3Shifted(), map, FleckDefOf.PsycastSkipFlashEntry, 3f);
 
             foreach (Thing thing in GenRadial.RadialDistinctThingsAround(center, map, Props.effectRadius, useCenter: true))
@@ -54,7 +54,7 @@ namespace CheatTraits.Comps
 
                 // Vanilla helper handles forceWake, sets forceRecoverAfterTicks from
                 // Ability_Duration, and sets sourceFaction. PsychicSensitivity scales
-                // duration the same way vanilla psycasts do.
+                // the resulting duration via the same StatDef passed in.
                 CompAbilityEffect_GiveMentalState.TryGiveMentalState(
                     stateDef,
                     p,

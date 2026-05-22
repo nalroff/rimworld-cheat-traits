@@ -235,7 +235,7 @@
     <degreeDatas>
       <li>
         <label>ch Wizard</label>
-        <description>A born psycaster. The weave bends to this pawn's will: vast psychic reserves, rapid neural recovery, and an instant grasp of the Lightning Bolt spell. Vanilla psycast progression still applies on top.</description>
+        <description>A born spellcaster. This pawn doesn't need a psylink or psyfocus — the weave answers them directly. Comes with a personal spellbook of four cooldown-based spells: a long-range Lightning Bolt, map-wide Teleport Other, a Mass Berserk pulse that turns hostiles on each other, and a Super Soldier conjuration that wraps a friendly pawn in Legendary spacer-tier gear for two in-game hours.</description>
         <skillGains>
           <Intellectual>8</Intellectual>
         </skillGains>

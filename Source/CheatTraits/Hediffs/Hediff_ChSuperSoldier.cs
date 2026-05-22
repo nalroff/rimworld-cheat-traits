@@ -6,7 +6,7 @@ using Verse;
 namespace CheatTraits.Hediffs
 {
     /// <summary>
-    /// Bookkeeping hediff for the Super Soldier psycast. Spawns a Legendary loadout
+    /// Bookkeeping hediff for the Super Soldier ability. Spawns a Legendary loadout
     /// (Cataphract Armor + Helmet, fully-charged Shield Belt, Super Charge Rifle),
     /// pegs Shooting and Melee skills to 20, and tears everything down when
     /// HediffComp_Disappears removes the hediff after 2 in-game hours.
