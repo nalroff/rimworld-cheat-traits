@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Wild Hunt: the mental state applied to every non-player animal by the Ch Beastmaster's
+    Call of the Wild ability. The state class subclasses MentalState_Manhunter so the vanilla
+    animal think tree's manhunter branch (ThinkNode_ConditionalMentalStateClass with
+    stateClass=MentalState_Manhunter, in Core/Defs/ThinkTreeDefs/SubTrees_Misc.xml) picks it
+    up automatically — no think tree patch required. JobGiver_Manhunter then drives targeting
+    via AttackTargetFinder.BestAttackTarget, and our ForceHostileTo override narrows the
+    candidates to pawns hostile to the player faction only.
+
+    Fixed duration: minTicksBeforeRecovery == maxTicksBeforeRecovery == 5000 forces an exact
+    5000-tick lifetime. recoveryMtbDays is ignored when min/max are equal but set high anyway
+    so the MTB branch never fires.
+
+    beginLetter / recoveryMessage are intentionally null: the ability is map-wide, so per-pawn
+    letters would spam. The ability comp sends a single summary letter at cast time instead.
+  -->
+  <MentalStateDef>
+    <defName>ChWildHunt</defName>
+    <label>wild hunt</label>
+    <stateClass>CheatTraits.MentalStates.MentalState_ChWildHunt</stateClass>
+    <category>Aggro</category>
+    <recoveryMtbDays>9999</recoveryMtbDays>
+    <minTicksBeforeRecovery>5000</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>5000</maxTicksBeforeRecovery>
+    <recoverFromDowned>true</recoverFromDowned>
+    <recoverFromSleep>false</recoverFromSleep>
+    <blockNormalThoughts>true</blockNormalThoughts>
+    <stopsJobs>true</stopsJobs>
+    <baseInspectLine>Answering the wild hunt — attacking enemies of the colony.</baseInspectLine>
+    <nameColor>(0.8, 0.4, 0.1)</nameColor>
+  </MentalStateDef>
+</Defs>

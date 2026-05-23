@@ -56,6 +56,7 @@ namespace CheatTraits.Patches
                         ChDocAbilityApplier.TickPawn(p);
                         ChArtificerAbilityApplier.TickPawn(p);
                         ChZippyAbilityApplier.TickPawn(p);
+                        ChBeastmasterAbilityApplier.TickPawn(p);
                     }
                 }
             }

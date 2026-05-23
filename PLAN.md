@@ -339,7 +339,16 @@ Trade-off worth knowing: a few non-UI consumers (`PlayerItemAccessibilityUtility
 
 ---
 
-### Chunk 7 — Call of the Wild (Beastmaster) [ ]
+### Chunk 7 — Call of the Wild (Beastmaster) [x] 2026-05-23
+
+Notes:
+- **Key shortcut found via analysis:** the vanilla animal think tree (`Core/Defs/ThinkTreeDefs/SubTrees_Misc.xml`, "Manhunter" branch in the `AnimalMentalStates` subtree) uses `ThinkNode_ConditionalMentalStateClass` with `stateClass=MentalState_Manhunter`. That node's `Satisfied` check uses `Type.IsInstanceOfType`, so **any subclass of `MentalState_Manhunter` automatically inherits the entire `JobGiver_Manhunter` branch**. No think tree patch, no custom JobGiver, no custom MentalStateWorker — just subclass and override `ForceHostileTo`. New analysis note written at [features/mental-states.md](F:/Development/rimworld-analysis/features/mental-states.md).
+- `MentalState_ChWildHunt : MentalState_Manhunter` lives in `Source/CheatTraits/MentalStates/`. Overrides both `ForceHostileTo(Thing)` and `ForceHostileTo(Faction)` to narrow the manhunter targeting to "things hostile to the player faction, excluding the pawn's own faction and the player faction itself." `Pawn.HostileTo` consults these overrides during `AttackTargetFinder.BestAttackTarget`'s `innerValidator`, so `JobGiver_Manhunter.FindPawnTarget` naturally picks only player-hostile humanlikes/mechs (the `Intelligence >= ToolUser` predicate already filters out other animals, preventing animal-on-animal infighting).
+- `MentalStateDef ChWildHunt` sets `min/maxTicksBeforeRecovery=5000` for an exact 5000-tick lifetime (per `MentalState.MentalStateTick`'s `age >= maxTicksBeforeRecovery` check); `recoveryMtbDays=9999` is defensive — MTB recovery is only considered when `age >= minTicksBeforeRecovery`, so with min==max it never fires, but the high MTB makes the intent obvious. `beginLetter` / `recoveryMessage` are left null so the map-wide cast doesn't spam per-pawn letters — the comp sends one summary letter at cast time.
+- `CompAbilityEffect_ChCallOfTheWild` snapshots `mapPawns.AllPawnsSpawned` before iterating (calling `TryStartMentalState` mutates the pawn's state and can invalidate the live list). For each animal not in the player's faction and not currently in `ChWildHunt`, it calls `TryStartMentalState(stateDef, forced: true, forceWake: true, transitionSilently: true)`. `forced=true` bypasses the `MentalBreaksBlocked()` check (some hediffs block mental breaks). `transitionSilently=true` skips per-pawn letter / tale-recording / records-increment. Same-def guard up front avoids the `CurStateDef == stateDef` no-op spam.
+- Cast UX matches Iron Wall — `targetRequired=false, range=0, canTargetSelf=true` (only) — fires instantly on click with no designator.
+- Icon: `UI/Abilities/AnimalWarcall` (Royalty psycast for animal mental breaks). Consistent with the mod's existing DLC-icon usage pattern. First-pass pick `UI/Abilities/AnimalRecruitmentAura` was a guess that doesn't exist in vanilla — corrected by grepping iconPath values across DLC AbilityDef XML before commit.
+- README spec was already authored in the prior README sync; no changes needed this chunk.
 
 **Scope:** Map-wide ability that puts every non-player animal into a custom mental state that drives them to attack the nearest hostile-to-player pawn.
 
