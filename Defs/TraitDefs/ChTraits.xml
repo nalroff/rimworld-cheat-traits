@@ -127,7 +127,7 @@
     <degreeDatas>
       <li>
         <label>ch Ascendant</label>
-        <description>This pawn radiates an exceptional presence. Nearby allies learn skills far more quickly and heal from injuries at an accelerated rate. Always fertile.</description>
+        <description>This pawn's intellect borders on the prophetic. Research crawls along at ten times the normal rate, and every quadrum a flash of insight — a Eureka — exposes two random discoverable recipes on a trait-gated Eureka Forge for three in-game days.</description>
         <skillGains>
           <Intellectual>10</Intellectual>
         </skillGains>

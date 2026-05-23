@@ -211,78 +211,116 @@ Notes:
 
 ---
 
-### Chunk 6 — Eureka Forge (Ascendant) [ ]
+### Chunk 6 — Eureka Forge (Ascendant) [x] 2026-05-23
+
+Notes:
+- `ChEurekaForge` ThingDef lives in `Defs/Things/ChEurekaForge.xml` (matching the codebase's existing `Defs/Things/` layout — the plan's `Defs/BuildingDefs/` was the spec path, not what the repo uses). Uses vanilla `Things/Building/Production/FueledSmithy` art as a placeholder; rotatable, 3x1, no power required. The `<recipes>` list statically attaches all `ChEureka_*` recipes (Bioferrite/ArchiteCapsule entries wrapped with `MayRequire`).
+- `ChEureka_*` recipes live in `Defs/RecipeDefs/ChEurekaRecipes.xml`. Each uses `<workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>`. No `recipeUsers` — the Forge's `<recipes>` list owns them. Both the Bioferrite (Anomaly) and Archite Capsule (Biotech) recipes use the canonical `MayRequire="ludeon.rimworld.anomaly"` / `MayRequire="ludeon.rimworld.biotech"` attributes on the top-level `<RecipeDef>` element.
+- `ChEurekaTracker` (in `ChEurekaSystem.cs`) keeps per-map state — `nextEurekaTick` + a list of `EurekaActive { recipeDefName, expiresAtTick }`. `IsActive` is a linear scan over the typically-≤2 actives. `nextEurekaTick` starts at `-1` so the first tick after the Ascendant arrives sets it to `now + EurekaIntervalTicks` (a quadrum-long wait before the first Eureka, matching spec). Caravan-pause behavior comes naturally: `Tick(map)` returns without advancing the schedule if `MapHasAscendant(map)` is false, so the Ascendant being off-map freezes the timer. Save scribe uses `Scribe_Deep` on the tracker and `LookMode.Deep` on the actives list.
+- `ChRecipeWorker_Eureka.AvailableOnNow(Thing, BodyPartRecord)` consults `thing.Map.GetComponent<CheatTraitsMapComponent>().EurekaTracker.IsActive(recipe.defName)`. Confirmed via [RecipeWorker.cs:12](F:/Development/rimworld-decomp/Assembly-CSharp/Verse/RecipeWorker.cs#L12) that the signature is `AvailableOnNow(Thing thing, BodyPartRecord part = null)` and the base returns `true` — keeps the recipe inert by default outside an active Eureka with no Harmony patch required.
+- `CompChEurekaForgeInspect` renders the inspect string. Shows the active recipes with `ToStringTicksToPeriod()` for each, or "Next Eureka in Xd Yh." when none active, plus the Ascendant-absence reminder when no Ascendant is on the map.
+- `ChAscendantAura.cs` was deleted entirely; `ChAscendant_InspirationAura` HediffDef removed from `ChHediffs.xml`. Trait description rewritten to match the Eureka mechanic. Trait already lacked the spec'd `<Fertility>1.0</Fertility>` statFactor (only `ResearchSpeed x10` was present), so no deletion needed there.
+- Tick wiring: removed `nextAscendantTick` + `ChAscendantAuraSystem.TickMap` from `ChTraitsMapComponent`; replaced with `nextEurekaTick` gated by `ChEurekaTracker.TickGateTicks` (2500). Tracker state scribes via `Scribe_Deep.Look` in the MapComponent's `ExposeData`.
+- Build clean: 0 errors, 0 warnings. README already pre-updated.
+
+
 
 **Scope:** Full reshape of the Ch Ascendant trait. The previous Vitae Pillar / aura / Fertility-forcing design is replaced with the **Eureka Forge**: a trait-gated crafting workbench whose bills are populated dynamically by a passive `Eureka` event. The event fires every `900,000` ticks (15 in-game days, one quadrum) while a Ch Ascendant is present on the map, granting `2` random recipes from a curated pool for `180,000` ticks (3 in-game days). The trait keeps its `+10 Intellectual` and `ResearchSpeed x10` passives; loses the aura, the Fertility forcing, and the Vitae Pillar.
 
 This chunk both **adds new content** (Forge, Eureka system, discoverable recipes) and **deletes old content** (aura code, aura hediff, Fertility statFactor). The Vitae Pillar that the original Chunk 6 spec'd was never implemented — there is no in-game state to migrate.
 
+**Implementation strategy — research-style availability gating (do NOT patch `AllRecipes`).**
+
+Earlier drafts of this chunk planned to dynamically inject recipes into `Building_WorkTable.AllRecipes` via Harmony. That approach is wrong. Confirmed via [features/worktable-recipes-and-bills.md](F:/Development/rimworld-analysis/features/worktable-recipes-and-bills.md):
+
+- `Building_WorkTable` does **not** define `AllRecipes`. The only `AllRecipes` getter lives on `ThingDef` (per-def, statically cached in `allRecipesCached`).
+- Mutating `__result` from a postfix permanently pollutes the def cache for the game session (defs are global, not save state).
+- The bill UI ([ITab_Bills.cs:101](F:/Development/rimworld-decomp/Assembly-CSharp/RimWorld/ITab_Bills.cs#L101)) calls **two** gates per recipe: `recipe.AvailableNow` (def-wide) AND `recipe.AvailableOnNow(thing, part)` (per-instance, gets the workbench as `thing` → has `thing.Map`). This is exactly how research-gated recipes work — the recipe is permanently in `AllRecipes`, and `AvailableNow` returns `false` until `researchPrerequisite.IsFinished` (see [RecipeDef.cs:88](F:/Development/rimworld-decomp/Assembly-CSharp/Verse/RecipeDef.cs#L88)).
+
+**The clean approach for this chunk:**
+1. Statically attach every `ChEureka_*` recipe to the Forge via the Forge ThingDef's `<recipes>` list. The recipes are permanently in `AllRecipes` for the Forge.
+2. Each `ChEureka_*` recipe uses a custom `<workerClass>` — `CheatTraits.Patches.ChRecipeWorker_Eureka` — that overrides `AvailableOnNow(Thing thing, BodyPartRecord part)` to consult the tracker on `thing.Map`. When the recipe isn't in the map's active set, the worker returns `false` and the recipe is hidden in the bills tab / inert for queued bills.
+3. **No Harmony patch is needed for the Eureka availability mechanic at all.** Bills that were queued while a recipe was active and outlive it go inert automatically: `WorkGiver_DoBill` calls `bill.ShouldDoNow`, which checks `AvailableOnNow`. No orphan-bill walker, no `AllRecipes` cache invalidation, no `Find.CurrentMap` guesswork — the workbench instance gives us the map directly.
+
+Trade-off worth knowing: a few non-UI consumers (`PlayerItemAccessibilityUtility`, `QuestNode_GetThingPlayerCanProduce`, `RoomRoleWorker_Kitchen`) iterate `def.AllRecipes` without checking availability. They will treat Eureka recipes as "the player can produce this" even between Eurekas. For single-colony play this is invisible; it's not worth a second gate unless a leak shows up in testing.
+
 **README sections:** `Ch Ascendant`, `Eureka Forge` (under Trait-Gated Buildings).
 
 **Files to create:**
-- `Defs/BuildingDefs/ChEurekaForge.xml` — `ThingDef` using `thingClass="RimWorld.Building_WorkTable"`. Costs `75 Steel + 30 Wood`, work `600`, no power, designation category matches existing trait-gated buildings. **No `<recipes>` list in the def** — the recipe list is injected at runtime by the Harmony patch below. Include `<inspectorTabs>` for the standard bill-stack tab so the empty list is still browseable.
-- `Defs/RecipeDefs/ChEurekaRecipes.xml` — All discoverable recipes. Each `RecipeDef` is prefixed `ChEureka_` and uses `MayRequire="..."` on the top-level entry to opt out when its required DLC isn't loaded. **Do not set `recipeUsers`** — the Forge picks them up via the runtime patch so bills aren't accidentally available elsewhere. Suggested initial pool (tune ingredient/work numbers during implementation):
+- `Defs/BuildingDefs/ChEurekaForge.xml` — `ThingDef` using `thingClass="RimWorld.Building_WorkTable"`. Costs `75 Steel + 30 Wood`, work `600`, no power, designation category matches existing trait-gated buildings. **Include a `<recipes>` list naming every `ChEureka_*` recipe by defName** (the static attachment is what lets the worker-based availability gate work). Wrap individual recipe references that require DLC with `<li MayRequire="ludeon.rimworld.anomaly">ChEureka_Bioferrite</li>` etc. so the reference itself is dropped when the recipe def is absent. Add the comp from below to the def's `<comps>` so the inspect string explains the mechanic.
+- `Defs/RecipeDefs/ChEurekaRecipes.xml` — All discoverable recipes. Each `RecipeDef` is prefixed `ChEureka_`, sets `<workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>`, and uses `MayRequire="..."` on the top-level entry to opt out when its required DLC isn't loaded. **Do not set `recipeUsers`** — the Forge picks them up via its `<recipes>` list so they never leak to other workbenches. Suggested initial pool (tune ingredient/work numbers during implementation):
   - `ChEureka_Luciferium` (base) — `3 Neutroamine + 1 Gold`, `2000` work → `5 Luciferium`
   - `ChEureka_Hyperweave` (base) — `40 Cloth + 20 Synthread`, `2000` work → `40 Hyperweave`
   - `ChEureka_Components` (base) — `30 Steel`, `800` work → `5 Components`
   - `ChEureka_AdvancedComponents` (base) — `5 Components + 10 Plasteel`, `3000` work → `2 Advanced Components`
   - `ChEureka_GlitterworldMedicine` (base) — `5 Medicine + 2 Neutroamine`, `2500` work → `5 Glitterworld Medicine`
-  - `ChEureka_Bioferrite` — `<RecipeDef MayRequire="Ludeon.RimWorld.Anomaly">` — `10 Steel + 2 Chemfuel`, `1500` work → `5 Bioferrite`
-  - `ChEureka_ArchiteCapsule` — `<RecipeDef MayRequire="Ludeon.RimWorld.Biotech">` — `2 Luciferium + 5 Gold`, `5000` work → `1 Archite Capsule`
-- `Source/CheatTraits/Patches/ChEurekaSystem.cs` — Core system:
+  - `ChEureka_Bioferrite` — `<RecipeDef MayRequire="ludeon.rimworld.anomaly">` — `10 Steel + 2 Chemfuel`, `1500` work → `5 Bioferrite`
+  - `ChEureka_ArchiteCapsule` — `<RecipeDef MayRequire="ludeon.rimworld.biotech">` — `2 Luciferium + 5 Gold`, `5000` work → `1 Archite Capsule`
+- `Source/CheatTraits/Patches/ChEurekaSystem.cs` — Core system. Houses both the tracker and the recipe worker.
   - `ChEurekaTracker : IExposable` — per-map state.
     - Fields: `int nextEurekaTick`, `List<EurekaActive> actives` where `EurekaActive` is `{ string recipeDefName; int expiresAtTick; }` (store as string for resilience if a recipe def is later renamed or its DLC unloaded).
     - Constants at top of file: `EurekaIntervalTicks = 900000`, `EurekaDurationTicks = 180000`, `EurekaRecipesPerEvent = 2`, `TickGateTicks = 2500`.
+    - `bool IsActive(string recipeDefName)` — fast lookup used by the worker. Be efficient: this is called from `AvailableOnNow`, which runs per-recipe per-frame while the bills tab is open.
   - `Tick(Map map)` — called from the existing tick hub, gated to every `TickGateTicks`. Steps:
     1. Prune expired entries from `actives`.
-    2. If no Ch Ascendant is currently spawned on the map (`CheatTraitsUtils.HasTraitedPawnOnMap` or equivalent), return without advancing the schedule (caravan-friendly: timer doesn't burn when the Ascendant is gone).
+    2. If no Ch Ascendant is currently spawned on the map (`CheatTraitsUtils.HasTrait` over `map.mapPawns.AllPawnsSpawned`), return without advancing the schedule (caravan-friendly: timer doesn't burn when the Ascendant is gone).
     3. If `Find.TickManager.TicksGame >= nextEurekaTick`, call `FireEureka(map)`. (`>=` not `==` so a return-from-caravan fires the missed Eureka immediately — matches README spec.)
   - `FireEureka(Map map)`:
     1. Build the eligible pool: `DefDatabase<RecipeDef>.AllDefs.Where(d => d.defName.StartsWith("ChEureka_"))` minus the currently-active set.
     2. Pick `EurekaRecipesPerEvent` distinct entries (or all of them if the pool has fewer).
     3. Append picks to `actives` with `expiresAtTick = TicksGame + EurekaDurationTicks`.
     4. `nextEurekaTick = TicksGame + EurekaIntervalTicks` (advance from now — keeps the cadence honest after a long Ascendant absence).
-    5. Mark every `Building_WorkTable` of `ChEurekaForge` on the map dirty so its bill UI refreshes (clear cached `AllRecipes` if the patch uses caching; otherwise no-op).
-    6. Fire a `Letter` of `LetterDefOf.PositiveEvent` titled "Eureka!" with body listing the discovered recipes' labels and the expiration time.
-  - `GetActiveRecipes()` → `List<RecipeDef>` — resolve defNames lazily via `DefDatabase<RecipeDef>.GetNamedSilentFail` so DLC-unloaded saves don't NRE.
-- `Source/CheatTraits/Patches/Patch_BuildingWorkTable_AllRecipes_Eureka.cs` — Harmony patch (postfix) on the recipe-source getter that the bill UI reads. **Use the `rimworld-analysis` skill before patching** to confirm whether the right hook is `Building_WorkTable.AllRecipes` (instance getter) or `ThingDef.AllRecipes` (def-level getter that's cached and would be wrong for per-instance dynamic lists). Likely `Building_WorkTable.AllRecipes`. The postfix:
-  - If `__instance.def != ChThingDefOfs.ChEurekaForge`, return.
-  - Replace `__result` with the tracker's current active recipes (the Forge def has no baseline recipes so no merging needed).
+    5. Fire a `Letter` of `LetterDefOf.PositiveEvent` titled "Eureka!" with body listing the discovered recipes' labels and the expiration time.
+    6. (No bill-UI refresh needed: `ITab_Bills` re-reads `AvailableOnNow` every frame — new recipes appear automatically the next time the tab redraws.)
+  - `GetActiveRecipes()` → `IEnumerable<RecipeDef>` — resolve defNames lazily via `DefDatabase<RecipeDef>.GetNamedSilentFail` so DLC-unloaded saves don't NRE. Used by the Forge inspect string comp.
+  - `ChRecipeWorker_Eureka : RecipeWorker` (same file, separate class):
+    - Override `AvailableOnNow(Thing thing, BodyPartRecord part = null)`.
+    - Resolve the tracker via `thing?.Map?.GetComponent<CheatTraitsMapComponent>()?.EurekaTracker`.
+    - Return `base.AvailableOnNow(thing, part) && tracker != null && tracker.IsActive(this.recipe.defName)`. (The base call preserves any default `RecipeWorker` checks.)
+    - Defensive null guards: if `thing == null` or `thing.Map == null`, fall back to `false` (recipe inactive when we can't know the map).
+- `Source/CheatTraits/Comps/CompChEurekaForgeInspect.cs` — `ThingComp` whose `CompInspectStringExtra()` formats the Eureka status. Reads the tracker via `parent.Map.GetComponent<CheatTraitsMapComponent>()?.EurekaTracker`. Format:
+  - When `actives` is non-empty:
+    `Eureka recipes available:`
+    `  - <label> (<Xd Yh> remaining)`
+    `  - ...`
+    Use `(activeEntry.expiresAtTick - Find.TickManager.TicksGame).ToStringTicksToPeriod()`.
+  - When empty: `No Eureka recipes active. Next Eureka in <Xd Yh>.`
+  - When no Ascendant on map: append `\n(Eureka requires a Ch Ascendant on this map.)`.
+  - The corresponding `CompProperties_ChEurekaForgeInspect` is trivial — just `compClass = typeof(CompChEurekaForgeInspect)`.
 
 **Files to modify:**
-- `Source/CheatTraits/Patches/ChTraitsMapComponent.cs` — Add a `ChEurekaTracker tracker` field. Initialize in constructor, chain through `ExposeData`, call `tracker.Tick(map)` from the existing tick hub. Remove the call to `ChAscendantAuraSystem.TickMap(map)`.
+- `Source/CheatTraits/Patches/ChTraitsMapComponent.cs` — Add a `ChEurekaTracker EurekaTracker` field (public read, owned by the MapComponent). Initialize in constructor, chain through `ExposeData` via `Scribe_Deep.Look`, call `EurekaTracker.Tick(map)` from the existing tick hub gated to `ChEurekaTracker.TickGateTicks`. Remove the call to `ChAscendantAuraSystem.TickMap(map)` and the `nextAscendantTick` field.
 - `Source/CheatTraits/Patches/ChThingDefOfs.cs` — Add `ChEurekaForge` entry.
-- `Source/CheatTraits/Patches/ChBuildRestrictions.cs` — Gate `ChEurekaForge` to the Ch Ascendant trait (mirror the existing Cauldron/Pillar entries).
-- `Source/CheatTraits/Patches/Patch_BuildFloatMenu_TraitOverrides.cs` — Allow Ch Ascendant force-build for `ChEurekaForge`.
-- `Source/CheatTraits/Patches/ChTraitsUtils.cs` — `CheatTraitsNames.AscendantTrait` already exists from the prior aura impl; verify only.
+- `Source/CheatTraits/Patches/ChBuildRestrictions.cs` — Gate `ChEurekaForge` to the Ch Ascendant trait (mirror the existing Comfort Node / Floragen entries; one `if (placingDef == ChThingDefOf.ChEurekaForge)` in `Patch_DesignatorBuild_Visible_TraitGates.Postfix` and one in `Patch_ConstructFinishFrames_TraitGates.Postfix`).
+- `Source/CheatTraits/Patches/Patch_BuildFloatMenu_TraitOverrides.cs` — Add a `ChEurekaForge` branch to `TryGetBuildTargetInfo` with `requiredTrait = CheatTraitsNames.AscendantTrait`, `labelPrefix = "Ch Ascendant"`.
+- `Source/CheatTraits/Patches/ChTraitsUtils.cs` — `CheatTraitsNames.AscendantTrait` already exists; verify only.
 - `Defs/TraitDefs/ChTraits.xml` — In the `ChAscendant` entry: **delete the `<statFactors><Fertility>1.0</Fertility></statFactors>` block** (or just remove the `Fertility` line if other factors live there); update the `<description>` text to reflect the Eureka mechanic instead of the old support-aura framing.
-- `Defs/Hediffs/ChHediffs.xml` — **Delete the entire `ChAscendant_InspirationAura` HediffDef block** (lines ~84-107 in the current file).
+- `Defs/Hediffs/ChHediffs.xml` — **Delete the entire `ChAscendant_InspirationAura` HediffDef block**.
 - `README.md` — Already updated as part of this plan revision.
 
 **Files to delete:**
-- `Source/CheatTraits/Patches/ChAscendantAura.cs` — the entire aura system (config, util, `ChAscendantAuraSystem`, `ChAscendantDefOf`). After updating `ChTraitsMapComponent.cs` to drop the `ChAscendantAuraSystem.TickMap(map)` call, nothing else references these types.
+- `Source/CheatTraits/Patches/ChAscendantAura.cs` — the entire aura system (`ChAscendantAuraConfig`, `ChAscendantUtil`, `ChAscendantAuraSystem`, `ChAscendantDefOf`). After updating `ChTraitsMapComponent.cs` to drop the `ChAscendantAuraSystem.TickMap(map)` call, nothing else references these types.
 
 **Implementation notes:**
 - **Cadence & uptime:** 3 days active out of every 15 = 20% uptime. Both numbers are single constants at the top of `ChEurekaTracker` — keep them visible for tuning.
-- **DLC safety:** `<RecipeDef MayRequire="...">` on the top-level entry is the vanilla XML pattern; RimWorld's Def loader silently skips the def when the DLC isn't installed. The pool builder uses `defName.StartsWith("ChEureka_")` so it naturally sees only the available recipes — no runtime DLC checks needed in C#.
-- **DLC package IDs to use in `MayRequire`:** `Ludeon.RimWorld.Anomaly`, `Ludeon.RimWorld.Biotech`. Use the rimworld-analysis skill to verify if uncertain.
-- **AllRecipes patch target:** This is the single most fragile part of the chunk. The bills UI reads from `Building_WorkTable.AllRecipes` which itself reads from `def.AllRecipes` and merges `recipeUsers` reverse lookups. Patching `def.AllRecipes` would pollute shared def state across all Forges and persist incorrectly across save/load. **Patch the instance getter on `Building_WorkTable`** so each Forge instance can return per-map tracker state. Confirm exact signature via rimworld-analysis before writing the `[HarmonyPatch]` attribute.
+- **DLC safety — recipe defs:** `<RecipeDef MayRequire="ludeon.rimworld.anomaly">` on the top-level entry is the vanilla XML pattern; RimWorld's Def loader silently skips the def when the DLC isn't installed. The pool builder uses `defName.StartsWith("ChEureka_")` so it naturally sees only the available recipes — no runtime DLC checks needed in C#.
+- **DLC safety — Forge `<recipes>` list:** Wrap individual `<li>` entries with `MayRequire="..."` so the cross-ref loader doesn't error on a missing recipe when the DLC is absent. Pattern: `<li MayRequire="ludeon.rimworld.anomaly">ChEureka_Bioferrite</li>`.
+- **DLC package IDs in `MayRequire`:** Canonical lowercase forms are `ludeon.rimworld.anomaly`, `ludeon.rimworld.biotech` (the engine compares case-insensitively, but lowercase is the in-source canonical — see [ModLister.cs:350](F:/Development/rimworld-decomp/Assembly-CSharp/Verse/ModLister.cs#L350) and [ModLister.cs:227](F:/Development/rimworld-decomp/Assembly-CSharp/Verse/ModLister.cs#L227)).
+- **Why the worker subclass, not a Harmony patch:** `RecipeDef.AvailableOnNow` delegates to `this.Worker.AvailableOnNow(thing, part)` ([RecipeDef.cs:243](F:/Development/rimworld-decomp/Assembly-CSharp/Verse/RecipeDef.cs#L243)). Overriding `RecipeWorker.AvailableOnNow` in a subclass is the vanilla extension point — it's how Royalty/Anomaly recipes do conditional availability. No Harmony required, no static-cache fragility, and the `thing` argument hands us the workbench so we have `thing.Map` directly.
 - **Multi-Ascendant rule:** the tracker is per-map, not per-pawn, so multiple Ascendants on one map don't multiply Eurekas. State naturally enforces this — no extra code.
-- **Multi-Forge rule:** the tracker is per-map, so multiple Forges share the active recipe list. Parallel throughput only. Desirable.
+- **Multi-Forge rule:** the tracker is per-map, the worker reads `thing.Map`, so multiple Forges on the same map share the active recipe list. Parallel throughput only. Desirable.
 - **Off-map behavior:** If the Ascendant is on a caravan when `nextEurekaTick` elapses, the timer pauses (step 2 of `Tick`). When they return, the next tick check passes the `>=` comparison and fires immediately. This matches the README spec.
 - **Save compat:** None needed — the prior aura/Pillar design was never shipped beyond the existing aura hediff. Any in-progress save with the aura hediff will gracefully drop it (vanilla handles missing HediffDefs by removing the hediff at load). No migration code required.
-- **Inspect string on the Forge:** Override `Building.GetInspectString` (via a `CompProperties_` + comp class, or via a Harmony postfix on the Forge's base inspect — comp is cleaner). Format:
-  - When `actives` is non-empty: `Eureka recipes available:\n  - <label> (Xd Yh remaining)\n  - ...`
-  - When empty: `No Eureka recipes active. Next Eureka in Xd Yh.` (Use `nextEurekaTick - TicksGame` formatted via `GenDate.ToStringTicksToPeriod`.)
-  - When no Ascendant on map: append `\n(Eureka requires a Ch Ascendant on this map.)`.
+- **Bill auto-disable on recipe expiry:** Bills outlive `AvailableOnNow` returning `false` — they remain on the BillStack with their `recipe` reference, but `WorkGiver_DoBill` calls `bill.ShouldDoNow → recipe.AvailableOnNow(billGiver)` and the bill goes inert automatically. The player can leave a `Brew Luciferium` bill queued; it sits paused between Eurekas and reactivates on the next time that recipe rolls. No bill cleanup code needed. **Verify this behavior in testing.** If the bill UI does something visually broken (e.g. shows the bill as available when the worker says no), add a cosmetic patch then — not before.
+- **Non-UI leakage:** `PlayerItemAccessibilityUtility`, `QuestNode_GetThingPlayerCanProduce`, `RoomRoleWorker_Kitchen` iterate `def.AllRecipes` without consulting `AvailableNow` / `AvailableOnNow`. They will treat Eureka recipes as always-producible. Single-colony impact is invisible. Don't add a second gate unless a real leak surfaces.
 - **Letter wording suggestion:** Title `"Eureka!"`. Body: `"<Ascendant's name> has had a breakthrough. The Eureka Forge can now produce:\n  - <recipe 1>\n  - <recipe 2>\nThese recipes will remain available for 3 days."`.
-- **Bill-UI refresh on Eureka fire:** If the player has the Forge's bill tab open when a Eureka fires, the new recipes should appear without needing to close/reopen. Vanilla `Dialog_BillConfig` / the bills tab re-reads `AllRecipes` on tab refresh; forcing a `Find.WindowStack.WindowOfType<MainTabWindow_Inspect>()?.Notify_ClickOutsideWindow()` or similar may be needed. Test first; only add if there's an observed bug.
+- **Worker call frequency:** `AvailableOnNow` runs per-recipe per-frame for every Forge whose bills tab is open. Keep `ChEurekaTracker.IsActive` to an O(n) scan over a tiny `actives` list (max 2 entries plus carryover from any partial overlap). A `HashSet<string>` rebuilt only when `actives` mutates is overkill; a linear scan over ≤4 entries is fine.
 
 **Acceptance criteria:**
 - Eureka Forge appears in the Architect menu only when the colony has a Ch Ascendant; force-buildable by a Ch Ascendant via the float-menu override.
-- Built Forge has no bills until a Eureka fires.
-- Roughly 15 in-game days after build (or game start with an Ascendant present), a letter announces the Eureka and exactly `2` random recipes appear in the bills tab.
-- Recipes disappear cleanly after 3 in-game days — no orphan bills, no NREs on bill UI open.
+- Built Forge shows every `ChEureka_*` recipe in the bills tab's "Add Bill" menu **only while that recipe is active**. Inactive recipes are hidden.
+- Roughly 15 in-game days after build (or game start with an Ascendant present), a letter announces the Eureka and exactly `2` random recipes become available in the bills tab.
+- After 3 in-game days, those recipes are hidden again from the "Add Bill" menu and any queued bills referencing them stop being picked up by workers (the bill row in the UI may still be visible — confirm whether it shows a "no recipe available" state or stays cosmetically green).
 - Bills use the assigned crafter's normal Crafting skill / work speed / quality (Artificer pairing produces MW/Legendary as expected).
 - DLC-gated recipes do not appear without the corresponding DLC installed and do not produce Def load errors when missing.
 - Ascendant absence (caravan, death) pauses the Eureka timer; presence resumes it.
@@ -290,11 +328,11 @@ This chunk both **adds new content** (Forge, Eureka system, discoverable recipes
 
 **Manual test steps for the user:**
 - Spawn Ch Ascendant. Confirm the Eureka Forge appears in the Architect menu and is force-buildable. Confirm there is no Vitae Pillar entry anywhere.
-- Build the Forge. Confirm bills tab is empty and the inspect string explains the Eureka mechanic with a countdown.
-- Dev-mode skip ~15 days. Confirm letter fires and two recipes appear in the bills tab without reopening it.
+- Build the Forge. Open the bills tab and confirm "Add Bill" shows no `ChEureka_*` recipes (worker gates them out). Confirm the inspect string explains the Eureka mechanic with a countdown.
+- Dev-mode skip ~15 days. Confirm letter fires and exactly two recipes appear in the bills tab without reopening it.
 - Queue a discovered recipe with a non-Artificer pawn; confirm the pawn's Crafting skill drives work speed and quality.
 - Queue a discovered recipe with a Ch Artificer; confirm Excellent/MW/Legendary quality rolls per their existing patch.
-- Skip another 3 days; confirm recipes drop off cleanly and no bills are stuck in queue (or that stuck bills error gracefully — observe and document).
+- Skip another 3 days; confirm the recipes drop out of "Add Bill" and that any in-flight bill stops being worked. Document whether the queued bill row stays cosmetically present or shows a "recipe not available" state.
 - Toggle Anomaly and Biotech on/off in separate test sessions — confirm Bioferrite / Archite Capsule recipes appear / don't appear accordingly and no Def load errors fire.
 - Caravan the Ascendant off-map for ~20 days; confirm no Eureka fires while gone, and a Eureka fires within `TickGateTicks` of their return.
 - Inspect the Ch Ascendant pawn — confirm no aura hediff appears on nearby colonists and no Fertility override.

@@ -176,6 +176,13 @@ namespace CheatTraits.Patches
                 return true;
             }
 
+            if (ChBuildRestrictionUtil.IsBuildTarget(target, ChThingDefOf.ChEurekaForge))
+            {
+                requiredTrait = CheatTraitsNames.AscendantTrait;
+                labelPrefix = "Ch Ascendant";
+                return true;
+            }
+
             requiredTrait = string.Empty;
             labelPrefix = string.Empty;
             return false;

@@ -8,6 +8,7 @@ namespace CheatTraits.Patches
     {
         public static ThingDef ChComfortNode = null!;
         public static ThingDef ChComfortNodeWall = null!;
+        public static ThingDef ChEurekaForge = null!;
         public static ThingDef ChFloragenCore = null!;
         public static ThingDef ChTeslaCoil = null!;
         public static ThingDef ChTeslaCoilWall = null!;

@@ -81,32 +81,6 @@
   </HediffDef>
 
   <HediffDef>
-    <defName>ChAscendant_InspirationAura</defName>
-    <hediffClass>HediffWithComps</hediffClass>
-    <label>ascendant inspiration</label>
-    <description>Skill learning and healing rate are accelerated by an ascendant presence.</description>
-    <isBad>false</isBad>
-    <tendable>false</tendable>
-    <initialSeverity>1</initialSeverity>
-    <maxSeverity>1</maxSeverity>
-    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
-    <comps>
-      <li Class="HediffCompProperties_Disappears">
-        <disappearsAfterTicks>7500</disappearsAfterTicks>
-      </li>
-    </comps>
-
-    <stages>
-      <li>
-        <statFactors>
-          <GlobalLearningFactor>3.0</GlobalLearningFactor>
-          <InjuryHealingFactor>4.0</InjuryHealingFactor>
-        </statFactors>
-      </li>
-    </stages>
-  </HediffDef>
-
-  <HediffDef>
     <defName>ChAlchemist_SimpleMealBoost</defName>
     <hediffClass>HediffWithComps</hediffClass>
     <label>alchemical nourishment (simple)</label>

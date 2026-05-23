@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RecipeDef>
+    <defName>ChEureka_Luciferium</defName>
+    <label>brew luciferium</label>
+    <description>Synthesize a small batch of luciferium from neutroamine and trace gold.</description>
+    <jobString>Brewing luciferium.</jobString>
+    <workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>2000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Neutroamine</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Neutroamine</li>
+        <li>Gold</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Luciferium>5</Luciferium>
+    </products>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>ChEureka_Hyperweave</defName>
+    <label>weave hyperweave</label>
+    <description>Spin nano-fibers into a bolt of hyperweave fabric.</description>
+    <jobString>Weaving hyperweave.</jobString>
+    <workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Tailor</effectWorking>
+    <soundWorking>Recipe_Tailor</soundWorking>
+    <workAmount>2000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Cloth</li>
+          </thingDefs>
+        </filter>
+        <count>40</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Synthread</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Cloth</li>
+        <li>Synthread</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Hyperweave>40</Hyperweave>
+    </products>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>ChEureka_Components</defName>
+    <label>fabricate components</label>
+    <description>Pull components straight from raw steel via a sudden insight into machining.</description>
+    <jobString>Fabricating components.</jobString>
+    <workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>800</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>30</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </products>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>ChEureka_AdvancedComponents</defName>
+    <label>fabricate advanced components</label>
+    <description>Assemble advanced components from industrial components and plasteel.</description>
+    <jobString>Fabricating advanced components.</jobString>
+    <workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>3000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>ComponentIndustrial</li>
+        <li>Plasteel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentSpacer>2</ComponentSpacer>
+    </products>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>ChEureka_GlitterworldMedicine</defName>
+    <label>compound glitterworld medicine</label>
+    <description>Refine industrial medicine and neutroamine into a small batch of glitterworld medicine.</description>
+    <jobString>Compounding glitterworld medicine.</jobString>
+    <workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>
+    <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Drug</soundWorking>
+    <workAmount>2500</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>MedicineIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Neutroamine</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>MedicineIndustrial</li>
+        <li>Neutroamine</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <MedicineUltratech>5</MedicineUltratech>
+    </products>
+    <workSkill>Intellectual</workSkill>
+  </RecipeDef>
+
+  <RecipeDef MayRequire="ludeon.rimworld.anomaly">
+    <defName>ChEureka_Bioferrite</defName>
+    <label>synthesize bioferrite</label>
+    <description>Force-grow a small mass of bioferrite from steel and chemfuel.</description>
+    <jobString>Synthesizing bioferrite.</jobString>
+    <workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>1500</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+        <li>Chemfuel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Bioferrite>5</Bioferrite>
+    </products>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+  <RecipeDef MayRequire="ludeon.rimworld.biotech">
+    <defName>ChEureka_ArchiteCapsule</defName>
+    <label>assemble archite capsule</label>
+    <description>Carefully fold luciferium and gold into a single archite capsule.</description>
+    <jobString>Assembling archite capsule.</jobString>
+    <workerClass>CheatTraits.Patches.ChRecipeWorker_Eureka</workerClass>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>5000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Luciferium</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Luciferium</li>
+        <li>Gold</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ArchiteCapsule>1</ArchiteCapsule>
+    </products>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+</Defs>

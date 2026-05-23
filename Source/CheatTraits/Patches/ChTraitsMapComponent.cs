@@ -7,14 +7,18 @@ namespace CheatTraits.Patches
     {
         private int nextPawnTick;
         private int nextGreenThumbTick;
-        private int nextAscendantTick;
         private int nextBeastmasterTick;
         private int nextDiplomatTick;
         private int nextComfyTick;
         private int nextFloragenTick;
+        private int nextEurekaTick;
 
         private HashSet<int> chComfyFireSuppressionDisabledPawnIds = new HashSet<int>();
         private Dictionary<int, int> chComfyNextDeployTickByPawnId = new Dictionary<int, int>();
+
+        private ChEurekaTracker eurekaTracker = new ChEurekaTracker();
+
+        public ChEurekaTracker EurekaTracker => eurekaTracker;
 
         public CheatTraitsMapComponent(Map map)
             : base(map) { }
@@ -56,11 +60,11 @@ namespace CheatTraits.Patches
                 }
             }
 
-            // Ascendant cadence (250)
-            if (tick >= nextAscendantTick)
+            // Eureka tracker cadence
+            if (tick >= nextEurekaTick)
             {
-                nextAscendantTick = tick + ChAscendantAuraConfig.ScanIntervalTicks;
-                ChAscendantAuraSystem.TickMap(m);
+                nextEurekaTick = tick + ChEurekaTracker.TickGateTicks;
+                eurekaTracker.Tick(m);
             }
 
             // Beastmaster cadence (250)
@@ -124,6 +128,10 @@ namespace CheatTraits.Patches
 
             if (chComfyNextDeployTickByPawnId == null)
                 chComfyNextDeployTickByPawnId = new Dictionary<int, int>();
+
+            Scribe_Deep.Look(ref eurekaTracker, "chEurekaTracker");
+            if (eurekaTracker == null)
+                eurekaTracker = new ChEurekaTracker();
         }
 
         public bool ChComfy_IsFireSuppressionEnabled(Pawn pawn)

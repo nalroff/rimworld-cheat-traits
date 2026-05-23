@@ -110,6 +110,17 @@ namespace CheatTraits.Patches
                 )
                     __result = false;
             }
+
+            if (placingDef == ChThingDefOf.ChEurekaForge)
+            {
+                if (
+                    !ChBuildRestrictionUtil.MapHasTraitColonist(
+                        __instance!.Map,
+                        CheatTraitsNames.AscendantTrait
+                    )
+                )
+                    __result = false;
+            }
         }
     }
 
@@ -151,6 +162,12 @@ namespace CheatTraits.Patches
             if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChFloragenCore))
             {
                 if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.GreenThumbTrait))
+                    __result = null;
+            }
+
+            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChEurekaForge))
+            {
+                if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.AscendantTrait))
                     __result = null;
             }
         }
