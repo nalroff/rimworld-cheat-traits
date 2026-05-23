@@ -173,7 +173,14 @@ Notes:
 
 ---
 
-### Chunk 5 — Blink (Zippy) [ ]
+### Chunk 5 — Blink (Zippy) [x] 2026-05-23
+
+Notes:
+- Implementation followed the spec exactly. `AbilityDef ChBlink`: range 15, `requireLineOfSight=false`, `canTargetLocations=true` only, `cooldownTicksRange=2500`, `warmupTime=0.1`.
+- `CompAbilityEffect_ChBlink` uses the same fleck/sound stack as `ChTeleportOther` (`PsycastSkipFlashEntry` at origin, `PsycastSkipInnerExit` + `PsycastSkipOuterRingExit` at landing; `Psycast_Skip_Entry` and `Psycast_Skip_Exit` sounds). Move via `caster.Position = landing; caster.Notify_Teleported(endCurrentJob: true, resetTweenedPos: true)`.
+- `Valid()` rejects: out-of-bounds, non-standable, and any cell already occupied by another pawn — each with a `RejectInput` message so the cursor explains the rejection.
+- Icon `UI/Abilities/Skip` (Royalty psycast icon). Consistent with the mod's existing DLC-icon usage (`Flashstorm`, `UnnaturalHealing`, `BulletShield`, `Beckon`, etc.).
+- Applier `ChZippyAbilityApplier` mirrors `ChDiggerAbilityApplier` exactly — humanlike-only, gain/remove per pawn tick. Wired into `CheatTraitsMapComponent.MapComponentTick` alongside the other ability appliers.
 
 **Scope:** Short-range teleport for the Zippy pawn.
 

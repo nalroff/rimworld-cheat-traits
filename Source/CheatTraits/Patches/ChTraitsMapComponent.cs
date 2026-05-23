@@ -51,6 +51,7 @@ namespace CheatTraits.Patches
                         ChTankAbilityApplier.TickPawn(p);
                         ChDocAbilityApplier.TickPawn(p);
                         ChArtificerAbilityApplier.TickPawn(p);
+                        ChZippyAbilityApplier.TickPawn(p);
                     }
                 }
             }
