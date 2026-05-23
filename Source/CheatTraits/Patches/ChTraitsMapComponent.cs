@@ -50,6 +50,7 @@ namespace CheatTraits.Patches
                         ChDiggerAbilityApplier.TickPawn(p);
                         ChTankAbilityApplier.TickPawn(p);
                         ChDocAbilityApplier.TickPawn(p);
+                        ChArtificerAbilityApplier.TickPawn(p);
                     }
                 }
             }

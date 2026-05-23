@@ -132,7 +132,15 @@ Notes:
 
 ---
 
-### Chunk 4 — Reforge (Artificer) [ ]
+### Chunk 4 — Reforge (Artificer) [x] 2026-05-22
+
+Notes:
+- Quality roll reuses `ArtificerQualityUtil.GetArtificerQualityLevel()` (already 60/30/10 Excellent/MW/Legendary). Per spec, replacement is unconditional — no downgrade guard.
+- Validation lives entirely in `CompAbilityEffect_ChReforge.Valid`: rejects non-Thing targets and Things without `CompQuality` with cursor messages. `ExtraLabelMouseAttachment` adds an inline "No quality" tag for non-quality targets so the rejection is visible before clicking.
+- `CompQuality.SetQuality(q, ArtGenerationContext.Colony)` does the actual rework: it sets the int, re-rolls art via `CompArt.InitializeArt(source)` when present, and triggers `Thing.PostQualitySet` (e.g. books regenerate). Verified against [CompQuality.cs](F:/Development/rimworld-decomp/Assembly-CSharp/RimWorld/CompQuality.cs). After the call, the comp also runs `thing.DirtyMapMesh(map)` so quality-tinted graphics (sculptures, etc.) repaint on the same tick.
+- Icon `UI/Abilities/TransmuteSteel` (Anomaly) — thematically right for "rework an item" and consistent with the mod's existing pattern of using DLC psycast icons (`Flashstorm`, `UnnaturalHealing`, `BulletShield`).
+- Default `targetRequired=true` is kept — Reforge needs an explicit pick. Range `15` and `requireLineOfSight=false`.
+- **Bugfix during first test**: cursor showed the no-go symbol on every target. Cause: `TargetingParameters.mapObjectTargetsMustBeAutoAttackable` defaults to `true`, which filters non-auto-attackable buildings (chairs, art, beds, etc.) and non-auto-attackable items (weapons, apparel). Verified against [TargetingParameters.cs:192-211](F:/Development/rimworld-decomp/Assembly-CSharp/RimWorld/TargetingParameters.cs#L192). Fix: set `<mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>` in the AbilityDef's `targetParams`. This mirrors vanilla `TargetingParameters.ForThing()`.
 
 **Scope:** A 3-charge ability that targets any building or item with a `QualityCategory` and rerolls its quality.
 

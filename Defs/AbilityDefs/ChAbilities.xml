@@ -286,6 +286,40 @@
   </AbilityDef>
 
   <AbilityDef>
+    <defName>ChReforge</defName>
+    <label>reforge</label>
+    <description>Rework the quality of any building or item with a quality rating. The reroll uses the Artificer's 60/30/10 Excellent/Masterwork/Legendary weights and always replaces the current quality, even if the new roll is lower. Three charges, each on an independent cooldown.</description>
+    <iconPath>UI/Abilities/TransmuteSteel</iconPath>
+    <hostile>false</hostile>
+    <aiCanUse>false</aiCanUse>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <charges>3</charges>
+    <cooldownPerCharge>true</cooldownPerCharge>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <range>15</range>
+      <requireLineOfSight>false</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>false</canTargetSelf>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>true</canTargetBuildings>
+        <canTargetItems>true</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+        <!-- Default true filters out non-auto-attackable buildings (chairs, art,
+             beds...) and non-auto-attackable items (weapons, apparel...).
+             Reforge needs to pick any quality-bearing thing, so flip it off. -->
+        <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChReforge" />
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef>
     <defName>ChBond</defName>
     <label>bond pawns</label>
     <description>Cast on a humanlike to begin a bond. After the first pick, choose a second humanlike — the two are locked into near-maximum compatibility: opinion of 100 each way, deep talks fire constantly, fights nearly vanish, and romance chance reaches 100% whenever the engine already permits it (orientation, age, species, and gene blocks still apply). Casting on a bonded pair again breaks the bond. If the second pick is cancelled, the cooldown is refunded.</description>
