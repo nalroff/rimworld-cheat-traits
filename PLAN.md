@@ -204,41 +204,93 @@ Notes:
 
 ---
 
-### Chunk 6 — Vitae Pillar (Ascendant) [ ]
+### Chunk 6 — Eureka Forge (Ascendant) [ ]
 
-**Scope:** Trait-gated building that affects every pawn in the same room. Includes a Biotech-conditional patch for birth complications.
+**Scope:** Full reshape of the Ch Ascendant trait. The previous Vitae Pillar / aura / Fertility-forcing design is replaced with the **Eureka Forge**: a trait-gated crafting workbench whose bills are populated dynamically by a passive `Eureka` event. The event fires every `900,000` ticks (15 in-game days, one quadrum) while a Ch Ascendant is present on the map, granting `2` random recipes from a curated pool for `180,000` ticks (3 in-game days). The trait keeps its `+10 Intellectual` and `ResearchSpeed x10` passives; loses the aura, the Fertility forcing, and the Vitae Pillar.
 
-**README section:** Vitae Pillar (under Trait-Gated Buildings).
+This chunk both **adds new content** (Forge, Eureka system, discoverable recipes) and **deletes old content** (aura code, aura hediff, Fertility statFactor). The Vitae Pillar that the original Chunk 6 spec'd was never implemented — there is no in-game state to migrate.
+
+**README sections:** `Ch Ascendant`, `Eureka Forge` (under Trait-Gated Buildings).
 
 **Files to create:**
-- `Defs/BuildingDefs/ChVitaePillar.xml` — `ThingDef` for the building. Costs `25 Steel`, work `400`, no power, designation category mirrors the existing trait-gated buildings.
-- `Defs/Hediffs/ChVitaeBlessing.xml` (or append to `ChHediffs.xml`) — the per-pawn buff hediff with `InjuryHealingFactor x4`, `ImmunityGainSpeed x2`. Lingers like the Ascendant aura — pawn is reapplied while in-room, hediff has a short `HediffComp_Disappears` so it falls off when they leave.
-- `Source/CheatTraits/Comps/CompProperties_ChVitaePillar.cs` + `CompChVitaePillar.cs` — per-tick (every `250` ticks) scan: for each pawn in `this.parent.GetRoom()`, apply blessing hediff; tick down severity of any `Hediff_Addiction` on those pawns.
-- `Source/CheatTraits/Patches/Patch_PregnancyComplications_VitaePillar.cs` — Biotech-conditional Harmony patch. Wrap `[HarmonyPatch]` registration in a `ModsConfig.BiotechActive` check; the patch suppresses pregnancy/labor complication rolls when the carrying pawn is inside a room with a Vitae Pillar.
+- `Defs/BuildingDefs/ChEurekaForge.xml` — `ThingDef` using `thingClass="RimWorld.Building_WorkTable"`. Costs `75 Steel + 30 Wood`, work `600`, no power, designation category matches existing trait-gated buildings. **No `<recipes>` list in the def** — the recipe list is injected at runtime by the Harmony patch below. Include `<inspectorTabs>` for the standard bill-stack tab so the empty list is still browseable.
+- `Defs/RecipeDefs/ChEurekaRecipes.xml` — All discoverable recipes. Each `RecipeDef` is prefixed `ChEureka_` and uses `MayRequire="..."` on the top-level entry to opt out when its required DLC isn't loaded. **Do not set `recipeUsers`** — the Forge picks them up via the runtime patch so bills aren't accidentally available elsewhere. Suggested initial pool (tune ingredient/work numbers during implementation):
+  - `ChEureka_Luciferium` (base) — `3 Neutroamine + 1 Gold`, `2000` work → `5 Luciferium`
+  - `ChEureka_Hyperweave` (base) — `40 Cloth + 20 Synthread`, `2000` work → `40 Hyperweave`
+  - `ChEureka_Components` (base) — `30 Steel`, `800` work → `5 Components`
+  - `ChEureka_AdvancedComponents` (base) — `5 Components + 10 Plasteel`, `3000` work → `2 Advanced Components`
+  - `ChEureka_GlitterworldMedicine` (base) — `5 Medicine + 2 Neutroamine`, `2500` work → `5 Glitterworld Medicine`
+  - `ChEureka_Bioferrite` — `<RecipeDef MayRequire="Ludeon.RimWorld.Anomaly">` — `10 Steel + 2 Chemfuel`, `1500` work → `5 Bioferrite`
+  - `ChEureka_ArchiteCapsule` — `<RecipeDef MayRequire="Ludeon.RimWorld.Biotech">` — `2 Luciferium + 5 Gold`, `5000` work → `1 Archite Capsule`
+- `Source/CheatTraits/Patches/ChEurekaSystem.cs` — Core system:
+  - `ChEurekaTracker : IExposable` — per-map state.
+    - Fields: `int nextEurekaTick`, `List<EurekaActive> actives` where `EurekaActive` is `{ string recipeDefName; int expiresAtTick; }` (store as string for resilience if a recipe def is later renamed or its DLC unloaded).
+    - Constants at top of file: `EurekaIntervalTicks = 900000`, `EurekaDurationTicks = 180000`, `EurekaRecipesPerEvent = 2`, `TickGateTicks = 2500`.
+  - `Tick(Map map)` — called from the existing tick hub, gated to every `TickGateTicks`. Steps:
+    1. Prune expired entries from `actives`.
+    2. If no Ch Ascendant is currently spawned on the map (`CheatTraitsUtils.HasTraitedPawnOnMap` or equivalent), return without advancing the schedule (caravan-friendly: timer doesn't burn when the Ascendant is gone).
+    3. If `Find.TickManager.TicksGame >= nextEurekaTick`, call `FireEureka(map)`. (`>=` not `==` so a return-from-caravan fires the missed Eureka immediately — matches README spec.)
+  - `FireEureka(Map map)`:
+    1. Build the eligible pool: `DefDatabase<RecipeDef>.AllDefs.Where(d => d.defName.StartsWith("ChEureka_"))` minus the currently-active set.
+    2. Pick `EurekaRecipesPerEvent` distinct entries (or all of them if the pool has fewer).
+    3. Append picks to `actives` with `expiresAtTick = TicksGame + EurekaDurationTicks`.
+    4. `nextEurekaTick = TicksGame + EurekaIntervalTicks` (advance from now — keeps the cadence honest after a long Ascendant absence).
+    5. Mark every `Building_WorkTable` of `ChEurekaForge` on the map dirty so its bill UI refreshes (clear cached `AllRecipes` if the patch uses caching; otherwise no-op).
+    6. Fire a `Letter` of `LetterDefOf.PositiveEvent` titled "Eureka!" with body listing the discovered recipes' labels and the expiration time.
+  - `GetActiveRecipes()` → `List<RecipeDef>` — resolve defNames lazily via `DefDatabase<RecipeDef>.GetNamedSilentFail` so DLC-unloaded saves don't NRE.
+- `Source/CheatTraits/Patches/Patch_BuildingWorkTable_AllRecipes_Eureka.cs` — Harmony patch (postfix) on the recipe-source getter that the bill UI reads. **Use the `rimworld-analysis` skill before patching** to confirm whether the right hook is `Building_WorkTable.AllRecipes` (instance getter) or `ThingDef.AllRecipes` (def-level getter that's cached and would be wrong for per-instance dynamic lists). Likely `Building_WorkTable.AllRecipes`. The postfix:
+  - If `__instance.def != ChThingDefOfs.ChEurekaForge`, return.
+  - Replace `__result` with the tracker's current active recipes (the Forge def has no baseline recipes so no merging needed).
 
 **Files to modify:**
-- `Source/CheatTraits/Patches/ChThingDefOfs.cs` — add the pillar's defName.
-- `Source/CheatTraits/Patches/ChBuildRestrictions.cs` — gate to Ch Ascendant.
-- `Source/CheatTraits/Patches/Patch_BuildFloatMenu_TraitOverrides.cs` — allow Ascendant to force-build.
-- `README.md` "Defs Layout" mentions of the new BuildingDef are already correct (no list change needed).
+- `Source/CheatTraits/Patches/ChTraitsMapComponent.cs` — Add a `ChEurekaTracker tracker` field. Initialize in constructor, chain through `ExposeData`, call `tracker.Tick(map)` from the existing tick hub. Remove the call to `ChAscendantAuraSystem.TickMap(map)`.
+- `Source/CheatTraits/Patches/ChThingDefOfs.cs` — Add `ChEurekaForge` entry.
+- `Source/CheatTraits/Patches/ChBuildRestrictions.cs` — Gate `ChEurekaForge` to the Ch Ascendant trait (mirror the existing Cauldron/Pillar entries).
+- `Source/CheatTraits/Patches/Patch_BuildFloatMenu_TraitOverrides.cs` — Allow Ch Ascendant force-build for `ChEurekaForge`.
+- `Source/CheatTraits/Patches/ChTraitsUtils.cs` — `CheatTraitsNames.AscendantTrait` already exists from the prior aura impl; verify only.
+- `Defs/TraitDefs/ChTraits.xml` — In the `ChAscendant` entry: **delete the `<statFactors><Fertility>1.0</Fertility></statFactors>` block** (or just remove the `Fertility` line if other factors live there); update the `<description>` text to reflect the Eureka mechanic instead of the old support-aura framing.
+- `Defs/Hediffs/ChHediffs.xml` — **Delete the entire `ChAscendant_InspirationAura` HediffDef block** (lines ~84-107 in the current file).
+- `README.md` — Already updated as part of this plan revision.
+
+**Files to delete:**
+- `Source/CheatTraits/Patches/ChAscendantAura.cs` — the entire aura system (config, util, `ChAscendantAuraSystem`, `ChAscendantDefOf`). After updating `ChTraitsMapComponent.cs` to drop the `ChAscendantAuraSystem.TickMap(map)` call, nothing else references these types.
 
 **Implementation notes:**
-- Mirror `CompChFloragenCore.cs` for the per-tick scan cadence, but scope to `parent.GetRoom()` instead of a tile-radius scan. Filter out `OutdoorsRoom` / `PsychologicallyOutdoors` rooms so a pillar dropped outside doesn't blanket the map.
-- "Multiple pillars in one room do not stack" → before applying the blessing hediff, check if the pawn already has it from this tick. Use the existing single-hediff-instance approach (the hediff is unique on a pawn; reapplying just refreshes severity).
-- Addiction decay: iterate `pawn.health.hediffSet.hediffs.OfType<Hediff_Addiction>()` → severity reduction per scan such that ~5000 ticks (20 scans at 250 each) brings any normal addiction to zero. Tune to taste.
-- Biotech patch target: `PregnancyUtility.GetBirthComplicationsChance` (or the actual labor-roll method — confirm via the rimworld-analysis skill before patching). The simplest patch returns 0 chance when the mother is in a Vitae Pillar room.
-- Heads-up to the implementer: **invoke the `rimworld-analysis` skill before touching the Biotech birth code** — that surface changes between patches and you want to be sure of the exact method name and signature.
+- **Cadence & uptime:** 3 days active out of every 15 = 20% uptime. Both numbers are single constants at the top of `ChEurekaTracker` — keep them visible for tuning.
+- **DLC safety:** `<RecipeDef MayRequire="...">` on the top-level entry is the vanilla XML pattern; RimWorld's Def loader silently skips the def when the DLC isn't installed. The pool builder uses `defName.StartsWith("ChEureka_")` so it naturally sees only the available recipes — no runtime DLC checks needed in C#.
+- **DLC package IDs to use in `MayRequire`:** `Ludeon.RimWorld.Anomaly`, `Ludeon.RimWorld.Biotech`. Use the rimworld-analysis skill to verify if uncertain.
+- **AllRecipes patch target:** This is the single most fragile part of the chunk. The bills UI reads from `Building_WorkTable.AllRecipes` which itself reads from `def.AllRecipes` and merges `recipeUsers` reverse lookups. Patching `def.AllRecipes` would pollute shared def state across all Forges and persist incorrectly across save/load. **Patch the instance getter on `Building_WorkTable`** so each Forge instance can return per-map tracker state. Confirm exact signature via rimworld-analysis before writing the `[HarmonyPatch]` attribute.
+- **Multi-Ascendant rule:** the tracker is per-map, not per-pawn, so multiple Ascendants on one map don't multiply Eurekas. State naturally enforces this — no extra code.
+- **Multi-Forge rule:** the tracker is per-map, so multiple Forges share the active recipe list. Parallel throughput only. Desirable.
+- **Off-map behavior:** If the Ascendant is on a caravan when `nextEurekaTick` elapses, the timer pauses (step 2 of `Tick`). When they return, the next tick check passes the `>=` comparison and fires immediately. This matches the README spec.
+- **Save compat:** None needed — the prior aura/Pillar design was never shipped beyond the existing aura hediff. Any in-progress save with the aura hediff will gracefully drop it (vanilla handles missing HediffDefs by removing the hediff at load). No migration code required.
+- **Inspect string on the Forge:** Override `Building.GetInspectString` (via a `CompProperties_` + comp class, or via a Harmony postfix on the Forge's base inspect — comp is cleaner). Format:
+  - When `actives` is non-empty: `Eureka recipes available:\n  - <label> (Xd Yh remaining)\n  - ...`
+  - When empty: `No Eureka recipes active. Next Eureka in Xd Yh.` (Use `nextEurekaTick - TicksGame` formatted via `GenDate.ToStringTicksToPeriod`.)
+  - When no Ascendant on map: append `\n(Eureka requires a Ch Ascendant on this map.)`.
+- **Letter wording suggestion:** Title `"Eureka!"`. Body: `"<Ascendant's name> has had a breakthrough. The Eureka Forge can now produce:\n  - <recipe 1>\n  - <recipe 2>\nThese recipes will remain available for 3 days."`.
+- **Bill-UI refresh on Eureka fire:** If the player has the Forge's bill tab open when a Eureka fires, the new recipes should appear without needing to close/reopen. Vanilla `Dialog_BillConfig` / the bills tab re-reads `AllRecipes` on tab refresh; forcing a `Find.WindowStack.WindowOfType<MainTabWindow_Inspect>()?.Notify_ClickOutsideWindow()` or similar may be needed. Test first; only add if there's an observed bug.
 
 **Acceptance criteria:**
-- Building shows up in the Architect menu only when the colony has a Ch Ascendant.
-- Placed inside a room, pawns in the room gain the blessing hediff within one scan tick.
-- Addictions visibly tick down over a few in-game minutes.
-- (Biotech) Pregnant pawn in a Vitae Pillar room never rolls a complication.
+- Eureka Forge appears in the Architect menu only when the colony has a Ch Ascendant; force-buildable by a Ch Ascendant via the float-menu override.
+- Built Forge has no bills until a Eureka fires.
+- Roughly 15 in-game days after build (or game start with an Ascendant present), a letter announces the Eureka and exactly `2` random recipes appear in the bills tab.
+- Recipes disappear cleanly after 3 in-game days — no orphan bills, no NREs on bill UI open.
+- Bills use the assigned crafter's normal Crafting skill / work speed / quality (Artificer pairing produces MW/Legendary as expected).
+- DLC-gated recipes do not appear without the corresponding DLC installed and do not produce Def load errors when missing.
+- Ascendant absence (caravan, death) pauses the Eureka timer; presence resumes it.
+- `ChAscendant_InspirationAura` is fully removed: no hediff def, no code references, the file `ChAscendantAura.cs` is gone, and the trait def no longer carries `Fertility x1.0`.
 
 **Manual test steps for the user:**
-- Spawn Ch Ascendant, confirm Architect entry appears. Build pillar in a hospital.
-- Dev-give a colonist a deep wound and an alcohol addiction. Watch healing speed and addiction severity in the inspect window while they're in the room.
-- (Biotech) Force-trigger labor on a pawn in vs. out of the room; confirm complications are absent in-room.
+- Spawn Ch Ascendant. Confirm the Eureka Forge appears in the Architect menu and is force-buildable. Confirm there is no Vitae Pillar entry anywhere.
+- Build the Forge. Confirm bills tab is empty and the inspect string explains the Eureka mechanic with a countdown.
+- Dev-mode skip ~15 days. Confirm letter fires and two recipes appear in the bills tab without reopening it.
+- Queue a discovered recipe with a non-Artificer pawn; confirm the pawn's Crafting skill drives work speed and quality.
+- Queue a discovered recipe with a Ch Artificer; confirm Excellent/MW/Legendary quality rolls per their existing patch.
+- Skip another 3 days; confirm recipes drop off cleanly and no bills are stuck in queue (or that stuck bills error gracefully — observe and document).
+- Toggle Anomaly and Biotech on/off in separate test sessions — confirm Bioferrite / Archite Capsule recipes appear / don't appear accordingly and no Def load errors fire.
+- Caravan the Ascendant off-map for ~20 days; confirm no Eureka fires while gone, and a Eureka fires within `TickGateTicks` of their return.
+- Inspect the Ch Ascendant pawn — confirm no aura hediff appears on nearby colonists and no Fertility override.
 
 ---
 
@@ -282,7 +334,7 @@ Notes:
 
 ### Chunk 8 — Alchemy Cauldron (Alchemist) [ ]
 
-**Scope:** Trait-gated building with two bills. Adds a custom drug-class ingestible `Trail Tonic`. Most ambitious chunk by surface area — building + ThingDef + drug behavior + 2 RecipeDefs + a hediff + a trait-gate on recipes.
+**Scope:** Trait-gated building with one bill (Trail Tonic). Adds a custom drug-class ingestible `Trail Tonic`. Surface area: building + ThingDef + drug behavior + 1 RecipeDef + a hediff + a trait-gate on recipes. The trait-gate infrastructure (`ChRequiredTrait` DefModExtension + Harmony postfix) should be built generically so additional Alchemist tonics can be added in later chunks with just a RecipeDef + Hediff + ThingDef.
 
 **README section:** Alchemy Cauldron (under Trait-Gated Buildings).
 
@@ -290,8 +342,8 @@ Notes:
 - `Defs/BuildingDefs/ChAlchemyCauldron.xml` — `ThingDef` for the cauldron. Costs `50 Steel + 20 Wood`, work `600`, no power. Include a `compIngredients` and the standard bill workbench machinery (mirror vanilla `ButcherTable` or `DrugLab` for the bill config).
 - `Defs/ThingDefs/ChTrailTonic.xml` — `ThingDef` for the tonic item. Parent off a drug base (e.g. `MakeableDrugBase` or `OrganicProductBase` with drug comps). Set `drugCategory` to `Hard` so the default policy excludes it. `comps`: `CompProperties_Drug` with `addictiveness=0`, `overdoseSeverityOffset=0`, `listOrder` and an ingest job. `ingestEffect=Drink`, `ingestSound=Ingest_Drink`. The hediff giver on the comp applies `ChTrailTonicBuff`.
 - `Defs/Hediffs/ChTrailTonicBuff.xml` — hediff for the drink effect: `HungerRateFactor x0.05`, `RestFallRateFactor x0.5`, `+5%` Move Speed. Use `HediffComp_Disappears` with duration `180000` ticks.
-- `Defs/RecipeDefs/ChAlchemyRecipes.xml` — two recipes: `BrewChTrailTonic` and `SynthesizeChNeutroamine`. Hook to the cauldron via `recipeUsers` on the recipe OR `recipes` on the cauldron ThingDef (either pattern works, pick one).
-- `Source/CheatTraits/Patches/ChAlchemistRecipeGate.cs` — Harmony patch that gates these two recipes to Ch Alchemist pawns only. Hook point candidates: `RecipeDef.PawnSatisfiesSkillRequirements` (returns false for non-Alchemist on these recipes) or `WorkGiver_DoBill.JobOnThing`. Use a `DefModExtension` (e.g. `ChRequiredTrait`) on the recipes so the patch can be generic and future-proof.
+- `Defs/RecipeDefs/ChAlchemyRecipes.xml` — one recipe: `BrewChTrailTonic`. Hook to the cauldron via `recipeUsers` on the recipe OR `recipes` on the cauldron ThingDef (either pattern works, pick one).
+- `Source/CheatTraits/Patches/ChAlchemistRecipeGate.cs` — Harmony patch that gates Alchemist-tagged recipes to Ch Alchemist pawns only. Hook point candidates: `RecipeDef.PawnSatisfiesSkillRequirements` (returns false for non-Alchemist when the recipe carries the trait tag) or `WorkGiver_DoBill.JobOnThing`. Use a `DefModExtension` (e.g. `ChRequiredTrait`) on the recipe so the patch is generic and future-proof — additional tonics added later just need the same extension, no patch changes.
 
 **Files to modify:**
 - `Source/CheatTraits/Patches/ChThingDefOfs.cs` — register the cauldron and the trail tonic defs.
@@ -302,32 +354,29 @@ Notes:
 **Implementation notes:**
 - **Witch's brew ingredients (per spec, no human-derived materials):**
   - Trail Tonic: `3 Herbal Medicine + 2 leather (any non-human) + 5 raw plants → 1 Trail Tonic`. For "leather (any)", use a `ThingFilter` referencing the `Leathery` category and explicitly exclude `Leather_Human`. Raw plants: `PlantMatter` category covers raw veggies, healroot, etc.
-  - Neutroamine: `5 Herbal Medicine + 2 leather (any non-human) + 1 Chemfuel → 5 Neutroamine`. Same exclusions.
-  - Cooldowns on `workAmount` should be roughly: Trail Tonic ~`8000` work, Neutroamine ~`6000` work. Tune to feel.
+  - `workAmount` for Trail Tonic ~`8000`. Tune to feel.
 - **Drug category vs auto-consume:** `drugCategory: Hard` plus the default drug policy (`PolicyDefOf.DefaultDrug` excludes Hard drugs unless scheduled) gives the "explicit consumption only" behavior. Confirm at test time by giving a colonist trail tonic in inventory and watching that they don't drink it spontaneously.
 - **Recipe trait gate:** the cleanest approach is a small `DefModExtension`:
   ```
   ChRequiredTrait { traitDefName = "ChAlchemist" }
   ```
-  attached to each recipe def, plus a Harmony postfix on `RecipeDef.PawnSatisfiesSkillRequirements` that also checks the ext and returns false for non-matching pawns.
+  attached to the recipe def, plus a Harmony postfix on `RecipeDef.PawnSatisfiesSkillRequirements` that also checks the ext and returns false for non-matching pawns. Build this generically so future tonic recipes only need to add the extension.
 - **Building bill UI:** vanilla `Building_WorkTable` already gives you the bill stack and the "Add Bill" menu — the cauldron should derive from it. Workbench art can reuse a vanilla texture initially; placeholder is fine for first pass.
-- This chunk is bigger than the others. If it splits naturally, the rough split is:
-  1. Cauldron ThingDef + trait-gated build + a no-op bill list (sanity-check the building exists in-game).
-  2. Trail Tonic item + hediff + ingest behavior (sanity-check drinking works from inventory).
-  3. Two recipes + trait gate (sanity-check Alchemist can craft and non-Alchemist cannot).
-  But aim for a single session if possible.
+- This chunk's natural split if it gets too long:
+  1. Cauldron ThingDef + trait-gated build + the generic recipe-gate machinery (sanity-check the building exists in-game and an empty bill list works).
+  2. Trail Tonic item + hediff + ingest behavior + the Trail Tonic recipe (sanity-check drinking works from inventory and Alchemist can craft).
+  Aim for a single session if possible.
 
 **Acceptance criteria:**
 - Architect entry appears only with Ch Alchemist in the colony.
-- Bills tab on the cauldron lists both recipes.
+- Bills tab on the cauldron lists the Trail Tonic recipe.
 - Non-Alchemist pawns cannot be assigned and will skip bills on it.
 - Trail Tonic items in stockpile are *not* auto-consumed under the default drug policy.
 - Right-click → Drink Trail Tonic works and applies the hediff for 3 in-game days.
-- Neutroamine recipe produces 5 neutroamine of standard quality.
 
 **Manual test steps for the user:**
 - Spawn Ch Alchemist; confirm cauldron unlocks. Build it.
-- Queue both bills. Confirm Alchemist works the bench. Switch Alchemist off-duty; queue a bill again; confirm a non-Alchemist Cook does *not* perform the bill.
+- Queue the Trail Tonic bill. Confirm Alchemist works the bench. Switch Alchemist off-duty; queue the bill again; confirm a non-Alchemist Cook does *not* perform the bill.
 - Move Trail Tonic into a pawn's inventory; observe over a couple of in-game days that they don't drink it on their own.
 - Manually drink it on the pawn → hediff applied, hunger flatlines for 3 days.
 
@@ -335,7 +384,7 @@ Notes:
 
 ## Deferred / not in this plan
 
-- Any further Alchemy Cauldron recipes beyond Trail Tonic and Neutroamine (user wants to keep scope tight).
+- Additional Alchemy Cauldron tonics beyond Trail Tonic — deferred to future chunks. The Chunk 8 trait-gate machinery is built generically so adding new tonics later is just RecipeDef + Hediff + ThingDef, no patch changes.
 - Any rebalancing of existing traits.
 - Multi-target or upgrade variants of the new abilities.
 

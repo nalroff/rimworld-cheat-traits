@@ -19,7 +19,7 @@ All traits use `commonality = 0`, so they are best suited for custom starts, edi
   - `Comfort Node`
   - `Tesla Coil`
   - `Alchemy Cauldron`
-  - `Vitae Pillar`
+  - `Eureka Forge`
 
 ## Trait-Gated Buildings
 
@@ -71,7 +71,7 @@ Unlocked by: `Ch Alchemist`
 - Only a Ch Alchemist pawn can perform its bills
 - Current recipes:
   - `Brew Trail Tonic` — `3 Herbal Medicine + 2 leather (any) + 5 raw plants → 1 Trail Tonic`
-  - `Synthesize Neutroamine` — `5 Herbal Medicine + 2 leather (any) + 1 Chemfuel → 5 Neutroamine`
+- More tonics may be added in future updates
 
 `Trail Tonic` itself:
 
@@ -83,21 +83,18 @@ Unlocked by: `Ch Alchemist`
   - `+5%` Move Speed
 - Designed for caravans, long sieges, and extended treks
 
-### Vitae Pillar
+### Eureka Forge
 
 Unlocked by: `Ch Ascendant`
 
-- Costs `25 Steel`
-- `400` work to build
+- Costs `75 Steel + 30 Wood`
+- `600` work to build
 - Requires no power
-- Affects every pawn inside the same room as the pillar, with no proximity limit
-- Multiple pillars in one room do not stack
-- Scans every `250` ticks
-- Effects on in-room pawns:
-  - `InjuryHealingFactor x4`
-  - `ImmunityGainSpeed x2`
-  - Existing addictions decay over `~5000` ticks
-  - When Biotech is loaded: pregnancy and labor complications are suppressed
+- Functions as a crafting workbench with no bills available by default
+- Bills become available only while a `Eureka` event has granted recipes (see `Ch Ascendant`)
+- All bills use the assigned crafter's normal Crafting skill, work speed, and quality rolls — pair with a Ch Artificer for guaranteed Excellent/Masterwork/Legendary output
+- Multiple Forges on one map share the same active recipe list (no per-Forge duplication)
+- Inspect string makes the Eureka mechanic explicit so an empty bills tab is not confusing
 
 ## Trait Reference
 
@@ -232,17 +229,19 @@ A guaranteed surgeon and elite doctor.
 
 ### Ch Ascendant
 
-A high-end leader/researcher with a powerful support aura.
+A genius intellect whose insights periodically unlock impossible recipes.
 
 - `+10` Intellectual
 - `ResearchSpeed x10`
-- `Fertility` is forced to `1.0`
-- Emits an aura to same-faction humanlikes within `20` tiles
-- Aura refreshes every `250` ticks and lingers for `7500` ticks
-- Aura grants:
-  - `GlobalLearningFactor x3`
-  - `InjuryHealingFactor x4`
-- Unlocks the `Vitae Pillar` (see the trait-gated buildings section above)
+- Unlocks the `Eureka Forge` (see the trait-gated buildings section above)
+- Every `15` in-game days (one quadrum) a `Eureka` event fires, but only while a Ch Ascendant is on the map:
+  - `2` random recipes are added to the Eureka Forge for `3` in-game days
+  - Pool is drawn from a curated list of normally-unattainable items: `Luciferium`, `Hyperweave`, `Components`, `Advanced Components`, `Glitterworld Medicine`
+  - DLC items added to the pool when their DLC is installed: `Bioferrite` (Anomaly), `Archite Capsule` (Biotech)
+  - Currently-active recipes are excluded from each new pick
+  - A letter announces the event
+  - Multiple Ascendants on one map do not multiply Eurekas
+  - If the Ascendant is off-map when the timer elapses, the event fires the moment they return
 
 ### Ch Beastmaster
 
