@@ -1,5 +1,7 @@
 # CheatTraits — Multi-Session Implementation Plan
 
+**Status: complete (closed out 2026-05-23).** All eight chunks shipped and the abilities/buildings expansion is done. This file is kept as a record of what was built and how. New work goes in a fresh plan, not amendments here.
+
 This file tracks the abilities/buildings expansion across multiple Claude Code sessions. The user wants each chunk implemented in its own session to keep context focused.
 
 ## How to use this file
@@ -386,7 +388,19 @@ Notes:
 
 ---
 
-### Chunk 8 — Alchemy Cauldron (Alchemist) [ ]
+### Chunk 8 — Alchemy Cauldron (Alchemist) [x] 2026-05-23
+
+Notes:
+- **Recipe-gate hook chosen:** `Bill.PawnAllowedToStartAnew` (postfix). Verified via [WorkGiver_DoBill.cs:144](F:/Development/rimworld-decomp/Assembly-CSharp/RimWorld/WorkGiver_DoBill.cs#L144) that this is the gate `StartOrResumeBillJob` consults before considering a bill for a pawn. Setting `__result = false` and calling `JobFailReason.Is(...)` gives the inspect-window feedback ("Requires the ChAlchemist trait.") with the same shape vanilla uses for `UnderRequiredSkill`. `PawnSatisfiesSkillRequirements` (the spec's other candidate) wasn't usable directly because the bill loop calls `FirstSkillRequirementPawnDoesntSatisfy`, not `PawnSatisfiesSkillRequirements`. `PawnAllowedToStartAnew` is cleaner and also gates `slavesOnly`/`mechsOnly`/etc. — the right vanilla extension point.
+- **DefModExtension:** `ChRequiredTraitExtension { traitDefName }` in `ChAlchemistRecipeGate.cs`. Attached to the recipe in XML via `<modExtensions><li Class="CheatTraits.Patches.ChRequiredTraitExtension">...`. The patch reads it with `recipe.GetModExtension<ChRequiredTraitExtension>()` and early-returns when absent — non-tagged recipes are unaffected. Future tonics only need to add the same extension; no patch changes.
+- **Trail Tonic drug parent:** used `DrugBase`, not `MakeableDrugBase`. `MakeableDrugBase` auto-generates a `Make_<DefName>` recipe via `<recipeMaker>`; we hand-author the recipe with specific ingredients, so the auto-recipe would be redundant.
+- **Hunger factor:** spec says `HungerRateFactor x0.05`. Implemented as `<hungerRateFactor>0.05</hungerRateFactor>` on the hediff stage (HediffStage field at [HediffStage.cs:110](F:/Development/rimworld-decomp/Assembly-CSharp/Verse/HediffStage.cs#L110)) — multiplicative, applied in `HediffSet.GetHungerRateFactor`. Not the same field as the `hungerRateFactorOffset` used by the alchemist meal hediffs (that one is additive).
+- **Ingredient filter shape:** initial pass put `categories=Leathers` AND `disallowedThingDefs=Leather_Human` on the per-ingredient `<filter>`, which made the bill UI render the slot as the unhelpful "2x ingredients" because the filter is no longer a single-category match. Reworked to vanilla `Make_Pemmican` shape: per-ingredient `<filter>` carries only `<categories><li>Leathers</li></categories>`, and the human-leather exclusion lives in `<defaultIngredientFilter>` instead. Trade-off: the player can re-enable human leather via the bill's ingredient menu — same flexibility vanilla pemmican gives for human meat. Bill UI now shows "2 leathers" cleanly.
+- **Plant category fix:** PLAN.md's "PlantMatter category covers raw veggies, healroot, etc." was wrong. `PlantMatter` is the *manufacturing* raw-plant category — it contains RawHops/PsychoidLeaves/SmokeleafLeaves. Raw vegetables (RawPotatoes/RawRice/RawCorn/RawBerries/RawFungus/RawAgave/Hay) sit in `PlantFoodRaw` ([ThingCategories.xml:42-47](file:///d:/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingCategoryDefs/ThingCategories.xml)). User report: "Alchemist won't go to the cauldron to work on anything" — root cause was that `PlantMatter` ingredients (hops/psychoid) weren't on the map, so `WorkGiver_DoBill.TryFindBestBillIngredients` failed and the bill went inert. Recipe now uses `PlantFoodRaw`.
+- **Cauldron art:** placeholder `Things/Building/Production/TableDrugLab` — thematically right for a brewing bench and consistent with the Eureka Forge using `TableSmithingFueled` as its placeholder.
+- **`ChTrailTonic` in ChThingDefOf:** registered alongside `ChAlchemyCauldron` for parity, even though no C# currently references it. Future tonics that need stat lookups can grab it from the DefOf directly.
+- **Bugfix during testing:** opening the Cauldron's bill config and clicking the Pawn Restriction dropdown logged `Can't find a WorkGiver for a BillGiver ChAlchemyCauldron`. Confirmed via [BillUtility.cs:170-189](F:/Development/rimworld-decomp/Assembly-CSharp/RimWorld/BillUtility.cs#L170): `GetWorkgiver` scans all `WorkGiverDef`s for a `WorkGiver_DoBill` whose `ThingIsUsableBillGiver` returns true, and errors if none match. Vanilla workbenches register themselves via a WorkGiverDef's `fixedBillGiverDefs` (e.g. `DoBillsBrew` → `Brewery`, `DoBillsDrugLab` → `DrugLab`). Added [Defs/WorkGiverDefs/ChWorkGivers.xml](Defs/WorkGiverDefs/ChWorkGivers.xml) with `DoBillsChAlchemyCauldron` (`workType=Cooking`, `fixedBillGiverDefs: ChAlchemyCauldron`). The Eureka Forge had the same latent issue (Chunk 6 testing never opened its pawn-restriction dropdown, so the error didn't surface) — added `DoBillsChEurekaForge` (`workType=Crafting`, `fixedBillGiverDefs: ChEurekaForge`) to the same file as part of this fix.
+- **Workamount tuning:** initial 8000 felt too slow in playtesting. Cut to 1600 (80% reduction) per user call. README's spec page doesn't pin a work value, so no spec drift.
 
 **Scope:** Trait-gated building with one bill (Trail Tonic). Adds a custom drug-class ingestible `Trail Tonic`. Surface area: building + ThingDef + drug behavior + 1 RecipeDef + a hediff + a trait-gate on recipes. The trait-gate infrastructure (`ChRequiredTrait` DefModExtension + Harmony postfix) should be built generically so additional Alchemist tonics can be added in later chunks with just a RecipeDef + Hediff + ThingDef.
 
@@ -438,8 +452,4 @@ Notes:
 
 ## Deferred / not in this plan
 
-- Additional Alchemy Cauldron tonics beyond Trail Tonic — deferred to future chunks. The Chunk 8 trait-gate machinery is built generically so adding new tonics later is just RecipeDef + Hediff + ThingDef, no patch changes.
-- Any rebalancing of existing traits.
-- Multi-target or upgrade variants of the new abilities.
-
-When the user requests additions, add a new chunk at the bottom rather than amending closed chunks.
+This plan is closed. Future work (additional Alchemy Cauldron tonics, trait rebalancing, multi-target / upgrade variants of these abilities, etc.) should go in a new plan file rather than new chunks appended here. The Chunk 8 trait-gate machinery is built generically so adding new Alchemist tonics later is just RecipeDef + Hediff + ThingDef + a `ChRequiredTraitExtension` modExtension — no patch changes.

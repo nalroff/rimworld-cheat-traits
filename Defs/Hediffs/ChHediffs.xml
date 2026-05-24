@@ -316,6 +316,35 @@
   </HediffDef>
 
   <HediffDef>
+    <defName>ChTrailTonic_Buff</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>trail tonic</label>
+    <description>An alchemical brew is suppressing hunger and softening fatigue. Designed for long treks.</description>
+    <defaultLabelColor>(0.45, 0.78, 0.45)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>true</scenarioCanAdd>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>180000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <hungerRateFactor>0.05</hungerRateFactor>
+        <statFactors>
+          <RestFallRateFactor>0.5</RestFallRateFactor>
+          <MoveSpeed>1.05</MoveSpeed>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
     <defName>ChWizard_Spellbook</defName>
     <hediffClass>HediffWithComps</hediffClass>
     <label>arcane attunement</label>

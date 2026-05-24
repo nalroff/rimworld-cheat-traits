@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="DrugBase">
+    <defName>ChTrailTonic</defName>
+    <label>trail tonic</label>
+    <description>An alchemical brew designed for caravans, long sieges, and extended treks. A single sip suppresses hunger almost completely and softens rest decay for three days. Classified as a hard drug so colonists never drink it without an explicit order.</description>
+    <descriptionHyperlinks>
+      <HediffDef>ChTrailTonic_Buff</HediffDef>
+    </descriptionHyperlinks>
+    <possessionCount>4</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Drug/Tea</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.88</drawSize>
+      <color>(0.45, 0.78, 0.45)</color>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>45</MarketValue>
+      <Mass>0.1</Mass>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Flammability>0.7</Flammability>
+    </statBases>
+    <techLevel>Medieval</techLevel>
+    <ingestible>
+      <foodType>Fluid, Processed</foodType>
+      <baseIngestTicks>210</baseIngestTicks>
+      <nurseable>true</nurseable>
+      <drugCategory>Hard</drugCategory>
+      <ingestSound>Ingest_Drink</ingestSound>
+      <ingestHoldOffsetStanding>
+        <northDefault>
+          <offset>(0.18,0,0)</offset>
+        </northDefault>
+      </ingestHoldOffsetStanding>
+      <ingestHoldUsesTable>false</ingestHoldUsesTable>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>ChTrailTonic_Buff</hediffDef>
+          <severity>1.0</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Drug">
+        <listOrder>500</listOrder>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

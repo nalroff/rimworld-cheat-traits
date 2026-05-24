@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>ChAlchemyCauldron</defName>
+    <label>alchemy cauldron</label>
+    <description>A trait-gated brewing bench attuned to an Alchemist's craft. Used to distill exotic tonics from herbs, leather, and raw plants. Only a Ch Alchemist can construct it or work its bills.</description>
+
+    <thingClass>RimWorld.Building_WorkTable</thingClass>
+    <category>Building</category>
+
+    <graphicData>
+      <texPath>Things/Building/Production/TableDrugLab</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3.5,1.5)</drawSize>
+      <shaderType>CutoutComplex</shaderType>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>true</rotatable>
+
+    <size>(3,1)</size>
+
+    <statBases>
+      <WorkToBuild>600</WorkToBuild>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <Mass>20</Mass>
+      <Beauty>2</Beauty>
+    </statBases>
+
+    <costList>
+      <Steel>50</Steel>
+      <WoodLog>20</WoodLog>
+    </costList>
+
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+    </building>
+
+    <recipes>
+      <li>BrewChTrailTonic</li>
+    </recipes>
+
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2710</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+  </ThingDef>
+
+</Defs>

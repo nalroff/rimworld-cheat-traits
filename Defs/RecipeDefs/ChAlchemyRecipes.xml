@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RecipeDef>
+    <defName>BrewChTrailTonic</defName>
+    <label>brew trail tonic</label>
+    <description>Distill herbal medicine, leather, and raw plants into a single dose of trail tonic. Only a Ch Alchemist can work this bill.</description>
+    <jobString>Brewing trail tonic.</jobString>
+    <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Brewing</soundWorking>
+    <workAmount>1600</workAmount>
+    <modExtensions>
+      <li Class="CheatTraits.Patches.ChRequiredTraitExtension">
+        <traitDefName>ChAlchemist</traitDefName>
+      </li>
+    </modExtensions>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>MedicineHerbal</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+      <li>
+        <filter>
+          <categories>
+            <li>Leathers</li>
+          </categories>
+        </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>MedicineHerbal</li>
+      </thingDefs>
+      <categories>
+        <li>Leathers</li>
+        <li>PlantFoodRaw</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <thingDefs>
+        <li>MedicineHerbal</li>
+      </thingDefs>
+      <categories>
+        <li>Leathers</li>
+        <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedThingDefs>
+        <li>Leather_Human</li>
+      </disallowedThingDefs>
+    </defaultIngredientFilter>
+    <products>
+      <ChTrailTonic>1</ChTrailTonic>
+    </products>
+  </RecipeDef>
+
+</Defs>

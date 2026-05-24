@@ -183,6 +183,13 @@ namespace CheatTraits.Patches
                 return true;
             }
 
+            if (ChBuildRestrictionUtil.IsBuildTarget(target, ChThingDefOf.ChAlchemyCauldron))
+            {
+                requiredTrait = CheatTraitsNames.AlchemistTrait;
+                labelPrefix = "Ch Alchemist";
+                return true;
+            }
+
             requiredTrait = string.Empty;
             labelPrefix = string.Empty;
             return false;

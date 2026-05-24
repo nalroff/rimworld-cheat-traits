@@ -121,6 +121,17 @@ namespace CheatTraits.Patches
                 )
                     __result = false;
             }
+
+            if (placingDef == ChThingDefOf.ChAlchemyCauldron)
+            {
+                if (
+                    !ChBuildRestrictionUtil.MapHasTraitColonist(
+                        __instance!.Map,
+                        CheatTraitsNames.AlchemistTrait
+                    )
+                )
+                    __result = false;
+            }
         }
     }
 
@@ -168,6 +179,12 @@ namespace CheatTraits.Patches
             if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChEurekaForge))
             {
                 if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.AscendantTrait))
+                    __result = null;
+            }
+
+            if (ChBuildRestrictionUtil.IsBuildTarget(t, ChThingDefOf.ChAlchemyCauldron))
+            {
+                if (!CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.AlchemistTrait))
                     __result = null;
             }
         }
