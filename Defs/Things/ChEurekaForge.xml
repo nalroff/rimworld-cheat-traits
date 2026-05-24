@@ -10,10 +10,10 @@
     <category>Building</category>
 
     <graphicData>
-      <texPath>Things/Building/Production/TableSmithingFueled</texPath>
+      <texPath>Things/ChAscendant_EurekaForge</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(3.5,1.5)</drawSize>
-      <shaderType>CutoutComplex</shaderType>
+      <shaderType>Transparent</shaderType>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>

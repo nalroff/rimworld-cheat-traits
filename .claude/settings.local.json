@@ -9,7 +9,8 @@
       "Read(//d/Steam/steamapps/common/RimWorld/Data/**)",
       "Bash(pwsh -NoProfile -Command \"./build.ps1\")",
       "Bash(ls F:/Development/rimworld-analysis/features/ 2>&1)",
-      "Read(//f/Development/rimworld-analysis/features/**)"
+      "Read(//f/Development/rimworld-analysis/features/**)",
+      "Bash(magick identify *)"
     ]
   }
 }

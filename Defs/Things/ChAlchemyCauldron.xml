@@ -10,10 +10,10 @@
     <category>Building</category>
 
     <graphicData>
-      <texPath>Things/Building/Production/TableDrugLab</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(3.5,1.5)</drawSize>
-      <shaderType>CutoutComplex</shaderType>
+      <texPath>Things/ChAlchemist_AlchemyCauldron</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.1,1.1)</drawSize>
+      <shaderType>Transparent</shaderType>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>
@@ -28,7 +28,7 @@
     <fillPercent>0.5</fillPercent>
     <rotatable>true</rotatable>
 
-    <size>(3,1)</size>
+    <size>(1,1)</size>
 
     <statBases>
       <WorkToBuild>600</WorkToBuild>

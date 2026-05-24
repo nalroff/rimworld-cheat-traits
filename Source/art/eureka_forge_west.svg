@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  West view is a horizontal mirror of east. We render east's PNG and flip it
+  with ImageMagick at build time, so we don't need a separate SVG. This file
+  exists as a stub for traceability; the actual asset is produced from
+  eureka_forge_east.png via `magick ... -flop`.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="448" viewBox="0 0 192 448">
+  <g transform="translate(192,0) scale(-1,1)">
+    <image href="eureka_forge_east.svg" x="0" y="0" width="192" height="448"/>
+  </g>
+</svg>

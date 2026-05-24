@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="auto">
+  <defs>
+    <clipPath id="silhouetteClip">
+      <ellipse cx="64" cy="58" rx="42" ry="28"/>
+    </clipPath>
+    <clipPath id="mouthClip">
+      <ellipse cx="64" cy="54" rx="30" ry="18"/>
+    </clipPath>
+    <mask id="ringMask">
+      <ellipse cx="64" cy="58" rx="42" ry="28" fill="white"/>
+      <ellipse cx="64" cy="54" rx="32" ry="20" fill="black"/>
+    </mask>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="flameBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="0.9"/>
+    </filter>
+    <filter id="coreBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- ============ BACK LAYER: green ambient glow ============ -->
+  <ellipse cx="64" cy="94" rx="50" ry="20" fill="#1eff44" opacity="0.65" filter="url(#softGlow)"/>
+
+  <!-- ============ FLAMES (behind cauldron) ============ -->
+  <g filter="url(#flameBlur)">
+    <path d="M 10,108 L 16,82  L 22,70  L 26,90  L 30,76  L 36,108 Z" fill="#28dd4a"/>
+    <path d="M 92,108 L 98,76  L 100,90 L 106,70 L 112,82 L 118,108 Z" fill="#28dd4a"/>
+    <path d="M 38,116 L 44,98  L 48,104 L 54,86  L 60,108 Z" fill="#28dd4a"/>
+    <path d="M 64,108 L 68,86  L 72,104 L 78,98  L 84,116 Z" fill="#28dd4a"/>
+    <path d="M 22,76  L 16,68  L 20,62  L 24,72 Z" fill="#28dd4a"/>
+    <path d="M 106,76 L 112,68 L 108,62 L 104,72 Z" fill="#28dd4a"/>
+  </g>
+  <g filter="url(#coreBlur)">
+    <path d="M 16,106 L 22,80  L 26,106 Z" fill="#a8ff9a"/>
+    <path d="M 102,106 L 108,80 L 112,106 Z" fill="#a8ff9a"/>
+    <path d="M 44,114 L 50,96  L 54,114 Z" fill="#a8ff9a"/>
+    <path d="M 70,114 L 76,94  L 80,114 Z" fill="#a8ff9a"/>
+  </g>
+  <g>
+    <rect x="21" y="90"  width="2" height="2" fill="#ffffd0"/>
+    <rect x="107" y="90" width="2" height="2" fill="#ffffd0"/>
+    <rect x="49" y="104" width="2" height="2" fill="#ffffd0"/>
+    <rect x="75" y="102" width="2" height="2" fill="#ffffd0"/>
+  </g>
+
+  <!-- ============ WOOD / COAL between legs ============ -->
+  <g>
+    <rect x="49" y="90" width="11" height="10" rx="2" fill="#1a0e08"/>
+    <rect x="50" y="92" width="9"  height="6"  fill="#3a2010"/>
+    <rect x="51" y="92" width="6"  height="1"  fill="#704020"/>
+    <rect x="70" y="90" width="11" height="10" rx="2" fill="#1a0e08"/>
+    <rect x="71" y="92" width="9"  height="6"  fill="#3a2010"/>
+    <rect x="72" y="92" width="6"  height="1"  fill="#704020"/>
+  </g>
+
+  <!-- ============ LEGS ============ -->
+  <g>
+    <rect x="36" y="82" width="12" height="16" rx="2" fill="#1a1410"/>
+    <rect x="38" y="84" width="8"  height="12" fill="#26262e"/>
+    <rect x="43" y="84" width="3"  height="12" fill="#15151a"/>
+
+    <rect x="58" y="84" width="12" height="16" rx="2" fill="#1a1410"/>
+    <rect x="60" y="86" width="8"  height="12" fill="#26262e"/>
+    <rect x="65" y="86" width="3"  height="12" fill="#15151a"/>
+
+    <rect x="80" y="82" width="12" height="16" rx="2" fill="#1a1410"/>
+    <rect x="82" y="84" width="8"  height="12" fill="#26262e"/>
+    <rect x="87" y="84" width="3"  height="12" fill="#15151a"/>
+  </g>
+
+  <!-- ============ CAULDRON BODY ============ -->
+  <!-- Outline ring drawn first (the body fill draws over the inner half) -->
+  <ellipse cx="64" cy="58" rx="42" ry="28" fill="none" stroke="#1a1410" stroke-width="3"/>
+
+  <!-- Body fill, all shading and highlights clipped to silhouette -->
+  <g clip-path="url(#silhouetteClip)">
+    <ellipse cx="64" cy="58" rx="42" ry="28" fill="#26262e"/>
+    <!-- Belly shadow (lower-front, light source upper-left) -->
+    <path d="M 24,72 L 32,80 L 50,86 L 70,86 L 88,82 L 100,74 L 104,68
+             L 100,82 L 84,87 L 64,90 L 46,87 L 30,82 Z" fill="#15151a"/>
+    <!-- Highlight chunks on upper iron ring -->
+    <path d="M 28,52 L 36,48 L 40,52 L 34,56 Z" fill="#3a3a48"/>
+    <path d="M 90,52 L 98,52 L 94,58 L 88,56 Z" fill="#3a3a48"/>
+    <path d="M 30,64 L 36,62 L 38,66 L 32,68 Z" fill="#3a3a48"/>
+    <path d="M 94,66 L 100,66 L 98,70 L 92,70 Z" fill="#3a3a48"/>
+    <!-- Discrete specular dots -->
+    <rect x="32" y="51" width="2" height="2" fill="#7c7a8c"/>
+    <rect x="94" y="51" width="2" height="2" fill="#7c7a8c"/>
+  </g>
+
+  <!-- ============ MOUTH DARK RING ============ -->
+  <ellipse cx="64" cy="54" rx="32" ry="20" fill="#1a1410"/>
+
+  <!-- ============ LIQUID (clipped to mouth so highlights don't leak) ============ -->
+  <g clip-path="url(#mouthClip)">
+    <ellipse cx="64" cy="55" rx="30" ry="18" fill="#0b6028"/>
+    <ellipse cx="64" cy="56" rx="27" ry="16" fill="#2ec24a"/>
+    <!-- Broken bright highlight chunks (upper-left bias) -->
+    <path d="M 46,48 L 56,46 L 62,50 L 52,52 L 46,51 Z" fill="#aaff9c"/>
+    <path d="M 58,60 L 66,58 L 72,60 L 66,62 L 60,62 Z" fill="#aaff9c"/>
+    <path d="M 72,50 L 80,48 L 84,52 L 78,54 L 72,53 Z" fill="#aaff9c"/>
+    <!-- Bubble specs -->
+    <rect x="50" y="48" width="1" height="1" fill="#ffffff"/>
+    <rect x="64" y="59" width="1" height="1" fill="#ffffff"/>
+    <rect x="78" y="50" width="1" height="1" fill="#ffffff"/>
+    <rect x="70" y="64" width="1" height="1" fill="#ffffff"/>
+  </g>
+
+  <!-- ============ BACK LIP HIGHLIGHT (clipped to iron ring via mask) ============ -->
+  <path d="M 38,40 Q 64,32 90,40" fill="none" stroke="#7c7a8c" stroke-width="1" mask="url(#ringMask)"/>
+</svg>

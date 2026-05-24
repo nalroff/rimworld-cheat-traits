@@ -64,6 +64,7 @@ Unlocked by: `Ch Tesla`
 
 Unlocked by: `Ch Alchemist`
 
+- `1x1` tile footprint
 - Costs `50 Steel + 20 Wood`
 - `600` work to build
 - Requires no power

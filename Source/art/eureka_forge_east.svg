@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="448" viewBox="-12 -28 216 504" shape-rendering="auto">
+  <defs>
+    <clipPath id="tableTopClip">
+      <polygon points="30,24 160,24 178,380 14,380"/>
+    </clipPath>
+    <clipPath id="frontFaceClip">
+      <rect x="14" y="380" width="164" height="34"/>
+    </clipPath>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="bigGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="lineBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="0.7"/>
+    </filter>
+  </defs>
+
+  <!-- ============ AMBIENT CYAN AURA (extends vertically along table) ============ -->
+  <ellipse cx="96" cy="220" rx="56" ry="140" fill="#4dffea" opacity="0.15" filter="url(#bigGlow)"/>
+  <ellipse cx="96" cy="100" rx="42" ry="30" fill="#a8fff5" opacity="0.28" filter="url(#softGlow)"/>
+  <ellipse cx="96" cy="340" rx="40" ry="30" fill="#a8fff5" opacity="0.25" filter="url(#softGlow)"/>
+
+  <!-- ============ LEGS (south face — bottom of texture) ============ -->
+  <rect x="18" y="412" width="20" height="32" rx="2" fill="#1a1410"/>
+  <rect x="20" y="414" width="14" height="28" fill="#3a2818"/>
+  <rect x="30" y="414" width="4" height="28" fill="#1a0e08"/>
+  <rect x="21" y="416" width="3" height="2" fill="#5c3e22"/>
+
+  <rect x="154" y="412" width="20" height="32" rx="2" fill="#1a1410"/>
+  <rect x="156" y="414" width="14" height="28" fill="#3a2818"/>
+  <rect x="166" y="414" width="4" height="28" fill="#1a0e08"/>
+  <rect x="157" y="416" width="3" height="2" fill="#5c3e22"/>
+
+  <!-- ============ SOUTH FACE (1-cell wide plank, was the original west end-grain) ============ -->
+  <g clip-path="url(#frontFaceClip)">
+    <rect x="14" y="380" width="164" height="34" fill="#3a2818"/>
+    <rect x="14" y="380" width="164" height="4" fill="#5c3e22"/>
+    <rect x="14" y="380" width="164" height="2" fill="#8a5a30"/>
+    <!-- End-grain wood: vertical lines instead of horizontal -->
+    <line x1="40" y1="384" x2="40" y2="412" stroke="#26180a" stroke-width="1" opacity="0.6"/>
+    <line x1="60" y1="384" x2="60" y2="412" stroke="#26180a" stroke-width="1" opacity="0.5"/>
+    <line x1="96" y1="384" x2="96" y2="412" stroke="#26180a" stroke-width="1" opacity="0.7"/>
+    <line x1="132" y1="384" x2="132" y2="412" stroke="#26180a" stroke-width="1" opacity="0.5"/>
+    <line x1="152" y1="384" x2="152" y2="412" stroke="#26180a" stroke-width="1" opacity="0.6"/>
+    <rect x="14" y="408" width="164" height="6" fill="#1a0e08" opacity="0.5"/>
+    <!-- Iron corner brackets at leg joints -->
+    <rect x="14" y="380" width="24" height="5" fill="#1a1410"/>
+    <rect x="14" y="380" width="24" height="2" fill="#404048"/>
+    <rect x="14" y="383" width="2" height="2" fill="#6a6a78"/>
+    <rect x="154" y="380" width="24" height="5" fill="#1a1410"/>
+    <rect x="154" y="380" width="24" height="2" fill="#404048"/>
+    <rect x="176" y="383" width="2" height="2" fill="#6a6a78"/>
+  </g>
+  <rect x="14" y="380" width="164" height="34" fill="none" stroke="#1a1410" stroke-width="2"/>
+
+  <!-- ============ TABLE TOP (long parallelogram, runs N-S) ============ -->
+  <polygon points="30,24 160,24 178,380 14,380" fill="none" stroke="#1a1410" stroke-width="2.5"/>
+  <g clip-path="url(#tableTopClip)">
+    <polygon points="30,24 160,24 178,380 14,380" fill="#5c3e22"/>
+    <!-- Light strip at the back edge (top of texture = north, receded) -->
+    <polygon points="30,24 160,24 158,28 32,28" fill="#8a5a30"/>
+    <polygon points="32,24 158,24 156,26 34,26" fill="#b88a50"/>
+    <!-- Shadow at the near edge (bottom = south, closest to camera) -->
+    <polygon points="14,380 178,380 174,376 18,376" fill="#3a2818"/>
+    <polygon points="14,380 178,380 176,378 16,378" fill="#26180a"/>
+    <!-- Vertical wood plank seams (run along the long axis) -->
+    <line x1="64" y1="28" x2="68" y2="378" stroke="#3a2818" stroke-width="1" opacity="0.6"/>
+    <line x1="128" y1="28" x2="124" y2="378" stroke="#3a2818" stroke-width="1" opacity="0.55"/>
+    <!-- Subtle grain highlights -->
+    <rect x="84" y="80" width="1" height="2" fill="#8a5a30" opacity="0.7"/>
+    <rect x="100" y="180" width="1" height="2" fill="#8a5a30" opacity="0.7"/>
+    <rect x="80" y="280" width="1" height="2" fill="#8a5a30" opacity="0.7"/>
+    <rect x="106" y="350" width="1" height="2" fill="#8a5a30" opacity="0.7"/>
+  </g>
+
+  <!-- ============ EAST-FACE IRON BANDING (thin strip on the right of the table top) ============ -->
+  <!-- The east face is the "long iron-banded face" of the original south view, now along the right -->
+  <g>
+    <!-- A thin vertical iron-banded strip just inside the right edge of the top -->
+    <line x1="172" y1="40" x2="178" y2="380" stroke="#1a1410" stroke-width="1" opacity="0.4"/>
+    <!-- Decorative iron studs along the east face (visible from above as small dark dots) -->
+    <rect x="170" y="80" width="3" height="3" fill="#1a1410"/>
+    <rect x="170" y="80" width="2" height="2" fill="#404048"/>
+    <rect x="171" y="180" width="3" height="3" fill="#1a1410"/>
+    <rect x="171" y="180" width="2" height="2" fill="#404048"/>
+    <rect x="172" y="280" width="3" height="3" fill="#1a1410"/>
+    <rect x="172" y="280" width="2" height="2" fill="#404048"/>
+    <rect x="173" y="350" width="3" height="3" fill="#1a1410"/>
+    <rect x="173" y="350" width="2" height="2" fill="#404048"/>
+  </g>
+
+  <!-- ============ NORTH END (top): BOOK STACK ============ -->
+  <g>
+    <!-- Stack viewed from above; books oriented with spines facing east (right) -->
+    <ellipse cx="96" cy="86" rx="42" ry="5" fill="#1a0e08" opacity="0.55"/>
+
+    <!-- Bottom book (red) -->
+    <rect x="54" y="60" width="84" height="22" rx="1" fill="#1a0e08"/>
+    <rect x="56" y="62" width="80" height="18" fill="#5a1a14"/>
+    <rect x="56" y="70" width="80" height="2" fill="#8a2820"/>
+    <rect x="56" y="63" width="80" height="1" fill="#8a2820"/>
+    <rect x="56" y="79" width="80" height="1" fill="#3a0e08"/>
+    <!-- Page edges peek out -->
+    <rect x="134" y="64" width="4" height="14" fill="#d6cea0"/>
+    <rect x="134" y="65" width="4" height="1" fill="#f0e8c8"/>
+    <!-- Gold double-arc stamp -->
+    <path d="M 82,68 Q 90,65 98,68" fill="none" stroke="#c89030" stroke-width="1.2"/>
+    <path d="M 82,72 Q 90,69 98,72" fill="none" stroke="#c89030" stroke-width="1.2"/>
+
+    <!-- Top book (green) -->
+    <rect x="58" y="42" width="74" height="18" rx="1" fill="#1a0e08"/>
+    <rect x="60" y="44" width="70" height="14" fill="#1a3a1e"/>
+    <rect x="60" y="49" width="70" height="2" fill="#284a30"/>
+    <rect x="60" y="45" width="70" height="1" fill="#284a30"/>
+    <rect x="60" y="56" width="70" height="1" fill="#0a1a0c"/>
+    <rect x="128" y="46" width="4" height="10" fill="#d6cea0"/>
+    <rect x="128" y="47" width="4" height="1" fill="#f0e8c8"/>
+    <!-- Concentric circles stamp -->
+    <circle cx="96" cy="51" r="3" fill="none" stroke="#c89030" stroke-width="0.9"/>
+    <circle cx="96" cy="51" r="1.4" fill="none" stroke="#c89030" stroke-width="0.7"/>
+  </g>
+
+  <!-- ============ CENTER: OPEN BOOK + FLOATING SYMBOL ============ -->
+  <g>
+    <ellipse cx="96" cy="252" rx="64" ry="5" fill="#1a0e08" opacity="0.55"/>
+
+    <!-- Open book base/cover -->
+    <polygon points="38,246 154,246 150,222 42,222" fill="#1a0e08"/>
+    <polygon points="40,244 152,244 148,223 44,223" fill="#1a2a5a"/>
+
+    <!-- Pages (V-fold horizontal, since book lies flat with pages spreading sideways) -->
+    <!-- Left page -->
+    <polygon points="42,222 96,221 96,242 44,243" fill="#f0e8c8"/>
+    <polygon points="42,222 96,221 96,223 44,224" fill="#ffffff"/>
+    <polygon points="44,243 96,242 96,240 46,241" fill="#d6cea0"/>
+    <!-- Right page -->
+    <polygon points="96,221 150,222 148,243 96,242" fill="#f0e8c8"/>
+    <polygon points="96,221 150,222 148,224 96,223" fill="#ffffff"/>
+    <polygon points="96,242 148,243 146,241 96,240" fill="#d6cea0"/>
+    <!-- Center fold -->
+    <line x1="96" y1="221" x2="96" y2="242" stroke="#1a0e08" stroke-width="1.2"/>
+    <line x1="96" y1="222" x2="96" y2="241" stroke="#3a2818" stroke-width="0.6"/>
+    <!-- Text lines -->
+    <g fill="#3a2818" opacity="0.75">
+      <rect x="50" y="226" width="40" height="1"/>
+      <rect x="50" y="229" width="36" height="1"/>
+      <rect x="50" y="232" width="40" height="1"/>
+      <rect x="50" y="235" width="30" height="1"/>
+    </g>
+    <g fill="#3a2818" opacity="0.75">
+      <rect x="102" y="226" width="40" height="1"/>
+      <rect x="102" y="229" width="38" height="1"/>
+      <rect x="102" y="232" width="40" height="1"/>
+      <rect x="102" y="235" width="32" height="1"/>
+    </g>
+    <!-- Glowing cyan accent line -->
+    <rect x="108" y="232" width="14" height="1" fill="#4dffea" opacity="0.9"/>
+    <rect x="112" y="229" width="10" height="1" fill="#4dffea" opacity="0.7"/>
+  </g>
+
+  <!-- ============ FLOATING ARCANE SYMBOL (above open book, hovering north) ============ -->
+  <ellipse cx="96" cy="180" rx="38" ry="22" fill="#4dffea" opacity="0.55" filter="url(#softGlow)"/>
+  <ellipse cx="96" cy="180" rx="22" ry="14" fill="#a8fff5" opacity="0.48" filter="url(#softGlow)"/>
+
+  <!-- Beam of light from book to symbol -->
+  <polygon points="86,220 106,220 102,200 90,200" fill="#4dffea" opacity="0.22" filter="url(#softGlow)"/>
+
+  <g filter="url(#lineBlur)">
+    <circle cx="96" cy="180" r="15" fill="none" stroke="#a8fff5" stroke-width="1.5"/>
+    <circle cx="96" cy="180" r="9" fill="none" stroke="#4dffea" stroke-width="1.3"/>
+    <circle cx="96" cy="180" r="2" fill="#ffffff"/>
+    <rect x="95" y="162" width="2" height="5" fill="#a8fff5"/>
+    <rect x="95" y="193" width="2" height="5" fill="#a8fff5"/>
+    <rect x="78" y="179" width="5" height="2" fill="#a8fff5"/>
+    <rect x="109" y="179" width="5" height="2" fill="#a8fff5"/>
+  </g>
+
+  <!-- Smaller side glyphs -->
+  <g filter="url(#lineBlur)">
+    <!-- Top glyph: 3 dots -->
+    <rect x="92" y="148" width="1.5" height="1.5" fill="#a8fff5"/>
+    <rect x="96" y="148" width="1.5" height="1.5" fill="#a8fff5"/>
+    <rect x="100" y="148" width="1.5" height="1.5" fill="#a8fff5"/>
+    <!-- Bottom glyph: triangle -->
+    <polygon points="92,214 100,214 96,208" fill="none" stroke="#a8fff5" stroke-width="0.9"/>
+  </g>
+
+  <!-- Floating sparkles -->
+  <g>
+    <rect x="68" y="200" width="1" height="1" fill="#ffffff" opacity="0.9"/>
+    <rect x="124" y="196" width="1" height="1" fill="#ffffff" opacity="0.9"/>
+    <rect x="80" y="170" width="1" height="1" fill="#a8fff5" opacity="0.8"/>
+    <rect x="116" y="166" width="1" height="1" fill="#a8fff5" opacity="0.8"/>
+  </g>
+
+  <!-- ============ SOUTH END (bottom): CRYSTAL ORB + INKWELL ============ -->
+  <g>
+    <!-- Inkwell + Quill (closer to camera since south end) -->
+    <ellipse cx="56" cy="358" rx="14" ry="4" fill="#1a0e08" opacity="0.55"/>
+    <rect x="44" y="338" width="22" height="20" rx="1" fill="#1a1410"/>
+    <rect x="46" y="340" width="18" height="16" fill="#26262e"/>
+    <rect x="47" y="340" width="2" height="14" fill="#3a3a48"/>
+    <rect x="62" y="340" width="2" height="14" fill="#15151a"/>
+    <ellipse cx="55" cy="338" rx="11" ry="3" fill="#1a1410"/>
+    <ellipse cx="55" cy="338" rx="9" ry="2.2" fill="#0a0a18"/>
+    <ellipse cx="53" cy="337" rx="3" ry="0.8" fill="#1a2a5a"/>
+    <!-- Quill rising to the south-east -->
+    <line x1="58" y1="338" x2="78" y2="300" stroke="#1a0e08" stroke-width="1.8"/>
+    <line x1="58" y1="338" x2="78" y2="300" stroke="#3a2818" stroke-width="0.8"/>
+    <path d="M 78,300 L 86,288 L 80,290 L 84,284 L 76,288 L 74,282 L 72,288 L 76,294 L 72,296 L 74,298 Z" fill="#f0e8c8"/>
+    <path d="M 78,300 L 84,286 L 80,288 L 78,294 L 76,294 Z" fill="#d6cea0"/>
+
+    <!-- Crystal orb on stand -->
+    <ellipse cx="130" cy="380" rx="18" ry="4" fill="#1a0e08" opacity="0.55"/>
+    <rect x="114" y="370" width="32" height="8" rx="2" fill="#1a1410"/>
+    <rect x="116" y="371" width="28" height="5" fill="#3a2818"/>
+    <rect x="118" y="371" width="24" height="1" fill="#5c3e22"/>
+    <rect x="120" y="372" width="3" height="1" fill="#8a5a30"/>
+    <rect x="117" y="365" width="3" height="6" fill="#1a1410"/>
+    <rect x="140" y="365" width="3" height="6" fill="#1a1410"/>
+    <rect x="128" y="364" width="3" height="6" fill="#1a1410"/>
+    <!-- Orb halo -->
+    <circle cx="130" cy="352" r="22" fill="#4dffea" opacity="0.35" filter="url(#softGlow)"/>
+    <circle cx="130" cy="352" r="14" fill="#a8fff5" opacity="0.35" filter="url(#softGlow)"/>
+    <!-- Orb body -->
+    <circle cx="130" cy="352" r="14" fill="#1a3a3a"/>
+    <circle cx="130" cy="352" r="12" fill="#2a6a6a"/>
+    <circle cx="130" cy="352" r="10" fill="#4dffea"/>
+    <circle cx="130" cy="352" r="6" fill="#a8fff5"/>
+    <ellipse cx="125" cy="347" rx="4" ry="3" fill="#ffffff"/>
+    <rect x="123" y="345" width="2" height="2" fill="#ffffff"/>
+    <path d="M 127,360 Q 130,356 134,361" fill="none" stroke="#1a3a3a" stroke-width="0.8" opacity="0.6"/>
+    <circle cx="130" cy="352" r="14" fill="none" stroke="#1a1410" stroke-width="1.5"/>
+  </g>
+
+  <!-- ============ STANDING BOOK (between book stack and open book, on the table) ============ -->
+  <g>
+    <ellipse cx="96" cy="130" rx="20" ry="4" fill="#1a0e08" opacity="0.5"/>
+    <!-- Lying flat closed book viewed from above -->
+    <rect x="64" y="100" width="64" height="22" rx="1" fill="#1a0e08"/>
+    <rect x="66" y="102" width="60" height="18" fill="#1a2a5a"/>
+    <rect x="66" y="108" width="60" height="2" fill="#283a7a"/>
+    <rect x="66" y="103" width="60" height="1" fill="#4a5aa0"/>
+    <rect x="66" y="117" width="60" height="1" fill="#0a1a3a"/>
+    <rect x="124" y="104" width="4" height="14" fill="#d6cea0"/>
+    <rect x="124" y="105" width="4" height="1" fill="#f0e8c8"/>
+    <!-- Gold three-dot stamp -->
+    <rect x="86" y="110" width="2" height="2" fill="#c89030"/>
+    <rect x="94" y="110" width="2" height="2" fill="#c89030"/>
+    <rect x="102" y="110" width="2" height="2" fill="#c89030"/>
+  </g>
+
+  <!-- ============ ROLLED SCROLL (between open book and orb) ============ -->
+  <g>
+    <ellipse cx="96" cy="290" rx="14" ry="3" fill="#1a0e08" opacity="0.4"/>
+    <rect x="74" y="284" width="44" height="6" rx="1" fill="#d6cea0"/>
+    <rect x="74" y="284" width="44" height="2" fill="#f0e8c8"/>
+    <rect x="74" y="289" width="44" height="1" fill="#b8aa78"/>
+    <ellipse cx="74" cy="287" rx="1.5" ry="3" fill="#b8aa78"/>
+    <ellipse cx="118" cy="287" rx="1.5" ry="3" fill="#b8aa78"/>
+    <ellipse cx="74" cy="287" rx="1" ry="2.5" fill="#8a7858"/>
+    <ellipse cx="118" cy="287" rx="1" ry="2.5" fill="#8a7858"/>
+    <circle cx="96" cy="287" r="2.2" fill="#8a2820"/>
+    <circle cx="96" cy="287" r="1.4" fill="#b8403a"/>
+  </g>
+
+</svg>

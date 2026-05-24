@@ -6,6 +6,8 @@ RimWorld 1.6 mod. Adds 15 overpowered `Ch*` traits for custom colonists and hero
 
 **Always use the `rimworld-analysis` skill before reasoning about RimWorld internals.** Any time a task touches vanilla RimWorld types, methods, or behavior — writing a new Harmony patch, modifying an existing one, debugging why a patch isn't firing, choosing the right hook point, reviewing aura/stat/Comp/Hediff logic, answering "how does X work in RimWorld", or naming a class/method to target — invoke the `rimworld-analysis` skill first so guidance is grounded in the curated notes and decompiled source rather than guessed. The only exception is pure XML Def authoring that doesn't touch C# behavior.
 
+**Always use the `rimworld-sprite` skill when creating or refining a sprite/texture.** It owns the SVG → Inkscape → ImageMagick pipeline, the vanilla-style rules (camera angle, outline weight, palette, tone count), and the Graphic_Single vs Graphic_Multi decision. Per-building SVG sources live in `Source/art/`; see [`Source/art/cauldron.svg`](Source/art/cauldron.svg) as the canonical template.
+
 ## Active multi-session work
 
 `PLAN.md` at the repo root tracks an in-progress abilities/buildings expansion broken into chunks. If the user asks to "implement the next chunk", "continue the plan", or names one of the chunked features (Knockout Blow, Deadeye, Tunnel, Iron Wall, Miracle Heal, Reforge, Blink, Vitae Pillar, Call of the Wild, Alchemy Cauldron), read `PLAN.md` first. The user-facing spec for each chunk lives in `README.md` and is authoritative on names/numbers/behavior.
