@@ -12,7 +12,7 @@
     <graphicData>
       <texPath>Things/ChAlchemist_AlchemyCauldron</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1.1,1.1)</drawSize>
+      <drawSize>(1.23,1.23)</drawSize>
       <shaderType>Transparent</shaderType>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
@@ -20,6 +20,9 @@
         <cornerBL>Damage/Corner</cornerBL>
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
+      <shadowData>
+        <volume>(0.75, 0.35, 0.33)</volume>
+      </shadowData>
     </graphicData>
 
     <altitudeLayer>Building</altitudeLayer>
