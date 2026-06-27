@@ -1,6 +1,6 @@
 # Cheat Traits
 
-`Cheat Traits` adds 15 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, spellcaster, and more.
+`Cheat Traits` adds 16 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, spellcaster, support hero, and more.
 
 All traits use `commonality = 0`, so they are best suited for custom starts, edited pawns, dev-mode setups, or other deliberate trait assignment.
 
@@ -11,7 +11,7 @@ All traits use `commonality = 0`, so they are best suited for custom starts, edi
 
 ## What The Mod Adds
 
-- `15` high-power role traits
+- `16` high-power role traits
 - Several passive aura systems
 - `13` custom castable abilities granted by traits
 - Five trait-gated buildings:
@@ -386,6 +386,33 @@ A born spellcaster with a custom spellbook of overpowered abilities. Works witho
   - The target's existing primary weapon and any replaced apparel drop to the ground rather than being destroyed
 - Once the buff ends, the spawned gear is destroyed regardless of where it ended up (still worn, dropped on the map, or picked up by another pawn)
 - The `Super Charge Rifle` is exclusive to this spell — it has `2x` range (`55.8`), `2x` damage (`32`), and `2x` armor penetration (`0.70`) of a vanilla charge rifle, and never spawns through raids, trade, quests, scenarios, or crafting
+
+### Ch Bard
+
+A battlefield support hero. The Bard projects a `12`-tile aura that empowers nearby colonists, and the buff **ramps up the longer an ally stays inside it** — reaching full strength after about `3` in-game hours and fading away over a similar time once they leave.
+
+- `+6` Social
+- Aura affects same-faction humanlikes within `12` tiles (the Bard does not buff itself)
+- Each affected ally builds the buff up through three tiers (faint → rising → peak); standing in the aura is what charges it
+- Switchable between four stances using gizmos on the Bard. Changing stance has a `3` in-game hour cooldown; the active stance shows a checkmark, the others grey out with a countdown while on cooldown:
+
+`War Anthem` (offense)
+
+- Up to `+0.18` Melee Hit Chance, `+0.10` Melee Dodge Chance, `+3` Shooting Accuracy
+- Up to `x1.30` Melee Damage, `x0.80` Melee Cooldown, `x0.70` Aiming Delay
+
+`Bulwark` (defense)
+
+- Up to `+0.30`/`+0.25`/`+0.20` Sharp/Blunt/Heat Armor and `+0.30` Pain Shock Threshold
+- Up to `x0.65` Incoming Damage
+
+`Vigor` (sustain)
+
+- Up to `-0.35` Hunger Rate, `x1.50` Immunity Gain Speed, `x1.50` Injury Healing, `x1.30` Rest Rate, `x1.30` Toxic Resistance
+
+`Heroic Boon` (reflexes and toughness)
+
+- Mimics `Nimble` + `Tough`: up to `+0.18` Melee Dodge Chance, `x0.75` Incoming Damage, `x1.10` Move Speed
 
 ## Suggested Use
 

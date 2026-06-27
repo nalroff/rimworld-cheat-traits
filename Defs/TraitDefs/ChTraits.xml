@@ -242,4 +242,18 @@
       </li>
     </degreeDatas>
   </TraitDef>
+
+  <TraitDef>
+    <defName>ChBard</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>ch Bard</label>
+        <description>A battlefield support hero. This pawn projects a commanding aura that empowers nearby colonists, and the longer an ally stays inside it the stronger the blessing grows. The Bard can switch the aura between four stances — War Anthem (offense), Bulwark (defense), Vigor (sustain), and Heroic Boon (reflexes and toughness) — with a short cooldown between changes.</description>
+        <skillGains>
+          <Social>6</Social>
+        </skillGains>
+      </li>
+    </degreeDatas>
+  </TraitDef>
 </Defs>

@@ -187,5 +187,6 @@ namespace CheatTraits.Patches
         public const string ZippyTrait = "ChZippy";
         public const string TeslaTrait = "ChTesla";
         public const string WizardTrait = "ChWizard";
+        public const string BardTrait = "ChBard";
     }
 }

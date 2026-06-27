@@ -376,4 +376,248 @@
       </li>
     </stages>
   </HediffDef>
+
+  <!-- ============================================================
+       ChBard — support-hero aura
+       ============================================================ -->
+
+  <!-- Invisible state carrier on the Bard. Holds the active aura mode and
+       the mode-switch cooldown end tick (see Hediff_ChBardConductor). Never
+       decays on its own; the applier adds/removes it with the trait. -->
+  <HediffDef>
+    <defName>ChBard_Conductor</defName>
+    <hediffClass>CheatTraits.Hediffs.Hediff_ChBardConductor</hediffClass>
+    <label>bard's aura</label>
+    <description>This pawn is projecting a commanding aura that empowers nearby colonists.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <defaultLabelColor>(0.85, 0.75, 0.35)</defaultLabelColor>
+  </HediffDef>
+
+  <!-- The four ramping buff hediffs. Each starts faint and is bumped up in
+       severity every aura scan while the ally stays in range (capped at 1.0);
+       the negative SeverityPerDay comp decays it to nothing (~3h) and the
+       hediff auto-removes at severity 0 once the ally leaves the aura. Three
+       severity stages give the visible "charging up". -->
+
+  <HediffDef>
+    <defName>ChBard_WarAnthem</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>war anthem</label>
+    <description>A Bard's battle hymn sharpens every strike and steadies every shot. The effect grows the longer you fight at their side.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>0.05</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <defaultLabelColor>(0.9, 0.5, 0.4)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-8.0</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>faint</label>
+        <statOffsets>
+          <MeleeHitChance>0.06</MeleeHitChance>
+        </statOffsets>
+        <statFactors>
+          <MeleeDamageFactor>1.10</MeleeDamageFactor>
+          <MeleeCooldownFactor>0.93</MeleeCooldownFactor>
+          <AimingDelayFactor>0.90</AimingDelayFactor>
+        </statFactors>
+      </li>
+      <li>
+        <label>rising</label>
+        <minSeverity>0.4</minSeverity>
+        <statOffsets>
+          <MeleeHitChance>0.12</MeleeHitChance>
+          <MeleeDodgeChance>0.06</MeleeDodgeChance>
+          <ShootingAccuracyPawn>2</ShootingAccuracyPawn>
+        </statOffsets>
+        <statFactors>
+          <MeleeDamageFactor>1.20</MeleeDamageFactor>
+          <MeleeCooldownFactor>0.87</MeleeCooldownFactor>
+          <AimingDelayFactor>0.80</AimingDelayFactor>
+        </statFactors>
+      </li>
+      <li>
+        <label>resounding</label>
+        <minSeverity>0.8</minSeverity>
+        <statOffsets>
+          <MeleeHitChance>0.18</MeleeHitChance>
+          <MeleeDodgeChance>0.10</MeleeDodgeChance>
+          <ShootingAccuracyPawn>3</ShootingAccuracyPawn>
+        </statOffsets>
+        <statFactors>
+          <MeleeDamageFactor>1.30</MeleeDamageFactor>
+          <MeleeCooldownFactor>0.80</MeleeCooldownFactor>
+          <AimingDelayFactor>0.70</AimingDelayFactor>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChBard_Bulwark</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>bulwark</label>
+    <description>A Bard's protective ward thickens armor and shrugs off pain. The effect grows the longer you hold the line beside them.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>0.05</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <defaultLabelColor>(0.5, 0.65, 0.9)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-8.0</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>faint</label>
+        <statOffsets>
+          <ArmorRating_Sharp>0.10</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.08</ArmorRating_Blunt>
+        </statOffsets>
+        <statFactors>
+          <IncomingDamageFactor>0.85</IncomingDamageFactor>
+        </statFactors>
+      </li>
+      <li>
+        <label>rising</label>
+        <minSeverity>0.4</minSeverity>
+        <statOffsets>
+          <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.16</ArmorRating_Blunt>
+          <ArmorRating_Heat>0.12</ArmorRating_Heat>
+          <PainShockThreshold>0.15</PainShockThreshold>
+        </statOffsets>
+        <statFactors>
+          <IncomingDamageFactor>0.75</IncomingDamageFactor>
+        </statFactors>
+      </li>
+      <li>
+        <label>unbreakable</label>
+        <minSeverity>0.8</minSeverity>
+        <statOffsets>
+          <ArmorRating_Sharp>0.30</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+          <ArmorRating_Heat>0.20</ArmorRating_Heat>
+          <PainShockThreshold>0.30</PainShockThreshold>
+        </statOffsets>
+        <statFactors>
+          <IncomingDamageFactor>0.65</IncomingDamageFactor>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChBard_Vigor</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>vigor</label>
+    <description>A Bard's sustaining presence fends off hunger and fatigue, speeds healing, and hardens the body against sickness. The effect grows the longer you remain at their side.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>0.05</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <defaultLabelColor>(0.5, 0.85, 0.5)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-8.0</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>faint</label>
+        <hungerRateFactorOffset>-0.10</hungerRateFactorOffset>
+        <statFactors>
+          <ImmunityGainSpeed>1.15</ImmunityGainSpeed>
+          <RestRateMultiplier>1.10</RestRateMultiplier>
+          <InjuryHealingFactor>1.15</InjuryHealingFactor>
+        </statFactors>
+      </li>
+      <li>
+        <label>rising</label>
+        <minSeverity>0.4</minSeverity>
+        <hungerRateFactorOffset>-0.20</hungerRateFactorOffset>
+        <statFactors>
+          <ImmunityGainSpeed>1.30</ImmunityGainSpeed>
+          <RestRateMultiplier>1.20</RestRateMultiplier>
+          <InjuryHealingFactor>1.30</InjuryHealingFactor>
+          <ToxicResistance>1.15</ToxicResistance>
+        </statFactors>
+      </li>
+      <li>
+        <label>tireless</label>
+        <minSeverity>0.8</minSeverity>
+        <hungerRateFactorOffset>-0.35</hungerRateFactorOffset>
+        <statFactors>
+          <ImmunityGainSpeed>1.50</ImmunityGainSpeed>
+          <RestRateMultiplier>1.30</RestRateMultiplier>
+          <InjuryHealingFactor>1.50</InjuryHealingFactor>
+          <ToxicResistance>1.30</ToxicResistance>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>ChBard_HeroicBoon</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>heroic boon</label>
+    <description>A Bard's blessing quickens reflexes and toughens the body, like the Nimble and Tough traits rolled into one. The effect grows the longer you stay within the aura.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>0.05</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <duplicationAllowed>false</duplicationAllowed>
+    <defaultLabelColor>(0.85, 0.75, 0.95)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-8.0</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>faint</label>
+        <statOffsets>
+          <MeleeDodgeChance>0.06</MeleeDodgeChance>
+        </statOffsets>
+        <statFactors>
+          <IncomingDamageFactor>0.90</IncomingDamageFactor>
+          <MoveSpeed>1.05</MoveSpeed>
+        </statFactors>
+      </li>
+      <li>
+        <label>rising</label>
+        <minSeverity>0.4</minSeverity>
+        <statOffsets>
+          <MeleeDodgeChance>0.12</MeleeDodgeChance>
+        </statOffsets>
+        <statFactors>
+          <IncomingDamageFactor>0.82</IncomingDamageFactor>
+          <MoveSpeed>1.08</MoveSpeed>
+        </statFactors>
+      </li>
+      <li>
+        <label>heroic</label>
+        <minSeverity>0.8</minSeverity>
+        <statOffsets>
+          <MeleeDodgeChance>0.18</MeleeDodgeChance>
+        </statOffsets>
+        <statFactors>
+          <IncomingDamageFactor>0.75</IncomingDamageFactor>
+          <MoveSpeed>1.10</MoveSpeed>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
 </Defs>

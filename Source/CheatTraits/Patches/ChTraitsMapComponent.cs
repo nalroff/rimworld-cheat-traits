@@ -12,6 +12,7 @@ namespace CheatTraits.Patches
         private int nextComfyTick;
         private int nextFloragenTick;
         private int nextEurekaTick;
+        private int nextBardTick;
 
         private HashSet<int> chComfyFireSuppressionDisabledPawnIds = new HashSet<int>();
         private Dictionary<int, int> chComfyNextDeployTickByPawnId = new Dictionary<int, int>();
@@ -57,6 +58,7 @@ namespace CheatTraits.Patches
                         ChArtificerAbilityApplier.TickPawn(p);
                         ChZippyAbilityApplier.TickPawn(p);
                         ChBeastmasterAbilityApplier.TickPawn(p);
+                        ChBardHediffApplier.TickPawn(p);
                     }
                 }
             }
@@ -80,6 +82,13 @@ namespace CheatTraits.Patches
             {
                 nextDiplomatTick = tick + ChDiplomatAuraConfig.ScanIntervalTicks;
                 ChDiplomatAuraSystem.TickMap(m);
+            }
+
+            // Bard cadence (250) — ramping support-hero aura
+            if (tick >= nextBardTick)
+            {
+                nextBardTick = tick + ChBardAuraConfig.ScanIntervalTicks;
+                ChBardAuraSystem.TickMap(m);
             }
 
             // Green Thumb cadence
