@@ -8,6 +8,8 @@ RimWorld 1.6 mod. Adds 17 overpowered `Ch*` traits for custom colonists and hero
 
 **Always use the `rimworld-sprite` skill when creating or refining a sprite/texture.** It owns the SVG → Inkscape → ImageMagick pipeline, the vanilla-style rules (camera angle, outline weight, palette, tone count), and the Graphic_Single vs Graphic_Multi decision. Per-building SVG sources live in `Source/art/`; see [`Source/art/cauldron.svg`](Source/art/cauldron.svg) as the canonical template.
 
+**Keep `About/About.xml` in sync with `README.md`.** `README.md` is the source of truth for trait/ability/building names, counts, and behavior. Whenever you add, change, or remove a `Ch*` trait, ability, or trait-gated building, re-check the Steam-facing `<description>` in [`About/About.xml`](About/About.xml) for accuracy: the trait count, the building list, the ability count and names, and the high-level summaries must still match the README. The About description is a curated marketing blurb (not an exhaustive dump), so update it for correctness rather than copying the README verbatim.
+
 ## Active multi-session work
 
 `PLAN.md` at the repo root tracks an in-progress abilities/buildings expansion broken into chunks. If the user asks to "implement the next chunk", "continue the plan", or names one of the chunked features (Knockout Blow, Deadeye, Tunnel, Iron Wall, Miracle Heal, Reforge, Blink, Vitae Pillar, Call of the Wild, Alchemy Cauldron), read `PLAN.md` first. The user-facing spec for each chunk lives in `README.md` and is authoritative on names/numbers/behavior.
