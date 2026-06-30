@@ -181,6 +181,7 @@ namespace CheatTraits.Patches
         public const string DiggerTrait = "ChDigger";
         public const string DiplomatTrait = "ChDiplomat";
         public const string DocTrait = "ChDoc";
+        public const string EngineerTrait = "ChEngineer";
         public const string GreenThumbTrait = "ChGreenThumb";
         public const string TankTrait = "ChTank";
         public const string TexTrait = "ChTex";

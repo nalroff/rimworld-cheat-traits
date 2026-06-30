@@ -406,7 +406,7 @@
   <HediffDef>
     <defName>ChBard_WarAnthem</defName>
     <hediffClass>HediffWithComps</hediffClass>
-    <label>war anthem</label>
+    <label>infantry</label>
     <description>A Bard's battle hymn sharpens every strike and steadies every shot. The effect grows the longer you fight at their side.</description>
     <isBad>false</isBad>
     <tendable>false</tendable>
@@ -521,7 +521,7 @@
   <HediffDef>
     <defName>ChBard_Vigor</defName>
     <hediffClass>HediffWithComps</hediffClass>
-    <label>vigor</label>
+    <label>paragon</label>
     <description>A Bard's sustaining presence fends off hunger and fatigue, speeds healing, and hardens the body against sickness. The effect grows the longer you remain at their side.</description>
     <isBad>false</isBad>
     <tendable>false</tendable>
@@ -572,7 +572,7 @@
   <HediffDef>
     <defName>ChBard_HeroicBoon</defName>
     <hediffClass>HediffWithComps</hediffClass>
-    <label>heroic boon</label>
+    <label>athlete</label>
     <description>A Bard's blessing quickens reflexes and toughens the body, like the Nimble and Tough traits rolled into one. The effect grows the longer you stay within the aura.</description>
     <isBad>false</isBad>
     <tendable>false</tendable>

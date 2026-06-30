@@ -46,6 +46,12 @@
 
   <AbilityDef>
     <defName>ChTeleportOther</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>teleport other</label>
     <description>Reach across the weave and pull any humanlike pawn on the map to the caster's side. The target appears at the nearest standable cell, briefly stunned by the displacement.</description>
     <iconPath>UI/Abilities/Beckon</iconPath>
@@ -114,6 +120,12 @@
 
   <AbilityDef>
     <defName>ChSuperSoldier</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>super soldier</label>
     <description>Conjure a temporary Legendary spacer-tier loadout onto a friendly humanlike and wire their reflexes to a tactical combat state. For two hours: Cataphract armor and helmet plus an overclocked charge rifle materialize on the target, their Shooting and Melee skills max out, their flesh takes a quarter of incoming damage, wounds knit closed steadily, and even a sworn pacifist will fight. When the spell fades, the conjured gear disintegrates.</description>
     <iconPath>Things/Item/Equipment/WeaponRanged/ChargeRifle</iconPath>
@@ -202,6 +214,12 @@
 
   <AbilityDef>
     <defName>ChTunnel</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>tunnel</label>
     <description>Carve a three-wide passage through rock and ore from your position to a target cell up to fifteen tiles away. Resources drop at the Digger's mining yield.</description>
     <iconPath>UI/Abilities/Chunkskip</iconPath>
@@ -230,6 +248,12 @@
 
   <AbilityDef>
     <defName>ChIronWall</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>iron wall</label>
     <description>Brace into a defensive stance for forty seconds. Incoming damage is reduced to a tenth, stuns slide off, and every hostile within forty-five tiles is goaded into attacking the Tank instead of softer colonists.</description>
     <iconPath>UI/Abilities/BulletShield</iconPath>
@@ -259,6 +283,12 @@
 
   <AbilityDef>
     <defName>ChMiracleHeal</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>miracle heal</label>
     <description>Reach across the map and restore one pawn. The worst disease or infection is purged, every non-permanent injury closes, and a single missing or destroyed body part is regrown.</description>
     <iconPath>UI/Abilities/UnnaturalHealing</iconPath>
@@ -287,9 +317,17 @@
 
   <AbilityDef>
     <defName>ChReforge</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>reforge</label>
-    <description>Rework the quality of any building or item with a quality rating. The reroll uses the Artificer's 60/30/10 Excellent/Masterwork/Legendary weights and always replaces the current quality, even if the new roll is lower. Three charges, each on an independent cooldown.</description>
-    <iconPath>UI/Abilities/TransmuteSteel</iconPath>
+    <description>Rework the quality of any carried item or sculpture with a quality rating — weapons, apparel, art, and other crafted goods. Installed furniture and other buildings are the Engineer's Retrofit. The reroll uses the Artificer's 60/30/10 Excellent/Masterwork/Legendary weights and always replaces the current quality, even if the new roll is lower. Three charges, each on an independent cooldown.</description>
+    <!-- Vanilla Core hammer (UI/Buttons/AutoRebuild). An "upgrade" up-arrow
+         overlay is pending custom art; kept distinct from Retrofit's icon. -->
+    <iconPath>UI/Buttons/AutoRebuild</iconPath>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>
     <cooldownTicksRange>12500</cooldownTicksRange>
@@ -320,7 +358,54 @@
   </AbilityDef>
 
   <AbilityDef>
+    <defName>ChRetrofit</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <label>retrofit</label>
+    <description>Rebuild an installed building in place to a higher standard — beds, chairs, tables, production benches, and other non-art structures. Sculptures and carried items are the Artificer's Reforge. The reroll uses the Engineer's 60/30/10 Excellent/Masterwork/Legendary weights and always replaces the current quality, even if the new roll is lower. Three charges, each on an independent cooldown.</description>
+    <!-- Vanilla Core building/install icon (UI/Commands/Install). An "upgrade"
+         up-arrow overlay is pending custom art; kept distinct from Reforge's icon. -->
+    <iconPath>UI/Commands/Install</iconPath>
+    <hostile>false</hostile>
+    <aiCanUse>false</aiCanUse>
+    <cooldownTicksRange>12500</cooldownTicksRange>
+    <charges>3</charges>
+    <cooldownPerCharge>true</cooldownPerCharge>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <range>15</range>
+      <requireLineOfSight>false</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>false</canTargetSelf>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>true</canTargetBuildings>
+        <canTargetItems>false</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+        <!-- Furniture (chairs, beds, benches) is not auto-attackable, so flip
+             this off the same way Reforge does to allow targeting it. -->
+        <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CheatTraits.Comps.CompProperties_AbilityChRetrofit" />
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef>
     <defName>ChBlink</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>blink</label>
     <description>Vanish and reappear at a chosen tile within fifteen cells. No line of sight required — walls, obstacles, and crowds are no obstacle. Low cooldown by design: this is a tactical positioning tool, not a setpiece.</description>
     <iconPath>UI/Abilities/Skip</iconPath>
@@ -349,6 +434,12 @@
 
   <AbilityDef>
     <defName>ChCallOfTheWild</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>call of the wild</label>
     <description>Rally every wild and neutral animal on the map. Affected animals — wild beasts, manhunter packs, insectoid hive defenders — are driven into a Wild Hunt and seek out the nearest pawn hostile to the colony. Player-faction animals are unaffected.</description>
     <iconPath>UI/Abilities/AnimalWarcall</iconPath>
@@ -378,6 +469,12 @@
 
   <AbilityDef>
     <defName>ChBond</defName>
+    <!-- Utility ability: keep its gizmo available without drafting.
+         displayGizmoWhileUndrafted shows the gizmo; disableGizmoWhileUndrafted
+         (default true) must be flipped off too or it stays greyed out with
+         "Must be drafted". Matches the vanilla Counsel ability. -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>bond pawns</label>
     <description>Cast on a humanlike to begin a bond. After the first pick, choose a second humanlike — the two are locked into near-maximum compatibility: opinion of 100 each way, deep talks fire constantly, fights nearly vanish, and romance chance reaches 100% whenever the engine already permits it (orientation, age, species, and gene blocks still apply). Casting on a bonded pair again breaks the bond. If the second pick is cancelled, the cooldown is refunded.</description>
     <iconPath>UI/Commands/GatherSpotActive</iconPath>

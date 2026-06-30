@@ -29,10 +29,10 @@ namespace CheatTraits.Patches
 
         public static readonly string[] Labels =
         {
-            "War Anthem",
+            "Infantry",
             "Bulwark",
-            "Vigor",
-            "Heroic Boon",
+            "Paragon",
+            "Athlete",
         };
 
         public static readonly string[] Descriptions =

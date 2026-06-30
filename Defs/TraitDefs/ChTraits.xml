@@ -82,11 +82,24 @@
     <degreeDatas>
       <li>
         <label>ch Artificer</label>
-        <description>Everything I make is at least excellent: 60% excellent, 30% masterwork, 10% legendary.</description>
+        <description>Everything I make is at least excellent: 60% excellent, 30% masterwork, 10% legendary. Covers crafted items and sculptures.</description>
         <skillGains>
-          <Construction>10</Construction>
           <Crafting>10</Crafting>
           <Artistic>10</Artistic>
+        </skillGains>
+      </li>
+    </degreeDatas>
+    <commonality>0</commonality>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChEngineer</defName>
+    <degreeDatas>
+      <li>
+        <label>ch Engineer</label>
+        <description>A master builder. Construction never fails, finishes in a fraction of the time, and every structure raised is at least excellent: 60% excellent, 30% masterwork, 10% legendary. Sculptures stay the Artificer's domain.</description>
+        <skillGains>
+          <Construction>10</Construction>
         </skillGains>
       </li>
     </degreeDatas>

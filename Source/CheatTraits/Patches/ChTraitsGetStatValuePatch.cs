@@ -24,6 +24,9 @@ namespace CheatTraits.Patches
         internal const float ArtificerSpeedMult = 5.0f;
         internal const float ArtificerSpeedCap = 8.0f;
 
+        internal const float EngineerSpeedMult = 5.0f;
+        internal const float EngineerSpeedCap = 8.0f;
+
         internal static bool IsBoxer(Pawn pawn)
         {
             return CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.BoxerTrait)
@@ -57,6 +60,11 @@ namespace CheatTraits.Patches
         internal static bool IsArtificer(Pawn pawn)
         {
             return CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.ArtificerTrait);
+        }
+
+        internal static bool IsEngineer(Pawn pawn)
+        {
+            return CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.EngineerTrait);
         }
 
         internal static bool IsAscendant(Pawn pawn)
@@ -126,12 +134,23 @@ namespace CheatTraits.Patches
             }
 
             // ------------------------
-            // Ch Artificer: construction and crafting speed boost
+            // Ch Artificer: general crafting speed boost (construction now belongs to Engineer)
             // ------------------------
             if (IsArtificer(pawn))
             {
-                if (stat.defName is "GeneralLaborSpeed" or "ConstructionSpeed")
+                if (stat.defName == "GeneralLaborSpeed")
                     __result = Mathf.Min(__result * ArtificerSpeedMult, ArtificerSpeedCap);
+            }
+
+            // ------------------------
+            // Ch Engineer: construction speed boost + never-fail construction
+            // ------------------------
+            if (IsEngineer(pawn))
+            {
+                if (stat.defName == "ConstructionSpeed")
+                    __result = Mathf.Min(__result * EngineerSpeedMult, EngineerSpeedCap);
+                else if (stat.defName == "ConstructSuccessChance")
+                    __result = Mathf.Max(__result, 1f); // frames never fail
             }
 
             // ------------------------

@@ -1,6 +1,6 @@
 # CheatTraits
 
-RimWorld 1.6 mod. Adds 15 overpowered `Ch*` traits for custom colonists and hero pawns. All traits use `commonality = 0`, so they never appear in normal gameplay — assignment is always deliberate (dev mode, scenario rules, character editor, etc.).
+RimWorld 1.6 mod. Adds 17 overpowered `Ch*` traits for custom colonists and hero pawns. All traits use `commonality = 0`, so they never appear in normal gameplay — assignment is always deliberate (dev mode, scenario rules, character editor, etc.).
 
 ## Working on this mod
 
@@ -47,7 +47,7 @@ Source/CheatTraits/
   Patches/
     Bootstrap.cs                      — Harmony init; applies all patches
     ChAlchemistMeals.cs               — Post-cook hook: applies buff meal variants
-    ChArtificerQuality.cs             — Patches quality roll to force Excellent/MW/Leg
+    ChArtificerQuality.cs             — Quality forcing split: Artificer=items+sculptures, Engineer=non-art buildings (Frame patch)
     ChAscendantAura.cs                — Learning + healing aura for humanlikes
     ChBeastmasterAura.cs              — Herd-blessing aura for animals
     ChBeastmasterInteractAnimalIgnoreSkill.cs — Bypasses skill minimums for tame/train
@@ -79,7 +79,7 @@ Source/CheatTraits/
 
 **Trait-gated buildings** (`ChBuildRestrictions.cs`, `Patch_BuildFloatMenu_TraitOverrides.cs`, `ChThingDefOfs.cs`): Buildings are hidden from the Architect menu unless the colony has the unlock trait. The float menu patch lets a trait-holding pawn force-build a gated thing via right-click even if it wouldn't normally be assignable.
 
-**Quality forcing** (`ChArtificerQuality.cs`): Patches the quality outcome roll for any work done by a Ch Artificer pawn. Weights: 60% Excellent, 30% Masterwork, 10% Legendary.
+**Quality forcing** (`ChArtificerQuality.cs`): Splits quality forcing across two traits using the same 60/30/10 weights (Excellent/Masterwork/Legendary). The `QualityUtility.GenerateQualityCreatedByPawn` leaf patch handles **items** (recipe `workSkill` ≠ Construction) for the Artificer. A `Frame.CompleteConstruction` patch handles **buildings**, branching on `CompArt`: sculptures (art) → Artificer, everything else → Engineer. Construction-skill rolls are deliberately skipped in the leaf patch so the Frame patch can tell art from non-art.
 
 **Surgery no-fail** (`ChDocMedical.cs`): Patches `Recipe_Surgery.CheckSurgeryFail` — returns false (no fail) when the doctor pawn has Ch Doc. Tend quality patch forces `Pawn_HealthTracker.Notify_Tended` to 1.0f.
 
@@ -91,12 +91,12 @@ Defs/
   HediffDefs/         — Aura hediffs (AscendantAura, BeastmasterAura, DiplomatAura, TankPainDamp, AlchemistMealBuff_*)
   StatDefs/           — Any custom StatDefs (none currently — all patches use base game stats)
   ThoughtDefs/        — DiplomaticCalm, EasyRapport ThoughtDefs
-  TraitDefs/          — All 14 Ch* TraitDefs with stat offsets
+  TraitDefs/          — All 17 Ch* TraitDefs with stat offsets
 ```
 
 ## Naming Conventions
 
-- All traits: `ChBoxer`, `ChTex`, `ChZippy`, `ChTank`, `ChGreenThumb`, `ChArtificer`, `ChAlchemist`, `ChDoc`, `ChAscendant`, `ChBeastmaster`, `ChDiplomat`, `ChDigger`, `ChComfy`, `ChTesla`
+- All traits: `ChBoxer`, `ChTex`, `ChZippy`, `ChTank`, `ChGreenThumb`, `ChArtificer`, `ChEngineer`, `ChAlchemist`, `ChDoc`, `ChAscendant`, `ChBeastmaster`, `ChDiplomat`, `ChDigger`, `ChComfy`, `ChTesla`, `ChWizard`, `ChBard`
 - All C# classes: `Ch` prefix (e.g., `CompChTeslaZap`, `ChDiplomatAura`)
 - All Def names: `Ch` prefix (e.g., `ChFloragenCore`, `ChDiplomaticCalm`)
 - Harmony patch classes follow the pattern `Patch_<TargetType>_<Method>` or `Ch<Feature>` for multi-method patches

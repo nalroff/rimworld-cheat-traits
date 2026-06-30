@@ -1,6 +1,6 @@
 # Cheat Traits
 
-`Cheat Traits` adds 16 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, spellcaster, support hero, and more.
+`Cheat Traits` adds 17 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, spellcaster, support hero, master crafter, master builder, and more.
 
 All traits use `commonality = 0`, so they are best suited for custom starts, edited pawns, dev-mode setups, or other deliberate trait assignment.
 
@@ -11,9 +11,9 @@ All traits use `commonality = 0`, so they are best suited for custom starts, edi
 
 ## What The Mod Adds
 
-- `16` high-power role traits
+- `17` high-power role traits
 - Several passive aura systems
-- `13` custom castable abilities granted by traits
+- `14` custom castable abilities granted by traits
 - Five trait-gated buildings:
   - `Floragen Core`
   - `Comfort Node`
@@ -173,23 +173,43 @@ A walking plant-growth engine and the unlock for `Floragen Core`.
 
 ### Ch Artificer
 
-A master builder, crafter, and artist who works fast and produces top-end quality.
+A master crafter and artist who works fast and produces top-end quality. The *building* side of things now belongs to the Ch Engineer — Artificer covers crafted items and sculptures.
 
-- `+10` Construction
 - `+10` Crafting
 - `+10` Artistic
 - `GeneralLaborSpeed x5`, capped at `8`
-- `ConstructionSpeed x5`, capped at `8`
-- Quality outcomes are forced to:
+- Quality outcomes are forced for **crafted items and sculptures**:
   - `60%` Excellent
   - `30%` Masterwork
   - `10%` Legendary
-- Adds a `Reforge` ability: rerolls the quality of any building or item with a quality rating
-  - Targets any built/installed building or any equipped/stored item with a `QualityCategory` (apparel, weapons, art, furniture, etc.)
+  - Items made at work tables (weapons, apparel, components, drugs, etc.) and sculptures built at a frame both qualify
+  - Non-art buildings (furniture, benches, walls) are the Ch Engineer's domain
+- Adds a `Reforge` ability: rerolls the quality of any carried/equipped item or sculpture
+  - Targets any equipped/stored item with a `QualityCategory` (apparel, weapons, art) plus installed sculptures
+  - Installed non-art buildings are rejected — use the Ch Engineer's `Retrofit` on those
   - Reroll uses the same `60/30/10` Excellent/Masterwork/Legendary weights as the Artificer's quality patch
   - The reroll always replaces the current quality — even if the new roll is lower than what was there
   - `3` charges, each on an independent `12500`-tick cooldown
-  - Reroll does not consume the item and does not count as construction work — other pawns can stay on build duty while the Artificer upgrades what they made
+  - Reroll does not consume the item and does not count as work — other pawns can stay on duty while the Artificer upgrades what they made
+
+### Ch Engineer
+
+A master builder. Splits the construction half off the old Artificer: every structure comes out fast, never fails, and rolls top-end quality.
+
+- `+10` Construction
+- `ConstructionSpeed x5`, capped at `8`
+- `ConstructSuccessChance` forced to `100%` — construction frames never fail, so resources are never wasted on a botched build
+- Quality outcomes are forced for **non-art buildings** built by this pawn (furniture, benches, walls, and other constructed things):
+  - `60%` Excellent
+  - `30%` Masterwork
+  - `10%` Legendary
+  - Sculptures are excluded — those roll on the Ch Artificer's quality patch instead
+- Adds a `Retrofit` ability: rerolls the quality of an installed, non-art building in place
+  - Targets installed furniture, benches, and other non-art buildings with a `QualityCategory`
+  - Items and sculptures are rejected — use the Ch Artificer's `Reforge` on those
+  - Reroll uses the same `60/30/10` Excellent/Masterwork/Legendary weights as the Artificer's
+  - The reroll always replaces the current quality — even if the new roll is lower than what was there
+  - `3` charges, each on an independent `12500`-tick cooldown
 
 ### Ch Alchemist
 
@@ -396,7 +416,7 @@ A battlefield support hero. The Bard projects a `12`-tile aura that empowers nea
 - Each affected ally builds the buff up through three tiers (faint → rising → peak); standing in the aura is what charges it
 - Switchable between four stances using gizmos on the Bard. Changing stance has a `3` in-game hour cooldown; the active stance shows a checkmark, the others grey out with a countdown while on cooldown:
 
-`War Anthem` (offense)
+`Infantry` (offense)
 
 - Up to `+0.18` Melee Hit Chance, `+0.10` Melee Dodge Chance, `+3` Shooting Accuracy
 - Up to `x1.30` Melee Damage, `x0.80` Melee Cooldown, `x0.70` Aiming Delay
@@ -406,11 +426,11 @@ A battlefield support hero. The Bard projects a `12`-tile aura that empowers nea
 - Up to `+0.30`/`+0.25`/`+0.20` Sharp/Blunt/Heat Armor and `+0.30` Pain Shock Threshold
 - Up to `x0.65` Incoming Damage
 
-`Vigor` (sustain)
+`Paragon` (sustain)
 
 - Up to `-0.35` Hunger Rate, `x1.50` Immunity Gain Speed, `x1.50` Injury Healing, `x1.30` Rest Rate, `x1.30` Toxic Resistance
 
-`Heroic Boon` (reflexes and toughness)
+`Athlete` (reflexes and toughness)
 
 - Mimics `Nimble` + `Tough`: up to `+0.18` Melee Dodge Chance, `x0.75` Incoming Damage, `x1.10` Move Speed
 

@@ -4,29 +4,29 @@ using CheatTraits.Patches;
 
 namespace CheatTraits.Comps
 {
-    public class CompProperties_AbilityChReforge : CompProperties_AbilityEffect
+    public class CompProperties_AbilityChRetrofit : CompProperties_AbilityEffect
     {
-        public CompProperties_AbilityChReforge()
+        public CompProperties_AbilityChRetrofit()
         {
-            compClass = typeof(CompAbilityEffect_ChReforge);
+            compClass = typeof(CompAbilityEffect_ChRetrofit);
         }
     }
 
     /// <summary>
-    /// Rerolls the quality of the targeted item or sculpture using the
-    /// Artificer's 60/30/10 Excellent/Masterwork/Legendary weights. Always
-    /// replaces the current quality — even a downgrade is honored per spec.
-    /// Installed non-art buildings are excluded — those are the Engineer's
-    /// Retrofit domain.
+    /// The Engineer's counterpart to the Artificer's Reforge: rerolls the
+    /// quality of an installed, non-art building (beds, chairs, tables,
+    /// benches, etc.) using the same 60/30/10 Excellent/Masterwork/Legendary
+    /// weights. Sculptures and carried items are excluded — those stay with
+    /// the Artificer's Reforge.
     /// </summary>
-    public class CompAbilityEffect_ChReforge : CompAbilityEffect
+    public class CompAbilityEffect_ChRetrofit : CompAbilityEffect
     {
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
 
             Thing? thing = ResolveQualityThing(target);
-            if (thing == null || !IsReforgeTarget(thing))
+            if (thing == null || !IsRetrofitTarget(thing))
                 return;
 
             CompQuality cq = thing.TryGetComp<CompQuality>();
@@ -36,7 +36,7 @@ namespace CheatTraits.Comps
             QualityCategory newQuality = ArtificerQualityUtil.GetArtificerQualityLevel();
             cq.SetQuality(newQuality, ArtGenerationContext.Colony);
 
-            // Force a redraw so any quality-tinted graphics (e.g. art) refresh.
+            // Force a redraw so any quality-tinted graphics refresh.
             if (thing.Spawned && thing.Map != null)
             {
                 thing.DirtyMapMesh(thing.Map);
@@ -56,18 +56,18 @@ namespace CheatTraits.Comps
             {
                 if (throwMessages)
                     Messages.Message(
-                        "Reforge requires an item or sculpture.",
+                        "Retrofit requires an installed building.",
                         MessageTypeDefOf.RejectInput,
                         historical: false
                     );
                 return false;
             }
 
-            if (!IsReforgeTarget(thing))
+            if (!IsRetrofitTarget(thing))
             {
                 if (throwMessages)
                     Messages.Message(
-                        $"{thing.LabelShortCap} is a building — use Retrofit instead.",
+                        $"{thing.LabelShortCap} is an item or sculpture — use Reforge instead.",
                         thing,
                         MessageTypeDefOf.RejectInput,
                         historical: false
@@ -79,7 +79,7 @@ namespace CheatTraits.Comps
             {
                 if (throwMessages)
                     Messages.Message(
-                        $"{thing.LabelShortCap} has no quality to reforge.",
+                        $"{thing.LabelShortCap} has no quality to retrofit.",
                         thing,
                         MessageTypeDefOf.RejectInput,
                         historical: false
@@ -95,23 +95,20 @@ namespace CheatTraits.Comps
             Thing? thing = ResolveQualityThing(target);
             if (thing == null)
                 return null;
-            if (!IsReforgeTarget(thing))
-                return "Use Retrofit";
+            if (!IsRetrofitTarget(thing))
+                return "Use Reforge";
             if (thing.TryGetComp<CompQuality>() == null)
                 return "No quality";
             return null;
         }
 
         /// <summary>
-        /// Reforge handles carried/equipped items and sculptures (art buildings).
-        /// Installed non-art buildings (furniture, benches, walls) are the
-        /// Engineer's Retrofit domain.
+        /// Retrofit handles installed, non-art buildings only. Sculptures (art
+        /// buildings) and carried/equipped items are the Artificer's Reforge.
         /// </summary>
-        private static bool IsReforgeTarget(Thing thing)
+        private static bool IsRetrofitTarget(Thing thing)
         {
-            if (thing is Building)
-                return thing.TryGetComp<CompArt>() != null;
-            return true;
+            return thing is Building && thing.TryGetComp<CompArt>() == null;
         }
 
         private static Thing? ResolveQualityThing(LocalTargetInfo target)
@@ -121,10 +118,6 @@ namespace CheatTraits.Comps
             Thing t = target.Thing;
             if (t == null || t.Destroyed)
                 return null;
-            // Targeting items in stacks: TryGetComp on the stack thing works
-            // directly; quality items don't stack with differing quality (see
-            // CompQuality.AllowStackWith), so the picked Thing is the one to
-            // reforge.
             return t;
         }
     }

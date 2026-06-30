@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
@@ -37,6 +38,17 @@ namespace CheatTraits.Patches
                 return QualityCategory.Masterwork;
             return QualityCategory.Excellent;
         }
+    }
+
+    internal static class EngineerQualityUtil
+    {
+        internal static bool IsEngineerPawn(Pawn pawn) =>
+            CheatTraitsUtils.HasTrait(pawn, CheatTraitsNames.EngineerTrait);
+
+        // The Engineer's building quality uses the same 60/30/10 weights as the
+        // Artificer's item quality — the split is about *what* each forces, not the odds.
+        internal static void ForceEngineerQuality(Thing thing) =>
+            ArtificerQualityUtil.ForceArtificerQuality(thing);
     }
 
     // ---------------------------------------------------------------------
@@ -109,14 +121,78 @@ namespace CheatTraits.Patches
             return methods.FirstOrDefault();
         }
 
-        public static void Postfix(Pawn pawn, ref QualityCategory __result)
+        public static void Postfix(Pawn pawn, SkillDef relevantSkill, ref QualityCategory __result)
         {
             if (pawn == null)
+                return;
+
+            // Buildings roll quality off Construction (Frame.CompleteConstruction).
+            // We let the Frame patch handle those so we can tell art (-> Artificer)
+            // from non-art (-> Engineer). Here we only force item/recipe quality.
+            if (relevantSkill == SkillDefOf.Construction)
                 return;
             if (!ArtificerQualityUtil.IsArtificerPawn(pawn))
                 return;
 
             __result = ArtificerQualityUtil.GetArtificerQualityLevel();
+        }
+    }
+
+    // ---------------------------------------------------------------------
+    // Construction: split building quality forcing between the two traits.
+    //   - Sculptures / art buildings (have CompArt)  -> Artificer
+    //   - Everything else (furniture, benches, etc.) -> Engineer
+    // Frame.CompleteConstruction rolls quality off SkillDefOf.Construction for
+    // both, so we re-roll here where the finished Thing is available.
+    // ---------------------------------------------------------------------
+    [HarmonyPatch(typeof(Frame), nameof(Frame.CompleteConstruction))]
+    internal static class Patch_Frame_CompleteConstruction_BuildingQuality
+    {
+        // CompleteConstruction destroys the frame mid-method, so capture the map
+        // and cell in a prefix and read back the spawned building in the postfix.
+        [System.ThreadStatic]
+        private static Map? capturedMap;
+
+        [System.ThreadStatic]
+        private static IntVec3 capturedPos;
+
+        static void Prefix(Frame __instance)
+        {
+            capturedMap = __instance.Map;
+            capturedPos = __instance.Position;
+        }
+
+        static void Postfix(Pawn worker)
+        {
+            Map? map = capturedMap;
+            capturedMap = null;
+            if (map == null || worker == null)
+                return;
+
+            bool artificer = ArtificerQualityUtil.IsArtificerPawn(worker);
+            bool engineer = EngineerQualityUtil.IsEngineerPawn(worker);
+            if (!artificer && !engineer)
+                return;
+
+            List<Thing> things = map.thingGrid.ThingsListAtFast(capturedPos);
+            for (int i = 0; i < things.Count; i++)
+            {
+                if (things[i] is not Building building)
+                    continue;
+                if (building.TryGetComp<CompQuality>() == null)
+                    continue;
+
+                if (building.TryGetComp<CompArt>() != null)
+                {
+                    if (artificer)
+                        ArtificerQualityUtil.ForceArtificerQuality(building);
+                }
+                else if (engineer)
+                {
+                    EngineerQualityUtil.ForceEngineerQuality(building);
+                }
+                break;
+            }
         }
     }
 }
