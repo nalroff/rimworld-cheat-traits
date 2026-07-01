@@ -84,21 +84,16 @@ namespace CheatTraits.Patches
         {
             switch ((ChBardMode)ChBardModes.Clamp(index))
             {
-                // Infantry: vanilla Core bolt-action rifle.
+                // Infantry: custom mod texture.
                 case ChBardMode.WarAnthem:
-                    return ContentFinder<Texture2D>.Get(
-                        "Things/Item/Equipment/WeaponRanged/BoltActionRifle");
-                // Bulwark: no DLC-free vanilla shield icon exists; the only shield
-                // icons (BulletShield/ShieldMech) are Royalty/Biotech. Pending
-                // custom art — keep the draft icon as a placeholder for now.
+                    return ContentFinder<Texture2D>.Get("UI/Commands/Bard_Infantry");
                 case ChBardMode.Bulwark:
-                    return TexCommand.Draft;
-                // Paragon: custom mod texture (Textures/UI/Commands/Bard_Paragon).
+                    return ContentFinder<Texture2D>.Get("UI/Abilities/Bard_Bulwark");
                 case ChBardMode.Vigor:
                     return ContentFinder<Texture2D>.Get("UI/Commands/Bard_Paragon");
-                // Athlete: vanilla Core move-speed (foot) icon.
+                // Athlete: custom mod texture.
                 case ChBardMode.HeroicBoon:
-                    return ContentFinder<Texture2D>.Get("UI/Icons/MoveSpeedBonus");
+                    return ContentFinder<Texture2D>.Get("UI/Commands/Bard_Athlete");
                 default:
                     return TexCommand.Attack;
             }

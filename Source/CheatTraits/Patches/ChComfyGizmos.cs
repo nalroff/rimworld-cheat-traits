@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace CheatTraits.Patches
@@ -43,7 +44,7 @@ namespace CheatTraits.Patches
                     bool cur = mapComp.ChComfy_IsFireSuppressionEnabled(pawn);
                     mapComp.ChComfy_SetFireSuppressionEnabled(pawn, !cur);
                 },
-                icon = TexCommand.ForbidOff,
+                icon = ContentFinder<Texture2D>.Get("UI/Commands/Comfy_FireSuppression"),
             };
         }
     }
