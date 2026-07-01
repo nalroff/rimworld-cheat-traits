@@ -112,6 +112,7 @@ An unarmed melee monster.
   - Range `15`, requires line of sight, cooldown `12500` ticks
   - Targets any pawn, animal, mech, or building — perfect for closing the gap on a ranged opponent
   - On landing, the Boxer's normal melee verb fires against the target; with the trait's `MeleeDamageFactor x10` unarmed bonus, a bare-handed punch lands as a single overwhelming blow
+  - The `Flying Punch` button graphic was drawn by my 10-year-old
 
 ### Ch Tex
 
@@ -189,7 +190,7 @@ A master crafter and artist who works fast and produces top-end quality. The *bu
   - Installed non-art buildings are rejected — use the Ch Engineer's `Retrofit` on those
   - Reroll uses the same `60/30/10` Excellent/Masterwork/Legendary weights as the Artificer's quality patch
   - The reroll always replaces the current quality — even if the new roll is lower than what was there
-  - `3` charges, each on an independent `12500`-tick cooldown
+  - Single use per `12500`-tick cooldown
   - Reroll does not consume the item and does not count as work — other pawns can stay on duty while the Artificer upgrades what they made
 
 ### Ch Engineer
@@ -209,7 +210,7 @@ A master builder. Splits the construction half off the old Artificer: every stru
   - Items and sculptures are rejected — use the Ch Artificer's `Reforge` on those
   - Reroll uses the same `60/30/10` Excellent/Masterwork/Legendary weights as the Artificer's
   - The reroll always replaces the current quality — even if the new roll is lower than what was there
-  - `3` charges, each on an independent `12500`-tick cooldown
+  - Single use per `12500`-tick cooldown
 
 ### Ch Alchemist
 

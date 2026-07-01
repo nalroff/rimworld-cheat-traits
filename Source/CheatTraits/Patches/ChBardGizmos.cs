@@ -84,16 +84,15 @@ namespace CheatTraits.Patches
         {
             switch ((ChBardMode)ChBardModes.Clamp(index))
             {
-                // Infantry: custom mod texture.
+                // All Bard stance icons are custom mod textures under UI/Gizmos.
                 case ChBardMode.WarAnthem:
-                    return ContentFinder<Texture2D>.Get("UI/Commands/Bard_Infantry");
+                    return ContentFinder<Texture2D>.Get("UI/Gizmos/Bard_Infantry");
                 case ChBardMode.Bulwark:
-                    return ContentFinder<Texture2D>.Get("UI/Abilities/Bard_Bulwark");
+                    return ContentFinder<Texture2D>.Get("UI/Gizmos/Bard_Bulwark");
                 case ChBardMode.Vigor:
-                    return ContentFinder<Texture2D>.Get("UI/Commands/Bard_Paragon");
-                // Athlete: custom mod texture.
+                    return ContentFinder<Texture2D>.Get("UI/Gizmos/Bard_Paragon");
                 case ChBardMode.HeroicBoon:
-                    return ContentFinder<Texture2D>.Get("UI/Commands/Bard_Athlete");
+                    return ContentFinder<Texture2D>.Get("UI/Gizmos/Bard_Athlete");
                 default:
                     return TexCommand.Attack;
             }

@@ -44,7 +44,7 @@ namespace CheatTraits.Patches
                     bool cur = mapComp.ChComfy_IsFireSuppressionEnabled(pawn);
                     mapComp.ChComfy_SetFireSuppressionEnabled(pawn, !cur);
                 },
-                icon = ContentFinder<Texture2D>.Get("UI/Commands/Comfy_FireSuppression"),
+                icon = ContentFinder<Texture2D>.Get("UI/Gizmos/Comfy_FireSuppression"),
             };
         }
     }

@@ -157,7 +157,7 @@
     <defName>ChFlyingPunch</defName>
     <label>flying punch</label>
     <description>Leap through the air to land adjacent to a chosen target and deliver a devastating strike. Useful for closing the gap on ranged opponents. Works on any pawn, animal, mech, or building.</description>
-    <iconPath>UI/Abilities/Stun</iconPath>
+    <iconPath>UI/Abilities/Boxer_FlyingPunch</iconPath>
     <hostile>true</hostile>
     <aiCanUse>false</aiCanUse>
     <jobDef>CastJump</jobDef>
@@ -324,15 +324,12 @@
     <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
     <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>reforge</label>
-    <description>Rework the quality of any carried item or sculpture with a quality rating — weapons, apparel, art, and other crafted goods. Installed furniture and other buildings are the Engineer's Retrofit. The reroll uses the Artificer's 60/30/10 Excellent/Masterwork/Legendary weights and always replaces the current quality, even if the new roll is lower. Three charges, each on an independent cooldown.</description>
-    <!-- Vanilla Core hammer (UI/Buttons/AutoRebuild). An "upgrade" up-arrow
-         overlay is pending custom art; kept distinct from Retrofit's icon. -->
-    <iconPath>UI/Commands/Artificer_Reforge</iconPath>
+    <description>Rework the quality of any carried item or sculpture with a quality rating — weapons, apparel, art, and other crafted goods. Installed furniture and other buildings are the Engineer's Retrofit. The reroll uses the Artificer's 60/30/10 Excellent/Masterwork/Legendary weights and always replaces the current quality, even if the new roll is lower.</description>
+    <!-- Vanilla Core hammer icon; kept distinct from Retrofit's home-area icon. -->
+    <iconPath>UI/Buttons/AutoRebuild</iconPath>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>
     <cooldownTicksRange>12500</cooldownTicksRange>
-    <charges>3</charges>
-    <cooldownPerCharge>true</cooldownPerCharge>
     <verbProperties>
       <verbClass>Verb_CastAbility</verbClass>
       <warmupTime>0.5</warmupTime>
@@ -366,15 +363,12 @@
     <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
     <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
     <label>retrofit</label>
-    <description>Rebuild an installed building in place to a higher standard — beds, chairs, tables, production benches, and other non-art structures. Sculptures and carried items are the Artificer's Reforge. The reroll uses the Engineer's 60/30/10 Excellent/Masterwork/Legendary weights and always replaces the current quality, even if the new roll is lower. Three charges, each on an independent cooldown.</description>
-    <!-- Vanilla Core building/install icon (UI/Commands/Install). An "upgrade"
-         up-arrow overlay is pending custom art; kept distinct from Reforge's icon. -->
-    <iconPath>UI/Commands/Engineer_Retrofit</iconPath>
+    <description>Rebuild an installed building in place to a higher standard — beds, chairs, tables, production benches, and other non-art structures. Sculptures and carried items are the Artificer's Reforge. The reroll uses the Engineer's 60/30/10 Excellent/Masterwork/Legendary weights and always replaces the current quality, even if the new roll is lower.</description>
+    <!-- Vanilla Core home-area (house) icon; kept distinct from Reforge's hammer. -->
+    <iconPath>UI/Buttons/AutoHomeArea</iconPath>
     <hostile>false</hostile>
     <aiCanUse>false</aiCanUse>
     <cooldownTicksRange>12500</cooldownTicksRange>
-    <charges>3</charges>
-    <cooldownPerCharge>true</cooldownPerCharge>
     <verbProperties>
       <verbClass>Verb_CastAbility</verbClass>
       <warmupTime>0.5</warmupTime>
