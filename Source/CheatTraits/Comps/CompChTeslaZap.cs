@@ -1,5 +1,5 @@
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,9 +12,25 @@ namespace CheatTraits.Comps
         public float radius = 6f;
         public int cooldownTicks = 180;
         public int stunTicks = 120;
-        public float damageAmount = 45f; // if <= 0, we'll try to match wooden spike trap damage
-        public float armorPenetration = 0.15f;
         public bool requirePower = false; // coil is a generator; keep false unless you want it to stop if unpowered
+
+        // Chain lightning: the pulse arcs from the coil to the nearest hostile, then
+        // hops to the next-nearest hostile within chainRadius, up to chainCount targets.
+        public int chainCount = 4;
+        public float chainRadius = 5f;
+
+        // Flesh targets (humanoids, animals) are tuned to DOWN rather than kill so
+        // attackers can still be captured. A flesh pawn already below
+        // fleshSpareHealthPercent takes no damage (stun only) so the coil won't land a
+        // killing blow on someone about to collapse; downed pawns are never re-targeted.
+        public float fleshDamage = 16f;
+        public float fleshArmorPenetration = 0.15f;
+        public float fleshSpareHealthPercent = 0.30f;
+
+        // Non-flesh targets (mechanoids, drones) are tuned to DESTROY: armor-piercing so
+        // heavy mech plating no longer soaks the whole hit.
+        public float mechDamage = 55f;
+        public float mechArmorPenetration = 1.2f;
 
         public CompProperties_ChTeslaZap()
         {
@@ -60,31 +76,61 @@ namespace CheatTraits.Comps
                 return;
             }
 
-            Pawn? target = FindHostilePawnInRange(props.radius);
-            if (target == null)
+            List<Pawn> chain = BuildChain(props);
+            if (chain.Count == 0)
             {
                 // try again soon, but don't spam
                 nextZapTick = now + 30;
                 return;
             }
 
-            DoZap(target, props);
+            DoZap(chain, props);
 
             nextZapTick = now + props.cooldownTicks;
         }
 
-        private Pawn? FindHostilePawnInRange(float radius)
+        // Builds the chain of victims: nearest hostile to the coil, then each subsequent
+        // hop is the nearest not-yet-hit hostile within chainRadius of the previous link.
+        private List<Pawn> BuildChain(CompProperties_ChTeslaZap props)
         {
+            var chain = new List<Pawn>();
+
             Map map = parent.Map;
             if (map == null)
-                return null;
+                return chain;
 
             Faction myFaction = parent.Faction;
             if (myFaction == null)
-                return null; // no owner = no zapping (prevents weirdness)
+                return chain; // no owner = no zapping (prevents weirdness)
 
-            IntVec3 center = parent.PositionHeld;
+            var hit = new HashSet<Pawn>();
+            IntVec3 fromCell = parent.PositionHeld;
+            float searchRadius = props.radius;
 
+            for (int i = 0; i < props.chainCount; i++)
+            {
+                Pawn? next = FindNearestHostile(fromCell, searchRadius, map, myFaction, hit);
+                if (next == null)
+                    break;
+
+                chain.Add(next);
+                hit.Add(next);
+                fromCell = next.PositionHeld;
+                searchRadius = props.chainRadius; // hops after the first use the shorter arc range
+            }
+
+            return chain;
+        }
+
+        private Pawn? FindNearestHostile(
+            IntVec3 center,
+            float radius,
+            Map map,
+            Faction myFaction,
+            HashSet<Pawn> exclude
+        )
+        {
+            // RadialDistinctThingsAround walks outward, so the first match is ~nearest.
             foreach (
                 Thing t in GenRadial.RadialDistinctThingsAround(
                     center,
@@ -99,8 +145,9 @@ namespace CheatTraits.Comps
                     p == null
                     || !p.Spawned
                     || p.Dead
-                    || !p.HostileTo(myFaction)
                     || p.Downed
+                    || !p.HostileTo(myFaction)
+                    || exclude.Contains(p)
                     || !GenSight.LineOfSight(center, p.PositionHeld, map)
                 )
                 {
@@ -113,17 +160,17 @@ namespace CheatTraits.Comps
             return null;
         }
 
-        private void DoZap(Pawn target, CompProperties_ChTeslaZap props)
+        private void DoZap(List<Pawn> chain, CompProperties_ChTeslaZap props)
         {
             Map map = parent.Map;
+            DamageDef damageDef = ResolveTeslaDamageDef();
 
-            // Visual
             try
             {
-                FleckMaker.ThrowLightningGlow(target.DrawPos, map, 1.2f);
+                PlayZapSound(parent.Position, map);
             }
             catch
-            { /* ignore if method signature differs */
+            { /* ignore */
             }
 
             try
@@ -134,23 +181,34 @@ namespace CheatTraits.Comps
             { /* ignore */
             }
 
-            try
+            Vector3 prev = parent.DrawPos;
+            foreach (Pawn target in chain)
             {
-                DrawZapBolt(parent.DrawPos, target.DrawPos, map);
-            }
-            catch
-            { /* ignore */
-            }
+                try
+                {
+                    DrawZapBolt(prev, target.DrawPos, map);
+                }
+                catch
+                { /* ignore */
+                }
 
-            try
-            {
-                PlayZapSound(parent.Position, map);
-            }
-            catch
-            { /* ignore */
-            }
+                try
+                {
+                    FleckMaker.ThrowLightningGlow(target.DrawPos, map, 1.2f);
+                }
+                catch
+                { /* ignore if method signature differs */
+                }
 
-            // Stun
+                ZapTarget(target, damageDef, props);
+                prev = target.DrawPos;
+            }
+        }
+
+        private void ZapTarget(Pawn target, DamageDef damageDef, CompProperties_ChTeslaZap props)
+        {
+            // Stun goes through StunHandler.StunFor, which bypasses EMP adaptation — so this
+            // stays reliable on mechanoids no matter how many times they've been hit.
             try
             {
                 target.stances?.stunner?.StunFor(props.stunTicks, parent);
@@ -159,118 +217,42 @@ namespace CheatTraits.Comps
             { /* ignore */
             }
 
-            float dmg = props.damageAmount;
+            float dmg;
+            float ap;
+
+            if (target.RaceProps != null && target.RaceProps.IsFlesh)
+            {
+                // Capture-friendly: don't finish off a flesh pawn that's already collapsing.
+                // Stun still lands so it stays locked down for arrest.
+                if (
+                    target.health != null
+                    && target.health.summaryHealth.SummaryHealthPercent
+                        < props.fleshSpareHealthPercent
+                )
+                {
+                    return;
+                }
+
+                dmg = props.fleshDamage;
+                ap = props.fleshArmorPenetration;
+            }
+            else
+            {
+                dmg = props.mechDamage;
+                ap = props.mechArmorPenetration;
+            }
+
             try
             {
-                var damageDef = ResolveTeslaDamageDef();
-
-                DamageInfo dinfo = new DamageInfo(
-                    damageDef,
-                    dmg,
-                    props.armorPenetration,
-                    instigator: parent
-                );
+                DamageInfo dinfo = new DamageInfo(damageDef, dmg, ap, instigator: parent);
                 target.TakeDamage(dinfo);
             }
             catch
             {
-                // As a last resort, deal burn damage if Stab isn't available for some reason
-                DamageInfo dinfo = new DamageInfo(
-                    DamageDefOf.Burn,
-                    dmg,
-                    props.armorPenetration,
-                    instigator: parent
-                );
+                // As a last resort, deal burn damage if the resolved def misbehaves.
+                DamageInfo dinfo = new DamageInfo(DamageDefOf.Burn, dmg, ap, instigator: parent);
                 target.TakeDamage(dinfo);
             }
-        }
-
-        private static float cachedSpikeTrapDamage = float.NaN;
-
-        private static float TryGetWoodenSpikeTrapDamageFallback(float fallback)
-        {
-            if (!float.IsNaN(cachedSpikeTrapDamage))
-                return cachedSpikeTrapDamage;
-
-            try
-            {
-                ThingDef? trap = DefDatabase<ThingDef>.GetNamedSilentFail("TrapSpike");
-                if (trap?.building == null)
-                {
-                    cachedSpikeTrapDamage = fallback;
-                    return cachedSpikeTrapDamage;
-                }
-
-                // Use reflection so we don't hard-depend on internal field names across versions.
-                object building = trap.building!;
-                Type bt = building.GetType();
-
-                string[] fieldNames =
-                {
-                    "trapDamage",
-                    "trapDamageBase",
-                    "trapDamageDefault",
-                    "trapDamageAmount",
-                    "TrapDamage",
-                };
-
-                foreach (string name in fieldNames)
-                {
-                    FieldInfo fi = bt.GetField(
-                        name,
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                    );
-                    if (
-                        fi != null
-                        && (fi.FieldType == typeof(float) || fi.FieldType == typeof(int))
-                    )
-                    {
-                        object val = fi.GetValue(building);
-                        if (val == null)
-                            continue;
-                        cachedSpikeTrapDamage = Convert.ToSingle(val);
-                        return cachedSpikeTrapDamage;
-                    }
-
-                    PropertyInfo pi = bt.GetProperty(
-                        name,
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                    );
-                    if (
-                        pi != null
-                        && (pi.PropertyType == typeof(float) || pi.PropertyType == typeof(int))
-                    )
-                    {
-                        object val = pi.GetValue(building, null);
-                        if (val == null)
-                            continue;
-                        cachedSpikeTrapDamage = Convert.ToSingle(val);
-                        return cachedSpikeTrapDamage;
-                    }
-                }
-            }
-            catch { }
-
-            cachedSpikeTrapDamage = fallback;
-            return cachedSpikeTrapDamage;
-        }
-
-        private static int DistanceSquaredToRect(IntVec3 c, CellRect r)
-        {
-            // CellRect in RimWorld is inclusive (min..max).
-            int dx = 0;
-            if (c.x < r.minX)
-                dx = r.minX - c.x;
-            else if (c.x > r.maxX)
-                dx = c.x - r.maxX;
-
-            int dz = 0;
-            if (c.z < r.minZ)
-                dz = r.minZ - c.z;
-            else if (c.z > r.maxZ)
-                dz = c.z - r.maxZ;
-
-            return dx * dx + dz * dz;
         }
 
         private static void DrawZapBolt(Vector3 start, Vector3 end, Map map)

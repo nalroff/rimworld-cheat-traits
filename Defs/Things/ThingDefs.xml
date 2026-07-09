@@ -104,13 +104,18 @@
         </affectedDamageDefs>
       </li>
 
-      <!-- Proximity zap -->
+      <!-- Proximity chain zap -->
       <li Class="CheatTraits.Comps.CompProperties_ChTeslaZap">
         <radius>6</radius>
         <cooldownTicks>180</cooldownTicks>
         <stunTicks>120</stunTicks>
-        <damageAmount>45</damageAmount>
-        <armorPenetration>0.15</armorPenetration>
+        <chainCount>4</chainCount>
+        <chainRadius>5</chainRadius>
+        <fleshDamage>16</fleshDamage>
+        <fleshArmorPenetration>0.15</fleshArmorPenetration>
+        <fleshSpareHealthPercent>0.30</fleshSpareHealthPercent>
+        <mechDamage>55</mechDamage>
+        <mechArmorPenetration>1.2</mechArmorPenetration>
         <requirePower>false</requirePower>
       </li>
     </comps>
@@ -259,8 +264,13 @@
         <radius>6</radius>
         <cooldownTicks>180</cooldownTicks>
         <stunTicks>120</stunTicks>
-        <damageAmount>45</damageAmount>
-        <armorPenetration>0.15</armorPenetration>
+        <chainCount>4</chainCount>
+        <chainRadius>5</chainRadius>
+        <fleshDamage>16</fleshDamage>
+        <fleshArmorPenetration>0.15</fleshArmorPenetration>
+        <fleshSpareHealthPercent>0.30</fleshSpareHealthPercent>
+        <mechDamage>55</mechDamage>
+        <mechArmorPenetration>1.2</mechArmorPenetration>
         <requirePower>false</requirePower>
       </li>
     </comps>

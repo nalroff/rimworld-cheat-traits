@@ -55,10 +55,14 @@ Unlocked by: `Ch Tesla`
 - Costs `15 Steel`
 - `250` work to build
 - Generates `750W`
-- Attacks standing hostile pawns within `6` tiles and line of sight
-- Deals `45` damage with `0.15` armor penetration
-- Stuns for `120` ticks
 - Fires every `180` ticks when a valid target is available
+- **Chain lightning**: arcs from the coil to the nearest standing hostile within `6` tiles and line of sight, then hops to the next-nearest hostile within `5` tiles, up to `4` targets per pulse
+- Every arc **stuns for `120` ticks** — this uses `StunHandler.StunFor`, which bypasses EMP adaptation, so it stays reliable on mechanoids no matter how many times they're hit
+- **Damage is split by target type so raiders can still be captured:**
+  - Flesh pawns (humanoids, animals): `16` damage at `0.15` armor penetration — tuned to *down* rather than kill. A flesh pawn already below `30%` health takes no damage (stun only), and downed pawns are never re-targeted, so the coil won't finish off a capturable attacker
+  - Mechanoids / drones: `55` damage at `1.2` armor penetration — armor-piercing so heavy plating no longer soaks the hit
+
+A wall-mounted variant with the same behavior is also available.
 
 ### Alchemy Cauldron
 
