@@ -2,7 +2,7 @@
 
 `Cheat Traits` adds 17 overpowered `Ch*` traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, spellcaster, support hero, master crafter, master builder, and more.
 
-All traits use `commonality = 0`, so they are best suited for custom starts, edited pawns, dev-mode setups, or other deliberate trait assignment.
+All traits use `commonality = 0` by default, so they are best suited for custom starts, edited pawns, dev-mode setups, or other deliberate trait assignment. If you *want* them to show up randomly, the mod settings let you raise their commonality (see below).
 
 ## Requirements
 
@@ -20,6 +20,15 @@ All traits use `commonality = 0`, so they are best suited for custom starts, edi
   - `Tesla Coil`
   - `Alchemy Cauldron`
   - `Eureka Forge`
+
+## Mod Settings
+
+Open **Options → Mod Settings → Cheat Traits** to control how often the `Ch*` traits appear during pawn generation.
+
+- **Cheat trait commonality** — a global slider (default `0` = off). Raising it makes every cheat trait eligible to roll on newly generated pawns. This applies to **all factions**: your colonists, allies, quest pawns, and raiders alike.
+- **Customize individual traits** — an optional, collapsible panel with a per-trait slider. Any trait left untouched follows the global slider; override just the ones you want, and use the reset (`↺`) button or **Reset all to global** to clear overrides.
+
+Guidance: a value near `1.0` makes each cheat trait roughly as common as a typical vanilla trait, which is *very* frequent across 17 traits — small values (`0.05`–`0.20`) are recommended. Changes take effect immediately for newly generated pawns; already-existing pawns are unaffected. The default of `0` keeps the traits deliberate-assignment-only, exactly as before.
 
 ## Trait-Gated Buildings
 
