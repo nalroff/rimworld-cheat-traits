@@ -1,301 +1,96 @@
 [h1]Cheat Traits[/h1]
 
-Cheat Traits adds 14 overpowered Ch* traits for players who want standout specialists, hero pawns, or deliberately broken colony builds. Each trait is built around a clear role: unarmed fighter, revolver ace, speedster, tank, master grower, miracle doctor, beastmaster, diplomat, and more.
+[b]17 overpowered traits that turn a colonist into a hero.[/b]
 
-All traits use commonality = 0, so they are best suited for custom starts, edited pawns, dev-mode setups, or other deliberate trait assignment.
+Vanilla traits nudge a number a few percent. These rewrite what a pawn is. A Ch Boxer punches a mechanoid apart bare-handed. A Ch Ascendant researches ten times faster and periodically invents recipes the game never intended you to have. Build a colony around one or two absurd standouts instead of a wall of generalists.
+
+Every trait carries a unique ability or unlocks a building, so no trait is just a pile of stat offsets.
+
+[hr][/hr]
+
+[h2]At A Glance[/h2]
+[list]
+[*][b]17[/b] role-defining traits
+[*][b]14[/b] castable abilities, all cooldown-based
+[*][b]5[/b] trait-gated buildings
+[*]Passive auras affecting pawns, animals, and plants
+[*][b]No Royalty required[/b] - no psylink, no psyfocus, no neural heat
+[/list]
+
+[h2]The Traits[/h2]
+
+[b]Combat[/b]
+[list]
+[*][b]Ch Boxer[/b] - unarmed monster. 10x melee damage barehanded, and a Flying Punch that leaps across the map to land one overwhelming blow.
+[*][b]Ch Tex[/b] - revolver ace. Near-perfect accuracy with a revolver, plus Deadeye: one guaranteed armor-piercing shot at anything he can see, at any range.
+[*][b]Ch Tank[/b] - damage sponge. Heavy armor, permanent pain dampening, and Iron Wall: taunts every hostile within 45 tiles while taking 10% damage.
+[*][b]Ch Zippy[/b] - speedster. Faster at moving and everything else, with a short-cooldown Blink for tactical repositioning.
+[/list]
+
+[b]Production[/b]
+[list]
+[*][b]Ch Artificer[/b] - master crafter. Every item and sculpture rolls Excellent, Masterwork, or Legendary. Reforge rerolls the quality of anything already made.
+[*][b]Ch Engineer[/b] - master builder. Construction never fails, builds 5x faster, and every structure rolls top-tier quality. Retrofit upgrades buildings in place.
+[*][b]Ch Digger[/b] - extreme miner. Triple mining speed and Tunnel, which instantly excavates a 3-wide passage straight through a mountain.
+[*][b]Ch Alchemist[/b] - meals become buffs. Cooks perfect variants that grant real stat bonuses for hours, and brews Trail Tonic for long caravans.
+[/list]
+
+[b]Support[/b]
+[list]
+[*][b]Ch Doc[/b] - surgeries never fail, tend quality is always perfect, and Miracle Heal cures disease, closes every wound, and regrows a lost body part.
+[*][b]Ch Ascendant[/b] - genius. 10x research speed, a learning-and-healing aura, and a Eureka event that grants normally-unobtainable recipes.
+[*][b]Ch Diplomat[/b] - mood and opinion aura, plus Bond Pawns to permanently lock two colonists into near-perfect rapport.
+[*][b]Ch Bard[/b] - battlefield support. A 12-tile aura that ramps up the longer allies stand in it, switchable between offense, defense, sustain, and reflex stances.
+[*][b]Ch Green Thumb[/b] - plants nearby grow 10x faster, ignoring light, temperature, and season. Blight is removed automatically.
+[*][b]Ch Beastmaster[/b] - colony animals become combat units via a 15-stat herd aura. Call of the Wild turns every wild animal on the map against your enemies.
+[/list]
+
+[b]Utility[/b]
+[list]
+[*][b]Ch Wizard[/b] - a real spellbook: Lightning Bolt, map-wide Teleport Other, Mass Berserk, and Super Soldier, which maxes a pawn's combat skills and conjures Legendary Cataphract gear for two hours.
+[*][b]Ch Comfy[/b] - extinguishes nearby fires automatically and shrugs off any temperature.
+[*][b]Ch Tesla[/b] - unlocks automated lightning defense.
+[/list]
+
+[h2]Trait-Gated Buildings[/h2]
+
+These appear in the Architect menu only when a colonist has the matching trait, and only that pawn can build them.
+
+[list]
+[*][b]Floragen Core[/b] (Green Thumb) - triples plant growth in a 12-tile field.
+[*][b]Comfort Node[/b] (Comfy) - holds a room at your chosen temperature with no power, glowing warmer or cooler to match.
+[*][b]Tesla Coil[/b] (Tesla) - generates 750W and chain-zaps up to 4 hostiles per pulse. Stuns bypass EMP adaptation, so mechanoids stay locked down, and damage is tuned to down raiders rather than kill them so you can still capture prisoners.
+[*][b]Alchemy Cauldron[/b] (Alchemist) - brews Trail Tonic: three days of near-zero hunger for caravans and sieges.
+[*][b]Eureka Forge[/b] (Ascendant) - crafts Luciferium, Hyperweave, Advanced Components, and Glitterworld Medicine when a Eureka grants the recipe.
+[/list]
+
+[h2]Getting The Traits[/h2]
+
+All 17 traits default to [b]commonality 0[/b], so they never appear by accident. Assign them deliberately with Character Editor, EDB Prepare Carefully, or dev mode.
+
+Prefer chaos? [b]Options > Mod Settings > Cheat Traits[/b] has a commonality slider, with optional per-trait overrides. Turn it up and cheat traits start rolling on any generated pawn: your colonists, your allies, and the raiders coming to kill them. Off by default.
 
 [h2]Requirements[/h2]
-
 [list]
 [*]RimWorld 1.6
 [*]Harmony
 [/list]
 
-[h2]What The Mod Adds[/h2]
-
+[h2]Best Used For[/h2]
 [list]
-[*]14 high-power role traits
-[*]Several passive aura systems
-[*]Three trait-gated buildings:
-[*]Floragen Core
-[*]Comfort Node
-[*]Tesla Coil
+[*]Hero pawn playthroughs and themed colonies
+[*]Challenge runs built around a few extreme specialists
+[*]Powerful utility without the micromanagement
 [/list]
 
-[h2]Trait-Gated Buildings[/h2]
+If you want a colony of ordinary pawns with one or two absurd standouts, this mod is built for exactly that.
 
-Some traits do more than modify stats. They also unlock special buildings that only appear when your colony has the matching trait, and only pawns with that trait can build or force-build them.
+[hr][/hr]
 
-[h3]Floragen Core[/h3]
+Full stat-by-stat documentation on [url=https://github.com/nalroff/rimworld-cheat-traits]GitHub[/url]. Bug reports and suggestions welcome in the comments.
 
-Unlocked by: Ch Green Thumb
+[i]The Flying Punch ability icon was drawn by my 10-year-old.[/i]
 
-[list]
-[*]Costs 15 Steel
-[*]250 work to build
-[*]12 tile radius
-[*]Scans every 2000 ticks
-[*]Applies 3x total plant growth in its field
-[*]Multiple cores do not stack with each other
-[*]Stacks with the Green Thumb pawn aura
-[/list]
+[i]Disclaimer: I used AI to generate some of the code (which I had to fix), the preview image, and the sprites (which I had to edit).[/i]
 
-[h3]Comfort Node[/h3]
-
-Unlocked by: Ch Comfy
-
-[list]
-[*]Costs 15 Steel
-[*]250 work to build
-[*]Requires no power
-[*]Indoor room stabilizer with a target-temperature gizmo
-[*]Keeps its room near the chosen temperature
-[*]Emits light that shifts cooler or warmer based on room temperature
-[/list]
-
-[h3]Tesla Coil[/h3]
-
-Unlocked by: Ch Tesla
-
-[list]
-[*]Costs 15 Steel
-[*]250 work to build
-[*]Generates 750W
-[*]Attacks standing hostile pawns within 6 tiles and line of sight
-[*]Deals 45 damage with 0.15 armor penetration
-[*]Stuns for 120 ticks
-[*]Fires every 180 ticks when a valid target is available
-[/list]
-
-[h2]Trait Reference[/h2]
-
-[h3]Ch Boxer[/h3]
-
-An unarmed melee monster.
-
-[list]
-[*]+10 Melee
-[*]+100 Melee Hit Chance
-[*]+1000 Pain Shock Threshold
-[*]While unarmed, MeleeDamageFactor x10
-[/list]
-
-[h3]Ch Tex[/h3]
-
-A gunfighter with a heavy revolver specialty.
-
-[list]
-[*]+10 Shooting
-[*]Always gains these ranged bonuses from the trait itself:
-[*]+0.45 Shooting Accuracy Pawn
-[*]AimingDelayFactor x0.55
-[*]RangedCooldownFactor x0.85
-[*]Gains an additional bonus while wielding a revolver
-[*]Works with Gun_Revolver and weapons whose defName contains Revolver
-[*]Total ranged bonus with a revolver equipped:
-[*]Accuracy is pushed extremely high and then capped at 0.99
-[*]AimingDelayFactor x0.10
-[*]RangedCooldownFactor x0.25
-[/list]
-
-[h3]Ch Zippy[/h3]
-
-A movement-focused speedster.
-
-[list]
-[*]+35 Move Speed
-[*]+35 Crawl Speed
-[*]+20 Global Work Speed
-[/list]
-
-[h3]Ch Tank[/h3]
-
-A front-line damage sponge with strong armor and pain resistance.
-
-[list]
-[*]+2.5 Sharp armor
-[*]+2.5 Blunt armor
-[*]Permanent pain dampener while the trait is present
-[*]Pain is reduced to 40% of normal
-[/list]
-
-[h3]Ch Green Thumb[/h3]
-
-A walking plant-growth engine and the unlock for Floragen Core.
-
-[list]
-[*]+10 Plants
-[*]Affects plants within 12 tiles
-[*]Reapplies its effect every 250 ticks
-[*]Pushes nearby plants to 10x total growth speed
-[*]Growth ignores normal light, temperature, season, and rest limitations
-[*]Removes blight from affected plants
-[/list]
-
-[h3]Ch Artificer[/h3]
-
-A master builder, crafter, and artist who works fast and produces top-end quality.
-
-[list]
-[*]+10 Construction
-[*]+10 Crafting
-[*]+10 Artistic
-[*]GeneralLaborSpeed x5, capped at 8
-[*]ConstructionSpeed x5, capped at 8
-[*]Quality outcomes are forced to:
-[*]60% Excellent
-[*]30% Masterwork
-[*]10% Legendary
-[/list]
-
-[h3]Ch Alchemist[/h3]
-
-A cook whose meals become buffs instead of just food.
-
-[list]
-[*]+10 Cooking
-[*]Works on simple, fine, and lavish meals
-[*]Alchemist meals never cause food poisoning
-[*]Meals can become "perfect" versions:
-[*]Simple: 15%
-[*]Fine: 25%
-[*]Lavish: 35%
-[/list]
-
-Meal effects:
-
-[list]
-[*]Simple meal: +5% Move Speed, +5% Work Speed Global, +10% Immunity Gain Speed, +10% Rest Rate, -10% Hunger Rate for 6000 ticks
-[*]Fine meal: +10% Move Speed, +10% Work Speed Global, +20% Immunity Gain Speed, +20% Rest Rate, -20% Hunger Rate for 9000 ticks
-[*]Lavish meal: +15% Move Speed, +15% Work Speed Global, +30% Immunity Gain Speed, +30% Rest Rate, -30% Hunger Rate for 12000 ticks
-[*]Perfect simple meal: +10% Move Speed, +10% Work Speed Global, +20% Immunity Gain Speed, +20% Rest Rate, -20% Hunger Rate for 9000 ticks
-[*]Perfect fine meal: +20% Move Speed, +20% Work Speed Global, +35% Immunity Gain Speed, +35% Rest Rate, -35% Hunger Rate for 12000 ticks
-[*]Perfect lavish meal: +30% Move Speed, +30% Work Speed Global, +50% Immunity Gain Speed, +50% Rest Rate, -50% Hunger Rate for 15000 ticks
-[/list]
-
-[h3]Ch Doc[/h3]
-
-A guaranteed surgeon and elite doctor.
-
-[list]
-[*]+10 Medicine
-[*]Surgeries performed by this pawn do not fail
-[*]Tend quality is forced to 100%
-[*]Includes self-tend
-[/list]
-
-[h3]Ch Ascendant[/h3]
-
-A high-end leader/researcher with a powerful support aura.
-
-[list]
-[*]+10 Intellectual
-[*]ResearchSpeed x10
-[*]Fertility is forced to 1.0
-[*]Emits an aura to same-faction humanlikes within 20 tiles
-[*]Aura refreshes every 250 ticks and lingers for 7500 ticks
-[*]Aura grants:
-[*]GlobalLearningFactor x3
-[*]InjuryHealingFactor x4
-[/list]
-
-[h3]Ch Beastmaster[/h3]
-
-A supreme animal handler with a strong aura for colony animals.
-
-[list]
-[*]+10 Animals
-[*]+1000 Tame Animal Chance
-[*]+1000 Train Animal Chance
-[*]AnimalGatherSpeed x2
-[*]AnimalGatherYield x2
-[*]Ignores animal-interaction skill minimums for tame/train-style work
-[*]Emits an aura to same-faction animals within 20 tiles
-[*]Aura refreshes every 250 ticks and lingers for 5000 ticks
-[/list]
-
-Herd blessing effects on animals:
-
-[list]
-[*]+0.12 Melee Hit Chance
-[*]+0.08 Melee Dodge Chance
-[*]+0.15 Sharp armor
-[*]+0.12 Blunt armor
-[*]+0.20 Pain Shock Threshold
-[*]MoveSpeed x1.15
-[*]CarryingCapacity x1.50
-[*]MeleeDamageFactor x1.25
-[*]MeleeCooldownFactor x0.95
-[*]InjuryHealingFactor x1.25
-[*]ImmunityGainSpeed x1.25
-[*]ToxicResistance x1.25
-[*]ToxicEnvironmentResistance x1.25
-[*]IncomingDamageFactor x0.85
-[*]Fertility x1.25
-[*]BodyResourceGrowthSpeed x7
-[/list]
-
-[h3]Ch Diplomat[/h3]
-
-A social powerhouse with mood and relationship support.
-
-[list]
-[*]+10 Social
-[*]+10.0 Social Impact
-[*]+10.0 Negotiation Ability
-[*]+2.0 Trade Price Improvement
-[*]+10.0 Conversion Power
-[*]Emits an aura to same-faction humanlikes within 16 tiles
-[*]Aura refreshes every 250 ticks and lingers for 15000 ticks
-[*]Affected player pawns gain +8 mood from diplomatic calm
-[*]Affected player pawns gain +12 opinion of each other from easy rapport
-[/list]
-
-[h3]Ch Digger[/h3]
-
-An extreme miner and driller.
-
-[list]
-[*]+10 Mining
-[*]MiningSpeed x3
-[*]SmoothingSpeed x6
-[*]MiningYield x2.5
-[*]DeepDrillingSpeed x3
-[/list]
-
-[h3]Ch Comfy[/h3]
-
-A fire-control and temperature utility specialist that unlocks the Comfort Node.
-
-[list]
-[*]+2.5 Heat armor
-[*]-40 Comfy Temperature Min
-[*]+40 Comfy Temperature Max
-[*]Automatically extinguishes fires within 10 tiles
-[*]Checks for fires every 120 ticks
-[*]Fire suppression can be toggled on or off per pawn
-[/list]
-
-[h3]Ch Tesla[/h3]
-
-The unlock trait for the Tesla Coil.
-
-[list]
-[*]No direct stat bonuses
-[*]Gives access to the Tesla Coil build chain
-[*]Best used for colonies that want free power plus short-range automated defense
-[/list]
-
-[h2]Suggested Use[/h2]
-
-Cheat Traits is best for:
-
-[list]
-[*]custom starts
-[*]hero-pawn playthroughs
-[*]themed colonies
-[*]challenge runs with a few extremely strong specialists
-[*]players who want powerful utility pawns without micromanaging gear or implants
-[/list]
-
-If you want a colony of normal pawns with one or two absurd standouts, this mod is built for exactly that.
+Enjoy!
