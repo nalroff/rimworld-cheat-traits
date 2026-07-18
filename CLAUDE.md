@@ -8,7 +8,22 @@ RimWorld 1.6 mod. Adds 17 overpowered `Ch*` traits for custom colonists and hero
 
 **Always use the `rimworld-sprite` skill when creating or refining a sprite/texture.** It owns the SVG → Inkscape → ImageMagick pipeline, the vanilla-style rules (camera angle, outline weight, palette, tone count), and the Graphic_Single vs Graphic_Multi decision. Per-building SVG sources live in `Source/art/`; see [`Source/art/cauldron.svg`](Source/art/cauldron.svg) as the canonical template.
 
-**Keep `About/About.xml` in sync with `README.md`.** `README.md` is the source of truth for trait/ability/building names, counts, and behavior. Whenever you add, change, or remove a `Ch*` trait, ability, or trait-gated building, re-check the Steam-facing `<description>` in [`About/About.xml`](About/About.xml) for accuracy: the trait count, the building list, the ability count and names, and the high-level summaries must still match the README. The About description is a curated marketing blurb (not an exhaustive dump), so update it for correctness rather than copying the README verbatim.
+**Keep both Steam-facing files in sync with `README.md`.** `README.md` is the source of truth for trait/ability/building names, counts, and behavior. Two downstream files describe the mod to players and must be re-checked whenever you add, change, or remove a `Ch*` trait, ability, or trait-gated building:
+
+1. [`About/About.xml`](About/About.xml) — the `<description>` shown in RimWorld's in-game mod list.
+2. [`About/CheatTraits_Workshop.txt`](About/CheatTraits_Workshop.txt) — the BBCode description pasted into the Steam Workshop item page.
+
+For both, verify the trait count, the ability count and names, the building list, and the high-level summaries still match the README. Both are curated marketing blurbs, not exhaustive dumps — update them for correctness rather than copying the README verbatim. They are the first thing to drift and the last thing anyone remembers to check, so treat updating them as part of the feature, not a follow-up.
+
+Constraints specific to `CheatTraits_Workshop.txt`:
+
+- **Hard limit 8000 bytes** (Steamworks `k_cchPublishedDocumentDescriptionMax`). BBCode tags count toward it, and the budget is bytes rather than characters — non-ASCII punctuation (`—`, `–`, `×`) costs 3 bytes each, so prefer ASCII `-` and `x` in this file. Measure before shipping:
+  ```powershell
+  [System.Text.Encoding]::UTF8.GetByteCount((Get-Content About/CheatTraits_Workshop.txt -Raw))
+  ```
+- An earlier version was a full per-stat port of the README and hit 7752 bytes while covering only 14 traits and 3 buildings — it could not grow further. Keep this file condensed and role-focused; link to GitHub for exhaustive stat tables.
+- Steam BBCode supports `[h1]`–`[h3]`, `[b]`, `[i]`, `[u]`, `[strike]`, `[list]`/`[olist]` with `[*]`, `[table]`/`[tr]`/`[th]`/`[td]`, `[hr]`, `[quote]`, `[code]`, `[spoiler]`, `[noparse]`, and `[url]`. There is **no `[color]` tag** — do not use one.
+- Editing this file does not update the live Workshop page; the text still has to be pasted into Steam manually.
 
 ## Active multi-session work
 
