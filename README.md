@@ -268,6 +268,7 @@ A genius intellect whose insights periodically unlock impossible recipes.
 
 - `+10` Intellectual
 - `ResearchSpeed x10`
+- `HackingSpeed x10`
 - Unlocks the `Eureka Forge` (see the trait-gated buildings section above)
 - Every `15` in-game days (one quadrum) a `Eureka` event fires, but only while a Ch Ascendant is on the map:
   - `2` random recipes are added to the Eureka Forge for `3` in-game days

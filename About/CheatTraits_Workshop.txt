@@ -2,7 +2,7 @@
 
 [b]17 overpowered traits that turn a colonist into a hero.[/b]
 
-Vanilla traits nudge a number a few percent. These rewrite what a pawn is. A Ch Boxer punches a mechanoid apart bare-handed. A Ch Ascendant researches ten times faster and periodically invents recipes the game never intended you to have. Build a colony around one or two absurd standouts instead of a wall of generalists.
+Vanilla traits nudge a number a few percent. These rewrite what a pawn is. A Ch Boxer punches a mechanoid apart bare-handed. A Ch Ascendant researches and hacks ten times faster and periodically invents recipes the game never intended you to have. Build a colony around one or two absurd standouts instead of a wall of generalists.
 
 Every trait carries a unique ability or unlocks a building, so no trait is just a pile of stat offsets.
 
@@ -38,7 +38,7 @@ Every trait carries a unique ability or unlocks a building, so no trait is just 
 [b]Support[/b]
 [list]
 [*][b]Ch Doc[/b] - surgeries never fail, tend quality is always perfect, and Miracle Heal cures disease, closes every wound, and regrows a lost body part.
-[*][b]Ch Ascendant[/b] - genius. 10x research speed, a learning-and-healing aura, and a Eureka event that grants normally-unobtainable recipes.
+[*][b]Ch Ascendant[/b] - genius. 10x research and hacking speed, a learning-and-healing aura, and a Eureka event that grants normally-unobtainable recipes.
 [*][b]Ch Diplomat[/b] - mood and opinion aura, plus Bond Pawns to permanently lock two colonists into near-perfect rapport.
 [*][b]Ch Bard[/b] - battlefield support. A 12-tile aura that ramps up the longer allies stand in it, switchable between offense, defense, sustain, and reflex stances.
 [*][b]Ch Green Thumb[/b] - plants nearby grow 10x faster, ignoring light, temperature, and season. Blight is removed automatically.

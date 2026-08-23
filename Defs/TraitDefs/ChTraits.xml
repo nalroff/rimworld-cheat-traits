@@ -140,12 +140,13 @@
     <degreeDatas>
       <li>
         <label>ch Ascendant</label>
-        <description>This pawn's intellect borders on the prophetic. Research crawls along at ten times the normal rate, and every quadrum a flash of insight — a Eureka — exposes two random discoverable recipes on a trait-gated Eureka Forge for three in-game days.</description>
+        <description>This pawn's intellect borders on the prophetic. Research and hacking both proceed at ten times the normal rate, and every quadrum a flash of insight — a Eureka — exposes two random discoverable recipes on a trait-gated Eureka Forge for three in-game days.</description>
         <skillGains>
           <Intellectual>10</Intellectual>
         </skillGains>
         <statFactors>
           <ResearchSpeed>10.0</ResearchSpeed>
+          <HackingSpeed>10.0</HackingSpeed>
         </statFactors>
       </li>
     </degreeDatas>
